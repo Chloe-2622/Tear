@@ -9,6 +9,8 @@ void Game::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
+	GameObject player{Transform{{100, 100}, {50, 50}, 0}, 100};
+
 	// mWindow.setVerticalSyncEnabled(true);
 	mWindow.setFramerateLimit(60);
 	while (mWindow.isOpen())
@@ -18,6 +20,7 @@ void Game::run()
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
 			timeSinceLastUpdate -= TimePerFrame;
+			player.Update(TimePerFrame.asMilliseconds());
 
 			processEvents();
 			update(TimePerFrame);

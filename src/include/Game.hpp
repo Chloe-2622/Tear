@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
 
 class Game {
     public:
@@ -14,4 +15,6 @@ class Game {
 
         sf::RenderWindow mWindow{sf::VideoMode{640, 480}, "SFML Application", sf::Style::Close};
         static const sf::Time TimePerFrame;
+
+        std::unique_ptr<GameObject*> gameObjects;
 };
