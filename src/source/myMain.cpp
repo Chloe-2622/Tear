@@ -1,6 +1,7 @@
 #include "Game.hpp"
+#include "myMain.h"
 
-int main() {
+int myMain() {
     Game game;
     game.run();
 
