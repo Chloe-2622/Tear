@@ -1,15 +1,21 @@
 #include "Game.hpp"
+#include "Tear.h"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() {}
+
+
+void Game::initPaterns() {}
+
 
 void Game::run()
 {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	GameObject player{Transform{{100, 100}, {50, 50}, 0}, 100};
+	//GameObject player{Transform{{100, 100}, {50, 50}, 0}, 100, "resources/Shopkeeper_big.png"};
+	Tear tear{ Transform{{100, 100}, {50, 50}, 0}, 100, "resources/Shopkeeper.png", 0, 0, 0, 0 };
 
 	// mWindow.setVerticalSyncEnabled(true);
 	mWindow.setFramerateLimit(60);
@@ -20,7 +26,8 @@ void Game::run()
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
 			timeSinceLastUpdate -= TimePerFrame;
-			player.Update(TimePerFrame.asMilliseconds());
+			tear.Update(TimePerFrame.asMilliseconds());
+			tear.Render(mWindow);
 
 			processEvents();
 			update(TimePerFrame);
@@ -50,4 +57,5 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::render()
 {
+	
 }

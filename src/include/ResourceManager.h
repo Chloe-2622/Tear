@@ -6,6 +6,6 @@
 class ResourceManager {
     public:
         ResourceManager();
-        static sf::Texture getTexture(std::string texturePath);
+        static sf::Texture getTexture(std::string const& texturePath);
         static std::map<std::string, sf::Texture> textures;
 };

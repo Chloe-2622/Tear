@@ -17,7 +17,7 @@ struct Transform {
 class GameObject {
     public:
         GameObject();
-        GameObject(Transform transform, double speed);
+        GameObject(Transform transform, double speed, std::string texturePath);
 
         void Update(double deltaTime);
         void Render(sf::RenderWindow &window);
