@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
+#include "Player.h"
 
 class Game {
     public:
