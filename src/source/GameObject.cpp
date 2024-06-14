@@ -17,10 +17,10 @@ GameObject::GameObject(Transform transform, double speed, std::string texturePat
     texturePath{ texturePath }
 {}
 
-void GameObject::Update(double deltaTime) {
+void GameObject::update(double deltaTime) {
 }
 
-void GameObject::Render(sf::RenderWindow &window) {
+void GameObject::render(sf::RenderWindow &window) {
     sf::Texture texture;
     texture = ResourceManager::getTexture(texturePath);
 

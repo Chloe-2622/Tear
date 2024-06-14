@@ -16,6 +16,7 @@ void Game::run()
 
 	//GameObject player{Transform{{100, 100}, {50, 50}, 0}, 100, "resources/Shopkeeper_big.png"};
 	Tear tear{ Transform{{100, 100}, {50, 50}, 0}, 100, "resources/Shopkeeper.png", 0, 0, 0, 0 };
+	Player player{Transform{{100, 100}, {50, 50}, 0}, 100};
 
 	// mWindow.setVerticalSyncEnabled(true);
 	mWindow.setFramerateLimit(60);
@@ -26,8 +27,9 @@ void Game::run()
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
 			timeSinceLastUpdate -= TimePerFrame;
-			tear.Update(TimePerFrame.asMilliseconds());
-			tear.Render(mWindow);
+			tear.update(TimePerFrame.asMilliseconds());
+			tear.render(mWindow);
+			player.update(TimePerFrame.asMilliseconds());
 
 			processEvents();
 			update(TimePerFrame);
