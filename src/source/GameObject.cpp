@@ -11,12 +11,11 @@ GameObject::GameObject() {
     texturePath = "";
 }
 
-GameObject::GameObject(Transform transform, double speed) {
-    this->transform = transform;
-    this->speed = speed;
-
-    texturePath = "";
-}
+GameObject::GameObject(Transform transform, double speed, std::string texturePath):
+    transform{ transform },
+    speed{ speed },
+    texturePath{ texturePath }
+{}
 
 void GameObject::update(double deltaTime) {
 }
