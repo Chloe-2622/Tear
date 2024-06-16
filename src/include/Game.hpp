@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
 #include "Player.h"
+#include "Tear.h"
 
 struct Patern {
     int id;
@@ -26,5 +27,5 @@ class Game {
         static const sf::Time TimePerFrame;
 
         std::unique_ptr<GameObject*> gameObjects;
-        std::vector<Patern> paterns
+        std::vector<Patern> paterns;
 };
