@@ -1,11 +1,11 @@
 #include "ResourceManager.h"
 
-std::map<std::string, sf::Texture> ResourceManager::textures;
+std::map<std::string, sf::Texture, std::less<>> ResourceManager::textures;
 
 sf::Texture ResourceManager::getTexture(std::string const& texturePath) {
 
     if (textures.contains(texturePath)) {
-        std::cout << "Already loaded texture: " << texturePath << std::endl;
+        //std::cout << "Already loaded texture: " << texturePath << std::endl;
         return textures[texturePath];
     }
 
