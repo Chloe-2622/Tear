@@ -1,3 +1,5 @@
+#pragma once
+
 #include "GameObject.h"
 
 
@@ -11,6 +13,9 @@ public:
 	void		doDamage();
 	bool		takeDamage();
 	double		exitScreen();
+
+	void update(double deltaTime) override {};
+	void render(sf::RenderWindow& window) override {};
 
 private:
 	int			healthPoints;

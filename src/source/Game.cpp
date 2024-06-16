@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include "Tear.h"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
