@@ -20,7 +20,7 @@ Tear::Tear(Transform const& transform, double speed, string const& texturePath, 
 {}
 
 Tear::Tear(const pugi::xml_node& node) :
-	GameObject{ Transform{{node.attribute("x").as_double(), node.attribute("y").as_double()}, {100, 100}, 0}, 0, "resources/Sprites/Basic_Tear.png" },
+	GameObject{ Transform{{node.attribute("x").as_double(), node.attribute("y").as_double()}, {node.attribute("size_x").as_double(), node.attribute("size_y").as_double()}, 0}, 0, "resources/Sprites/Basic_Tear.png" },
 	healthPoints{ 100 },
 	scrollingPenalty{ 1 },
 	damage{ 10 },
