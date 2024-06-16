@@ -36,7 +36,7 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const wi
 	int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
 
 	// Choose random location
-	auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowWidth)));
+	auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowWidth - paterns[paternId]->getMaxSpawnable_x(windowWidth))));
 	auto offset_y = lenght;
 
 	//cout << "id: " << paternId << " offset: " << offset_x << ", offset max: " << paterns[paternId]->getMaxSpawnable_x(windowDimensions.x) << "\n";
@@ -73,7 +73,7 @@ void Level::Update(double deltaTime, float windowLenght) {
 
 		if (gameObject->isOutofView(view.getCenter().y + windowLenght)) {
 			scrollingSpeed += gameObject->exitView();
-			gameObjects.erase(find(gameObjects.begin(), gameObjects.end(), gameObject));
+			gameObjects.erase(std::ranges::find(gameObjects.begin(), gameObjects.end(), gameObject));
 		}
 	}
 }

@@ -1,5 +1,0 @@
-# DELETE THIS FILE WHEN RESOURCES ARE ADDED
-# Its only purpose is to keep the directory structure in git
-*
-# Except this file
-!.gitignore

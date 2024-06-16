@@ -52,7 +52,8 @@ std::string Patern::dump(std::string indent) const {
     std::ostringstream oss;
     oss << indent
         << "id: " << id
-        << "Name: " << name << endl;
+        << " Name: " << name
+        << " Size: " << size.x << ", " << size.y << endl;
     for (auto const& tear : tears) {
         oss << tear->dump("| ");
     }
