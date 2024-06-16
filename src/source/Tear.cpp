@@ -50,6 +50,9 @@ double Tear::exitView() const {
 	return scrollingPenalty;
 }
 
+void Tear::Update(double deltaTime) {
+}
+
 
 
 void Tear::doDamage() {}

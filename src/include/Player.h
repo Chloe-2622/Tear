@@ -13,8 +13,7 @@ class Player : public GameObject {
         void upgrade(Upgrade upgrade);
 
         // Override
-        void update(double deltaTime) override {};
-        void render(sf::RenderWindow &window) override {};
+        void Update(double deltaTime) override;
 
     private:
         // Health

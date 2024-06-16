@@ -16,3 +16,6 @@ Player::Player(Transform transform, double speed) : GameObject(transform, speed)
     goldMultiplier = 1.0;
     projectileDuplication = 1;
 };
+
+void Player::Update(double deltaTime) {
+}

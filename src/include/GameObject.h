@@ -24,8 +24,8 @@ class GameObject {
 
         GameObject(GameObject const& gameObject);
 
-        void            Update(double deltaTime);
-        void            Render(sf::RenderWindow &window) const;
+        virtual void    Update(double deltaTime);
+        virtual void    Render(sf::RenderWindow &window) const;
 
         void            move(Vector2 movement);
         virtual bool    isOutofView(float const viewBottomBoarder) const = 0;

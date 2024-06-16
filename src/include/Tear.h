@@ -20,8 +20,7 @@ public:
 	bool		takeDamage();
 	double		exitScreen();
 
-	void update(double deltaTime) override {};
-	void render(sf::RenderWindow& window) override {};
+	void 		Update(double deltaTime) override;
 
 private:
 	int			healthPoints;
