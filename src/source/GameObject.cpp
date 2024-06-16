@@ -39,6 +39,10 @@ void GameObject::Render(sf::RenderWindow &window) const {
 
     sf::Sprite sprite;
     sprite.setTexture(texture);
+
+    //std::cout << texture.getSize().x << ", " << texture.getSize().y;
+
+    sprite.setScale(transform.size.x/texture.getSize().x , transform.size.y / texture.getSize().y);
     sprite.setPosition(static_cast<float>(transform.position.x), static_cast<float>(transform.position.y));
     sprite.setRotation(static_cast<float>(transform.rotation));
 

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- Dans cette version de format, les coordonnees (x,y) sont exprimees dans un		-->
+<!-- repere dont le centre est le coin supérieur gauche, les valeurs positives de x -->
+<!-- etant vers la droite, les valeurs positives de y etant vers le bas.			-->
+<!-- Les valeurs de x et y doivent être positives									-->
+<Paterns>	
+	<Patern id="0" name="Single Drop">
+		<Tear x="0" y="0"/>
+	</Patern>
+	<Patern id="1" name="Two Drops">
+		<Tear x="0" y="0"/>
+		<Tear x="200" y="0"/>
+	</Patern>
+	<Patern id="2" name="Wall">
+		<Tear x="0" y="0"/>
+		<Tear x="100" y="0"/>
+		<Tear x="200" y="0"/>
+		<Tear x="300" y="0"/>
+		<Tear x="400" y="0"/>
+		<Tear x="500" y="0"/>
+		<Tear x="600" y="0"/>
+	</Patern>
+</Paterns>
+
+
