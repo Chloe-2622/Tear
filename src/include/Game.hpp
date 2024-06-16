@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Level.h"
 
+
 class Game {
     public:
         explicit Game() = default;
@@ -22,4 +23,5 @@ class Game {
         std::vector<std::unique_ptr<Patern>>    paterns;
         int                                     levelNumber;
         Level                                   currentLevel{ 0 };
+
 };

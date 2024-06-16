@@ -19,7 +19,9 @@ struct Transform {
 class GameObject {
     public:
         GameObject();
+        GameObject(Transform transform, double speed);
         GameObject(Transform transform, double speed, std::string texturePath);
+
         GameObject(GameObject const& gameObject);
 
         void            Update(double deltaTime);
@@ -40,4 +42,5 @@ class GameObject {
         Transform       transform;
         double          speed;
         std::string     texturePath;
+
 };

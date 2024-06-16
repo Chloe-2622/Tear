@@ -1,9 +1,11 @@
 #include "Game.hpp"
+
 #include "iostream"
 #include <string>
 
 
 using namespace std;
+
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -30,11 +32,13 @@ void Game::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
+
 	initPaterns();
 	currentLevel.buildLevel(paterns, static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y));
 
 	// Apply the view
 	mWindow.setView(currentLevel.initView(static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)));
+
 
 	// mWindow.setVerticalSyncEnabled(true);
 	mWindow.setFramerateLimit(60);
@@ -46,6 +50,7 @@ void Game::run()
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
 			timeSinceLastUpdate -= TimePerFrame;
+
 			processEvents();
 			update(TimePerFrame);
 		}

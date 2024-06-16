@@ -33,6 +33,7 @@ void GameObject::Update(double deltaTime) {
 }
 
 void GameObject::Render(sf::RenderWindow &window) const {
+
     sf::Texture texture;
     texture = ResourceManager::getTexture(texturePath);
 
