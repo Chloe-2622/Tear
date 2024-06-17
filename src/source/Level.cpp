@@ -57,8 +57,8 @@ void Level::spawnPlayer() {
 }
 
 void Level::spawnGoal() {
-	double goalSize = 100;
-	goal = make_unique<Goal>(Transform{ {windowSize.x - (goalSize / 2), 0}, {goalSize, goalSize}, 0 }, "resources/Sprites/Bebe.png");
+	double goalSize = 200;
+	goal = make_unique<Goal>(Transform{ {(windowSize.x - goalSize ) / 2, 0}, {goalSize, goalSize}, 0 }, "resources/Sprites/Bebe.png");
 }
 
 void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
@@ -152,7 +152,7 @@ void Level::Render(sf::RenderWindow& window) const {
 	for (auto const& projectile : projectiles) {
 		projectile->Render(window);
 	}
-	player->Render(window);
 	goal->Render(window);
+	player->Render(window);
 }
 
