@@ -2,7 +2,9 @@
 
 #include "pugixml.hpp"
 #include "Tear.h"
+#include "Basic_Tear.h"
 #include "Guided_Tear.h"
+#include "River_Tear.h"
 
 class Patern {
 public :

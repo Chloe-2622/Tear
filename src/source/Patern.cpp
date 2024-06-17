@@ -15,13 +15,13 @@ Patern::Patern(const pugi::xml_node& node) :
     for (pugi::xml_node tear : node.children()) {
 
         if (tear.name() == "Basic_Tear"s) {
-            tears.push_back(make_unique<Tear>(tear));
+            tears.push_back(make_unique<Basic_Tear>(tear));
         }
         else if (tear.name() == "Guided_Tear"s) {
             tears.push_back(make_unique<Guided_Tear>(tear));
         }
         else if (tear.name() == "River_Tear"s) {
-            tears.push_back(make_unique<Guided_Tear>(tear));
+            tears.push_back(make_unique<River_Tear>(tear));
         }
 
         if (!tears.empty()) {

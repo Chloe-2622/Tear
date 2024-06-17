@@ -41,6 +41,7 @@ GameObject::GameObject(GameObject const& gameObject) :
 
 // Render
 void GameObject::Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLenght, Vector2 playerPosition) {}
+
 void GameObject::Render(sf::RenderWindow &window) const {
 
     sf::Texture texture;
@@ -69,7 +70,6 @@ void GameObject::move(Vector2 movement) {
 bool GameObject::isOutofView(sf::FloatRect currentViewBox) const { return false; }
 double GameObject::exitView() const { return 0; }
 //void GameObject::doDamage(GameObject gameObject, double playerMultiplier) const {/*Method to override*/}
-bool GameObject::takeDamage(double damages) { return false; }
 #pragma endregion Override if necessary
 
 

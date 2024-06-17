@@ -28,10 +28,6 @@ Tear::Tear(Tear const& tear) :
 {}
 #pragma endregion Constructeurs
 
-std::unique_ptr<Tear> Tear::copy() const{
-	return make_unique<Tear>(*this);
-}
-
 bool Tear::isOutofView(sf::FloatRect currentViewBox) const {
 	//cout << "Bottom: " << viewBottomBoarder << ", Position: " << transform.position.y << "\n";
 
@@ -47,6 +43,10 @@ double Tear::exitView() const {
 //	healthPoints -= (int)damages;
 //	return healthPoints < 0;
 //}
+bool Tear::takeDamage(double damages) {
+	healthPoints -= static_cast<int>(damages);
+	return healthPoints > 0;
+}
 
 
 

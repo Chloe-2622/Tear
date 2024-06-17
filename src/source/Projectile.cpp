@@ -9,3 +9,5 @@ void Projectile::UpdateProjectile(double deltaTime, float viewPositionY, float w
 bool Projectile::isOutofView(sf::FloatRect currentViewBox) const {
     return getPosition().y < currentViewBox.top - getSize().y;
 }
+
+bool Projectile::takeDamage(double damages) { return false; }

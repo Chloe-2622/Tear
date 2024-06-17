@@ -14,7 +14,7 @@ class Player : public GameObject {
         void                        upgrade(Upgrade upgrade);
 
         // Override
-        virtual unique_ptr<GameObject> hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
+        //virtual unique_ptr<GameObject> hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
         void                        UpdatePlayer(double deltaTime, float viewPositionY, float windowLength, float windowWidth, std::vector<std::unique_ptr<Projectile>>& projectiles);
 
         void                        handleInput(sf::Keyboard::Key keyPressed, bool isPressed);
