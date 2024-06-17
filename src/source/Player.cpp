@@ -9,7 +9,7 @@ Player::Player() : GameObject() {
     projectileDuplication = 1;
 };
 
-Player::Player(Transform transform, double speed) : GameObject(transform, speed) {
+Player::Player(Transform transform, double speed) : GameObject(transform, speed, "") {
     healthPoint = 100;
     damageMultiplier = 1.0;
     goldCount = 0;
@@ -17,5 +17,4 @@ Player::Player(Transform transform, double speed) : GameObject(transform, speed)
     projectileDuplication = 1;
 };
 
-void Player::Update(double deltaTime) {
-}
+void Player::Update(double deltaTime) {};

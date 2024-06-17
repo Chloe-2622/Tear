@@ -8,12 +8,17 @@ class Player : public GameObject {
         Player();
         Player(Transform transform, double speed);
 
+
+
+
+
+
         void shootProjectile();
         bool takeDamage(double damage);
         void upgrade(Upgrade upgrade);
 
         // Override
-        void Update(double deltaTime) override;
+        void        Update(double deltaTime) override;
 
     private:
         // Health

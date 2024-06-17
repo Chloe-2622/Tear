@@ -43,18 +43,19 @@ std::unique_ptr<Tear> Tear::copy() const{
 bool Tear::isOutofView(float const viewBottomBoarder) const {
 	//cout << "Bottom: " << viewBottomBoarder << ", Position: " << transform.position.y << "\n";
 
-	return transform.position.y >= viewBottomBoarder;
+	return getPosition().y >= viewBottomBoarder;
 }
 
 double Tear::exitView() const {
 	return scrollingPenalty;
 }
 
-void Tear::Update(double deltaTime) {
+bool Tear::hit(Player player, vector<unique_ptr<GameObject>> const& gameObjects) const {
+	return (player.getPosition().x - getPosition().x < getSize().x) && (player.getPosition().y - getPosition().y < getSize().y);
 }
 
-
-
-void Tear::doDamage() {}
-bool Tear::takeDamage() { return false; }
-double Tear::exitScreen() { return 0; }
+void Tear::doDamage(GameObject const& gameObject, double playerMultiplier) const { gameObject. }
+bool Tear::takeDamage(double damages) {
+	healthPoints -= (int)damages;
+	return healthPoints < 0;
+}
