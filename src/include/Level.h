@@ -8,10 +8,10 @@ public:
 	Level() = default;
 
 	sf::View										initView(float const windowWidth, float const windowLenght);
-	void											buildLevel(std::vector<std::unique_ptr<Patern>> const& paterns, float const windowWidth, float const windowLenght);
+	void											buildLevel(std::vector<std::unique_ptr<Patern>> const& paterns);
 
 	sf::View										UpdateView(double deltaTime);
-	void											Update(double deltaTime, float const windowLenght, float windowWidth);
+	void											Update(double deltaTime);
 	void											Render(sf::RenderWindow& window) const;
 
 	// Getter
@@ -19,7 +19,7 @@ public:
 
 private:
 	void											spawnPatern(Patern const& patern, Vector2 const& offset);
-	void 										    spawnPlayer(float const windowWidth, float const windowLenght);
+	void 										    spawnPlayer();
 	sf::View										view;
 
 	double											lenght = 2*1080;
@@ -27,4 +27,5 @@ private:
 	bool											hasReachedEnd = false;
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
 	std::unique_ptr<Player>							player;
+	Vector2											windowSize;
 };

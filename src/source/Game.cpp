@@ -34,7 +34,7 @@ void Game::run()
 
 
 	initPaterns();
-	currentLevel.buildLevel(paterns, static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y));
+	currentLevel.buildLevel(paterns);
 
 	// Apply the view
 	mWindow.setView(currentLevel.initView(static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)));
@@ -83,7 +83,7 @@ void Game::processEvents()
 
 void Game::update(sf::Time elapsedTime) {
 	mWindow.setView(currentLevel.UpdateView(static_cast<double>(elapsedTime.asMilliseconds())));
-	currentLevel.Update(static_cast<double>(elapsedTime.asMilliseconds()), static_cast<float>(mWindow.getSize().y), static_cast<float>(mWindow.getSize().x));
+	currentLevel.Update(static_cast<double>(elapsedTime.asMilliseconds()));
 }
 
 void Game::render() {

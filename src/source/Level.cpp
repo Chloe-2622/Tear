@@ -21,6 +21,8 @@ Level::Level(int levelNumber) {
 
 #pragma region Initialize Level
 sf::View Level::initView(float const windowWidth, float const windowLenght) {
+	windowSize = { windowWidth , windowLenght };
+
 	// Set view
 	view.reset(sf::FloatRect(0, 0, windowWidth, windowLenght));
 
@@ -31,16 +33,16 @@ sf::View Level::initView(float const windowWidth, float const windowLenght) {
 	return view;
 }
 
-void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const windowWidth, float const windowLenght) {
+void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 
-	spawnPlayer(windowWidth, windowLenght);
+	spawnPlayer();
 
 	// Choose random patern
 	//int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
 	int paternId = 1;
 
 	// Choose random location
-	auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowWidth - paterns[paternId]->getMaxSpawnable_x(windowWidth))));
+	auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowSize.x - paterns[paternId]->getMaxSpawnable_x(windowSize.x))));
 	auto offset_y = lenght;
 
 	//cout << "id: " << paternId << " offset: " << offset_x << ", offset max: " << paterns[paternId]->getMaxSpawnable_x(windowDimensions.x) << "\n";
@@ -48,9 +50,9 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const wi
 	spawnPatern(*paterns[paternId], { offset_x, offset_y });
 }
 
-void Level::spawnPlayer(float const windowWidth, float const windowLenght) {
+void Level::spawnPlayer() {
 
-	Transform initPlayerTransform = { {windowWidth / 2, lenght - 100 + windowLenght}, {100, 100}, 0 };
+	Transform initPlayerTransform = { {windowSize.y / 2, lenght - 100 + windowSize.y}, {100, 100}, 0 };
 	this->player = std::make_unique<Player>(initPlayerTransform, 100, "resources/Sprites/Tetine.png");
 }
 
@@ -74,24 +76,24 @@ sf::View Level::UpdateView(double const deltaTime) {
 	return view;
 }
 
-void Level::Update(double deltaTime, float windowLenght, float windowWidth) {
+void Level::Update(double deltaTime) {
 
-	if (view.getCenter().y - windowLenght / 2 <= 0 && !hasReachedEnd) {
+	if (view.getCenter().y - windowSize.y / 2 <= 0 && !hasReachedEnd) {
 		hasReachedEnd = true;
 		float offsetY = view.getCenter().y;
-		view.setCenter(view.getCenter().x, windowLenght / 2);
+		view.setCenter(view.getCenter().x, windowSize.y / 2);
 		offsetY -= view.getCenter().y;
 		player.get()->setPosition({ player.get()->getPosition().x, player.get()->getPosition().y - offsetY});
 	}
 
-	player->UpdatePlayer(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght, windowWidth);
+	player->UpdatePlayer(deltaTime, scrollingSpeed, view.getCenter().y - windowSize.y / 2, windowSize.y, windowSize.x);
 
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end()) {
 		auto const& gameObject = *it;
-		gameObject->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght, player->getPosition());
+		gameObject->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowSize.y / 2, windowSize.y, player->getPosition());
 
-		if (gameObject->isOutofView(view.getCenter().y + windowLenght / 2)) {
+		if (gameObject->isOutofView(view.getCenter().y + windowSize.y / 2)) {
 			scrollingSpeed += gameObject->exitView();
 			it = gameObjects.erase(it);
 		}

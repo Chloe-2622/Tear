@@ -12,5 +12,6 @@ public:
 	explicit Guided_Tear(const pugi::xml_node& node);
 	explicit Guided_Tear(Guided_Tear const& guided_Tear);
 
+	std::unique_ptr<Tear> copy() const override;
 	void Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0, Vector2 playerPosition = { 0, 0 }) override;
 };
