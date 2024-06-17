@@ -17,8 +17,4 @@ Player::Player(Transform transform, double speed) : GameObject(transform, speed)
     projectileDuplication = 1;
 };
 
-
-
-
 void Player::Update(double deltaTime) {};
-
