@@ -33,7 +33,8 @@ sf::View Level::initView(float const windowWidth, float const windowLenght) {
 
 void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const windowWidth, float const windowLenght) {
 	// Choose random patern
-	int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
+	//int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
+	int paternId = 1;
 
 	// Choose random location
 	auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowWidth - paterns[paternId]->getMaxSpawnable_x(windowWidth))));
@@ -56,7 +57,7 @@ void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
 #pragma endregion initialize Level
 
 sf::View Level::UpdateView(double const deltaTime) {
-	//cout << "view: " << view.getCenter().y << "\n";
+	// cout << "view: " << view.getCenter().y << "\n";
 	if (view.getCenter().y > 0) {
 		view.move(0, -static_cast<float>(scrollingSpeed*deltaTime));
 
@@ -68,14 +69,19 @@ sf::View Level::UpdateView(double const deltaTime) {
 }
 
 void Level::Update(double deltaTime, float windowLenght) {
-	for (auto const& gameObject : gameObjects) {
-		gameObject->Update(deltaTime);
 
+	auto it = gameObjects.begin();
+	while (it != gameObjects.end()) {
+		auto const& gameObject = *it;
 		if (gameObject->isOutofView(view.getCenter().y + windowLenght)) {
 			scrollingSpeed += gameObject->exitView();
-			gameObjects.erase(std::ranges::find(gameObjects.begin(), gameObjects.end(), gameObject));
+			it = gameObjects.erase(it);
+		}
+		else {
+			++it;
 		}
 	}
+
 }
 
 void Level::Render(sf::RenderWindow& window) const {
