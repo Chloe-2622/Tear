@@ -21,7 +21,7 @@ public:
 	bool		takeDamage(double damages) override;
 
 	// Test eaxh frames
-	bool		isOutofView(float const viewBottomBoarder) const override;
+	bool		isOutofView(sf::FloatRect currentViewBox) const override;
 	double		exitView() const override; // Result if true
 
 	void		setHealthPoints(int healthPointsNew);

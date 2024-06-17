@@ -2,20 +2,20 @@
 
 #include "GameObject.h"
 #include "Shop.h"
+#include "Projectile.h"
 
 class Player : public GameObject {
     public:
         Player() = default;
-        explicit Player(Transform transform, double speed, std::string texturePath);
+        explicit Player(Transform const& transform, double speed, std::string const& texturePath);
 
-        void                        shootProjectile();
+        void                        shootProjectile(std::vector<std::unique_ptr<Projectile>>& projectiles);
         bool                        takeDamage(double damage) override {return false;};
         void                        upgrade(Upgrade upgrade);
 
         // Override
-        void                        UpdatePlayer(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength, float windowWidth);
         virtual unique_ptr<GameObject> hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
-
+        void                        UpdatePlayer(double deltaTime, float viewPositionY, float windowLength, float windowWidth, std::vector<std::unique_ptr<Projectile>>& projectiles);
 
         void                        handleInput(sf::Keyboard::Key keyPressed, bool isPressed);
 
@@ -33,5 +33,8 @@ class Player : public GameObject {
         bool                        isMovingDown = false;
         bool                        isMovingLeft = false;
         bool                        isMovingRight = false;
+
+        bool                        isShooting = false;
+        double                      shootingCooldown = 0.0;
         
 };

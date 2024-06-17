@@ -1,10 +1,8 @@
 #include "Player.h"
 
-Player::Player(Transform transform, double speed, std::string texturePath) :
-    GameObject(transform, speed, texturePath)
-{}
+Player::Player(Transform const& transform, double speed, std::string const& texturePath) : GameObject(transform, speed, texturePath) {}
 
-void Player::UpdatePlayer(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength, float windowWidth) {
+void Player::UpdatePlayer(double deltaTime, float viewPositionY, float windowLength, float windowWidth, std::vector<std::unique_ptr<Projectile>>& projectiles) {
     Vector2 movement(0.f, 0.f);
     if (isMovingUp && getPosition().y > viewPositionY) {
         movement.y -= getSpeed();
@@ -19,6 +17,16 @@ void Player::UpdatePlayer(double deltaTime, double scrollingSpeed, float viewPos
         movement.x += getSpeed();
     }
     move(movement);
+
+    if (shootingCooldown > 0.0) {
+        shootingCooldown -= deltaTime;
+    }
+    if (isShooting && shootingCooldown <= 0.0) {
+        std::cout << "Shooting" << std::endl;
+        shootingCooldown = 0.5;
+        shootProjectile(projectiles);
+    }
+    
 };
 
 void Player::handleInput(sf::Keyboard::Key keyPressed, bool isPressed) {
@@ -34,4 +42,17 @@ void Player::handleInput(sf::Keyboard::Key keyPressed, bool isPressed) {
     if (keyPressed == sf::Keyboard::D) {
         isMovingRight = isPressed;
     }
+    if (keyPressed == sf::Keyboard::Space) {
+        isShooting = isPressed;
+    }
+}
+
+void Player::shootProjectile(std::vector<std::unique_ptr<Projectile>>& projectiles) {
+    Vector2 projectileSize = {32, 56};
+    std::cout << "Playze size : " << getSize().x << ", " << getSize().y << std::endl;
+    Vector2 projectilePosition = {getPosition().x + getSize().x/2 - projectileSize.x/2, getPosition().y - projectileSize.y};
+    Transform projectileTransform = {projectilePosition, projectileSize, 0};
+    std::string projectileTexturePath = "resources/Sprites/Basic_Projectile.png";
+    std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(projectileTransform, 20, projectileTexturePath);
+    projectiles.push_back(std::move(projectile));
 }

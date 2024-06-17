@@ -28,10 +28,14 @@ Tear::Tear(Tear const& tear) :
 {}
 #pragma endregion Constructeurs
 
-bool Tear::isOutofView(float const viewBottomBoarder) const {
+std::unique_ptr<Tear> Tear::copy() const{
+	return make_unique<Tear>(*this);
+}
+
+bool Tear::isOutofView(sf::FloatRect currentViewBox) const {
 	//cout << "Bottom: " << viewBottomBoarder << ", Position: " << transform.position.y << "\n";
 
-	return getPosition().y >= viewBottomBoarder;
+	return getPosition().y > currentViewBox.top + currentViewBox.height;
 }
 
 double Tear::exitView() const {

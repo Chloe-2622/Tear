@@ -66,7 +66,7 @@ void GameObject::move(Vector2 movement) {
 }
 
 #pragma region Override if necessary
-bool GameObject::isOutofView(float const viewBottomBoarder) const { return false; }
+bool GameObject::isOutofView(sf::FloatRect currentViewBox) const { return false; }
 double GameObject::exitView() const { return 0; }
 //void GameObject::doDamage(GameObject gameObject, double playerMultiplier) const {/*Method to override*/}
 bool GameObject::takeDamage(double damages) { return false; }
