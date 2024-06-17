@@ -43,7 +43,7 @@ double Tear::exitView() const {
 }
 
 bool Tear::hit(Player const& player, vector<unique_ptr<GameObject>> const& gameObjects) const {
-	return (player.getPosition().x - getPosition().x < getSize().x) && (player.getPosition().y - getPosition().y < getSize().y);
+	return (abs(player.getPosition().x - getPosition().x) < getSize().x) && (abs(player.getPosition().y - getPosition().y) < getSize().y);
 }
 
 void Tear::doDamage(GameObject gameObject, double playerMultiplier) const { gameObject.takeDamage(damage * playerMultiplier); }

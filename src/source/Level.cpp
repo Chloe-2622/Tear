@@ -53,7 +53,7 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 void Level::spawnPlayer() {
 
 	Transform initPlayerTransform = { {windowSize.y / 2, lenght - 100 + windowSize.y}, {100, 100}, 0 };
-	this->player = std::make_unique<Player>(initPlayerTransform, 100, "resources/Sprites/Tetine.png");
+	this->player = std::make_unique<Player>(initPlayerTransform, 5, "resources/Sprites/Tetine.png");
 }
 
 void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
@@ -93,12 +93,22 @@ void Level::Update(double deltaTime) {
 		auto const& gameObject = *it;
 		gameObject->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowSize.y / 2, windowSize.y, player->getPosition());
 
-		if (gameObject->isOutofView(view.getCenter().y + windowSize.y / 2)) {
+		// Check if object is still ont the screen (below screen for tears, above for projectiles)
+		if (gameObject->isOutofView(static_cast<float>(view.getCenter().y + windowSize.y / 2))) {
 			scrollingSpeed += gameObject->exitView();
 			it = gameObjects.erase(it);
 		}
 
-		// Check if object collide with another
+		// Check if object collide with the player or another object
+		/*if (gameObject->hit(*player->getPosition(), gameObjects)) {
+			cout << "Hit " << gameObject->dump();
+		}*/
+
+
+
+
+
+
 
 
 		else {

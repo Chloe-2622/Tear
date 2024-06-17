@@ -34,10 +34,10 @@ void Game::run()
 
 
 	initPaterns();
-	currentLevel.buildLevel(paterns);
 
 	// Apply the view
 	mWindow.setView(currentLevel.initView(static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)));
+	currentLevel.buildLevel(paterns);
 
 
 	// mWindow.setVerticalSyncEnabled(true);
