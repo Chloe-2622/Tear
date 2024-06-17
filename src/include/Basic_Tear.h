@@ -17,5 +17,5 @@ public:
 
 	// Update
 	void Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLenght, Vector2 playerPosition) override {/*Basic tear do not update*/ };
-	//unique_ptr<GameObject> hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override;
+	void hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override;
 };

@@ -48,6 +48,10 @@ bool Tear::takeDamage(double damages) {
 	return healthPoints > 0;
 }
 
+void Tear::doDamage(GameObject & gameObject, double playerMultiplier) const {
+	gameObject.takeDamage(damage);
+}
+
 
 
 void Tear::setHealthPoints(int healthPointsNew) { healthPoints = healthPointsNew; }

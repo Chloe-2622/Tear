@@ -15,5 +15,9 @@ public:
     void                        UpdateProjectile(double deltaTime, float viewPositionY, float windowLength, float windowWidth);
 
     bool                        takeDamage(double damages) override;
-    void                        doDamage(const Tear &tear);
+    void                        doDamage(const Tear& tear) {};
+    void                        doDamage(GameObject& gameObject, double playerMultiplier) const override {};
+
+    void hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
+
 };

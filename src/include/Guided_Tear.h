@@ -16,4 +16,5 @@ public:
 	std::unique_ptr<Tear> copy() const override;
 
 	void Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0, Vector2 playerPosition = { 0, 0 }) override;
+	void hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
 };

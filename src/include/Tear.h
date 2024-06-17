@@ -18,7 +18,7 @@ public:
 	virtual std::unique_ptr<Tear> copy() const = 0;
 
 	// To & Take damage
-	//void		doDamage(GameObject gameObject, double playerMultiplier) const override;
+	void		doDamage(GameObject & gameObject, double playerMultiplier) const override;
 	bool		takeDamage(double damages) override;
 
 	// Test eaxh frames

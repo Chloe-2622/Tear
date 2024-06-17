@@ -29,6 +29,8 @@ std::unique_ptr<Tear> Basic_Tear::copy() const {
 	return make_unique<Basic_Tear>(*this);
 }
 
-//unique_ptr<GameObject> Basic_Tear::hit(Player& player, vector<unique_ptr<GameObject>> const& gameObjects) const {
-//	return nullptr;
-//}
+void Basic_Tear::hit(Player& player, vector<unique_ptr<GameObject>> const& gameObjects) const {
+	if (getPosition().distance(player.getPosition()) < getSize().x) {
+		doDamage(player, 1);		 
+	}
+}

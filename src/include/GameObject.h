@@ -48,8 +48,8 @@ class GameObject {
         virtual bool            isOutofView(sf::FloatRect currentViewBox) const;
         virtual double          exitView() const;
 
-        //virtual unique_ptr<GameObject> hit(Player & player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const = 0;
-        //virtual void            doDamage(GameObject gameObject, double playerMultiplier) const;
+        virtual void hit(Player & player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const = 0;
+        virtual void            doDamage(GameObject & gameObject, double playerMultiplier) const = 0;
         virtual bool            takeDamage(double damages) = 0;
 
 
