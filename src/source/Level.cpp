@@ -69,18 +69,22 @@ sf::View Level::UpdateView(double const deltaTime) {
 
 	if (!hasReachedEnd) {
 		view.move(0, -static_cast<float>(scrollingSpeed*deltaTime));
+		player.get()->move({ 0, -static_cast<float>(scrollingSpeed*deltaTime) });
 	}
 	return view;
 }
 
-void Level::Update(double deltaTime, float windowLenght) {
+void Level::Update(double deltaTime, float windowLenght, float windowWidth) {
 
 	if (view.getCenter().y - windowLenght / 2 <= 0 && !hasReachedEnd) {
 		hasReachedEnd = true;
+		float offsetY = view.getCenter().y;
 		view.setCenter(view.getCenter().x, windowLenght / 2);
+		offsetY -= view.getCenter().y;
+		player.get()->setPosition({ player.get()->getPosition().x, player.get()->getPosition().y - offsetY});
 	}
 
-	player->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght, player->getPosition());
+	player->UpdatePlayer(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght, windowWidth);
 
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end()) {
