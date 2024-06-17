@@ -50,11 +50,11 @@ double Tear::exitView() const {
 	return scrollingPenalty;
 }
 
-bool Tear::hit(Player player, vector<unique_ptr<GameObject>> const& gameObjects) const {
+bool Tear::hit(Player const& player, vector<unique_ptr<GameObject>> const& gameObjects) const {
 	return (player.getPosition().x - getPosition().x < getSize().x) && (player.getPosition().y - getPosition().y < getSize().y);
 }
 
-void Tear::doDamage(GameObject const& gameObject, double playerMultiplier) const { gameObject. }
+void Tear::doDamage(GameObject gameObject, double playerMultiplier) const { gameObject.takeDamage(damage * playerMultiplier); }
 bool Tear::takeDamage(double damages) {
 	healthPoints -= (int)damages;
 	return healthPoints < 0;

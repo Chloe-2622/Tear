@@ -33,7 +33,8 @@ sf::View Level::initView(float const windowWidth, float const windowLenght) {
 
 void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const windowWidth, float const windowLenght) {
 	// Choose random patern
-	int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
+	//int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
+	int paternId = 1;
 
 	// Choose random location
 	auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowWidth - paterns[paternId]->getMaxSpawnable_x(windowWidth))));
@@ -68,17 +69,19 @@ sf::View Level::UpdateView(double const deltaTime) {
 }
 
 void Level::Update(double deltaTime, float windowLenght) {
-	cout << gameObjects.size();
+	std::vector<std::unique_ptr<GameObject>> objectsToRemove;
 
-
-
-	for (auto const& gameObject : gameObjects) {
+	for (auto& gameObject : gameObjects) {
 		gameObject->Update(deltaTime);
 
 		if (gameObject->isOutofView(view.getCenter().y + windowLenght)) {
 			scrollingSpeed += gameObject->exitView();
-			gameObjects.erase(std::ranges::find(gameObjects.begin(), gameObjects.end(), gameObject));
+			objectsToRemove.push_back(move(gameObject));
 		}
+	}
+
+	for (auto const& objectToRemove : objectsToRemove) {
+		gameObjects.erase(std::ranges::find(gameObjects.begin(), gameObjects.end(), objectToRemove));
 	}
 }
 

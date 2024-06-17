@@ -17,13 +17,13 @@ public:
 	// Construct Level
 	std::unique_ptr<Tear> copy() const;
 
-	void		doDamage(GameObject const& gameObject, double playerMultiplier) const override;
+	void		doDamage(GameObject gameObject, double playerMultiplier) const override;
 	bool		takeDamage(double damages) override;
 
 	// Test eaxh frames
 	bool		isOutofView(float const viewBottomBoarder) const override;
 	double		exitView() const override; // Result if true
-	bool		hit(Player player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override;
+	bool		hit(Player const& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override;
 	
 private:
 	int			healthPoints;

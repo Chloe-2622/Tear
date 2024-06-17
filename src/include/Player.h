@@ -6,7 +6,7 @@
 class Player : public GameObject {
     public:
         Player();
-        Player(Transform transform, double speed);
+        Player(Transform transform, double speed, std::string texturePath);
 
 
 
@@ -22,16 +22,16 @@ class Player : public GameObject {
 
     private:
         // Health
-        int healthPoint;
+        int healthPoint = 100;
 
         // Damage
-        double damageMultiplier;
+        double damageMultiplier = 1.0;
 
         // Gold
-        int goldCount;
-        double goldMultiplier;
+        int goldCount = 0;
+        double goldMultiplier = 1.0;
 
         // Projectiles
-        int projectileDuplication;
+        int projectileDuplication = 1.0;
         
 };

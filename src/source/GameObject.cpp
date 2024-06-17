@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include "Player.h"
 #include <iostream>
 #include <sstream>
 
@@ -29,6 +28,7 @@ GameObject::GameObject(GameObject const& gameObject) :
 #pragma endregion Constructeurs
 
 // Render
+void GameObject::Update(double deltaTime) {}
 void GameObject::Render(sf::RenderWindow &window) const {
 
     sf::Texture texture;
@@ -48,10 +48,6 @@ void GameObject::Render(sf::RenderWindow &window) const {
     window.draw(sprite);
 }
 
-double GameObject::exitView() const {
-    return 0;
-}
-
 void GameObject::move(Vector2 movement) {
     transform.position.x += movement.x;
     transform.position.y += movement.y;
@@ -60,8 +56,8 @@ void GameObject::move(Vector2 movement) {
 #pragma region Override if necessary
 bool GameObject::isOutofView(float const viewBottomBoarder) const { return false; }
 double GameObject::exitView() const { return 0; }
-bool GameObject::hit(Player player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const { return false; }
-void GameObject::doDamage(GameObject const& gameObject, double playerMultiplier) const {/*Method to override*/}
+bool GameObject::hit(Player const& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const { return false; }
+void GameObject::doDamage(GameObject gameObject, double playerMultiplier) const {/*Method to override*/}
 bool GameObject::takeDamage(double damages) { return false; }
 #pragma endregion Override if necessary
 

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-class Player : public GameObject {};
+class Player;
 
 struct Vector2 {
     double x;
@@ -33,8 +33,8 @@ class GameObject {
         virtual bool    isOutofView(float const viewBottomBoarder) const;
         virtual double  exitView() const;
 
-        virtual bool    hit(Player player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const;
-        virtual void    doDamage(GameObject const& gameObject, double playerMultiplier) const;
+        virtual bool    hit(Player const& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const;
+        virtual void    doDamage(GameObject gameObject, double playerMultiplier) const;
         virtual bool    takeDamage(double damages);
 
 
@@ -52,6 +52,4 @@ class GameObject {
         Transform       transform;
         double          speed;
         std::string     texturePath;
-
-
 };
