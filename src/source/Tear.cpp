@@ -51,3 +51,5 @@ bool Tear::takeDamage(double damages) {
 	healthPoints -= (int)damages;
 	return healthPoints < 0;
 }
+
+void Tear::setScrollingPenalty(double scrollingPenaltyNew) { scrollingPenalty = scrollingPenaltyNew; }

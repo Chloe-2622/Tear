@@ -24,6 +24,8 @@ public:
 	bool		isOutofView(float const viewBottomBoarder) const override;
 	double		exitView() const override; // Result if true
 	bool		hit(Player const& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override;
+
+	void		setScrollingPenalty(double scrollingPenaltyNew);
 	
 private:
 	int			healthPoints = 100;

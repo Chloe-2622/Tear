@@ -50,11 +50,8 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const wi
 
 void Level::spawnPlayer(float const windowWidth, float const windowLenght) {
 
-	Transform initPlayerTransform = { Vector2(windowWidth / 2, lenght - 100 + windowLenght), Vector2(100, 100), 0 };
-	std::unique_ptr<Player> player = std::make_unique<Player>(initPlayerTransform, 100, "resources/Sprites/Tetine.png");
-	
-	// Spawn player
-	gameObjects.push_back(std::move(player));
+	Transform initPlayerTransform = { {windowWidth / 2, lenght - 100 + windowLenght}, {100, 100}, 0 };
+	this->player = std::make_unique<Player>(initPlayerTransform, 100, "resources/Sprites/Tetine.png");
 }
 
 void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
@@ -83,10 +80,12 @@ void Level::Update(double deltaTime, float windowLenght) {
 		view.setCenter(view.getCenter().x, windowLenght / 2);
 	}
 
+	player->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght, player->getPosition());
+
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end()) {
 		auto const& gameObject = *it;
-		gameObject->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght);
+		gameObject->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght, player->getPosition());
 
 		if (gameObject->isOutofView(view.getCenter().y + windowLenght / 2)) {
 			scrollingSpeed += gameObject->exitView();
@@ -109,5 +108,6 @@ void Level::Render(sf::RenderWindow& window) const {
 	for (auto const& gameObject : gameObjects) {
 		gameObject->Render(window);
 	}
+	player->Render(window);
 }
 

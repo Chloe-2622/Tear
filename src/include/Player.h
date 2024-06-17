@@ -18,7 +18,7 @@ class Player : public GameObject {
         void upgrade(Upgrade upgrade);
 
         // Override
-        void        Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength) override;
+        void        Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0, Vector2 playerPosition = { 0, 0 }) override;
 
     private:
         // Health

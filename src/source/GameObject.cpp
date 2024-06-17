@@ -40,7 +40,7 @@ GameObject::GameObject(GameObject const& gameObject) :
 #pragma endregion Constructeurs
 
 // Render
-void GameObject::Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength) {}
+void GameObject::Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLenght, Vector2 playerPosition) {}
 void GameObject::Render(sf::RenderWindow &window) const {
 
     sf::Texture texture;
@@ -80,6 +80,7 @@ bool GameObject::takeDamage(double damages) { return false; }
 Vector2 GameObject::getPosition() const { return transform.position; }
 Vector2 GameObject::getSize() const { return transform.size; }
 double GameObject::getRotation() const { return transform.rotation; }
+double GameObject::getSpeed() const { return speed; }
 #pragma endregion Getter
 
 // Debug

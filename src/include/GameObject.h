@@ -11,6 +11,15 @@ class Player;
 struct Vector2 {
     double x;
     double y;
+
+    void normalize() {
+        x = x / sqrt(pow(x, 2) + pow(y, 2));
+        y = y / sqrt(pow(x, 2) + pow(y, 2));
+    }
+
+    Vector2 operator+(const Vector2 v) const { return { x + v.x, y + v.y }; }
+    Vector2 operator-(const Vector2 v) const { return { x - v.x, y - v.y }; }
+    Vector2 operator*(const double k) const { return { k*x, k*y }; }
 };
 
 struct Transform {
@@ -29,7 +38,7 @@ class GameObject {
         explicit GameObject(GameObject const& gameObject);
 
         // Update & Render
-        virtual void    Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0);
+        virtual void    Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0, Vector2 playerPosition = {0, 0});
         void            Render(sf::RenderWindow &window) const;
 
         virtual bool    isOutofView(float const viewBottomBoarder) const;
@@ -46,13 +55,13 @@ class GameObject {
         Vector2         getPosition() const;
         Vector2         getSize() const;
         double          getRotation() const;
+        double          getSpeed() const;
 
         // Setter
         void            setPosition(Vector2 position) {transform.position = position;};
 
         // Debug
         std::string     dump(std::string const& indent = "") const;
-
     private:
         Transform       transform;
         double          speed;
