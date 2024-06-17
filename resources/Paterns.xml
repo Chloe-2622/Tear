@@ -5,21 +5,12 @@
 <!-- Les valeurs de x et y doivent être positives									-->
 <Paterns>	
 	<Patern id="0" name="Single Drop">
-		<Tear x="0" y="0"/>
+		<Tear x="0" y="0" size_x="150" size_y="150"/>
 	</Patern>
 	<Patern id="1" name="Two Drops">
-		<Tear x="0" y="0"/>
-		<Tear x="200" y="0"/>
-	</Patern>
-	<Patern id="2" name="Wall">
-		<Tear x="0" y="0"/>
-		<Tear x="100" y="0"/>
-		<Tear x="200" y="0"/>
-		<Tear x="300" y="0"/>
-		<Tear x="400" y="0"/>
-		<Tear x="500" y="0"/>
-		<Tear x="600" y="0"/>
-	</Patern>
+		<Tear x="0" y="0" size_x="100" size_y="100"/>
+		<Tear x="100" y="0" size_x="90" size_y="90"/>
+	</Patern>	
 </Paterns>
 
 

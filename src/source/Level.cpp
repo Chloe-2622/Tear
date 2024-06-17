@@ -57,7 +57,7 @@ void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
 #pragma endregion Initialize Level
 
 sf::View Level::UpdateView(double const deltaTime) {
-	//cout << "view: " << view.getCenter().y << "\n";
+	// cout << "view: " << view.getCenter().y << "\n";
 	if (view.getCenter().y > 0) {
 		view.move(0, -static_cast<float>(scrollingSpeed*deltaTime));
 
@@ -69,20 +69,19 @@ sf::View Level::UpdateView(double const deltaTime) {
 }
 
 void Level::Update(double deltaTime, float windowLenght) {
-	std::vector<std::unique_ptr<GameObject>> objectsToRemove;
 
-	for (auto& gameObject : gameObjects) {
-		gameObject->Update(deltaTime);
-
+	auto it = gameObjects.begin();
+	while (it != gameObjects.end()) {
+		auto const& gameObject = *it;
 		if (gameObject->isOutofView(view.getCenter().y + windowLenght)) {
 			scrollingSpeed += gameObject->exitView();
-			objectsToRemove.push_back(move(gameObject));
+			it = gameObjects.erase(it);
+		}
+		else {
+			++it;
 		}
 	}
 
-	for (auto const& objectToRemove : objectsToRemove) {
-		gameObjects.erase(std::ranges::find(gameObjects.begin(), gameObjects.end(), objectToRemove));
-	}
 }
 
 void Level::Render(sf::RenderWindow& window) const {
