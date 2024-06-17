@@ -21,4 +21,5 @@ private:
 	double											lenght = 2*1080;
 	double											scrollingSpeed = 1;
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
+	Player											player;
 };

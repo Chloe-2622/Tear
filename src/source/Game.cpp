@@ -19,7 +19,7 @@ void Game::initPaterns() {
 	}
 
 	for (pugi::xml_node patern : doc.child("Paterns").children()) {
-		paterns.push_back(make_unique<Patern>(patern));
+		paterns.push_back(make_unique<Patern>(patern, player));
 	}
 
 	for (auto const& patern : paterns) {

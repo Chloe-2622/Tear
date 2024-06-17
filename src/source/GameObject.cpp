@@ -20,6 +20,18 @@ GameObject::GameObject(Transform const& transform, double speed, std::string con
     texturePath{ texturePath }
 {}
 
+GameObject::GameObject(const pugi::xml_node& node, double speed, std::string texturePath) :
+    speed{ speed },
+    texturePath{ texturePath }
+{
+    transform.position.x = node.attribute("x").as_double();
+    transform.position.y = node.attribute("y").as_double();
+    transform.size.x = node.attribute("size_x").as_double();
+    transform.size.y = node.attribute("size_y").as_double();
+    transform.rotation = 0;
+}
+
+
 GameObject::GameObject(GameObject const& gameObject) :
     transform{ gameObject.transform },
     speed{ gameObject.speed },

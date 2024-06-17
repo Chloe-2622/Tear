@@ -17,6 +17,9 @@ Patern::Patern(const pugi::xml_node& node) :
         if (tear.name() == "Tear"s) {
             tears.push_back(make_unique<Tear>(tear));
         }
+        if (tear.name() == "Guided_Tear"s) {
+            tears.push_back(make_unique<Guided_Tear>(tear));
+        }
 
         if (!tears.empty()) {
             double compar_x = tears.back()->getPosition().x + tears.back()->getSize().x;
@@ -37,7 +40,7 @@ vector<unique_ptr<Tear>> Patern::copyTears() const {
     for (const auto& tear : tears) {
         newTears.push_back(tear->copy());
     }
-    return move(newTears);
+    return newTears;
 }
 
 double Patern::getMaxSpawnable_x(double const windowWidth) const {

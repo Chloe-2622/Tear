@@ -23,5 +23,4 @@ class Game {
         std::vector<std::unique_ptr<Patern>>    paterns;
         int                                     levelNumber;
         Level                                   currentLevel{ 0 };
-
 };

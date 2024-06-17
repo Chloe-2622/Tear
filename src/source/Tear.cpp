@@ -4,11 +4,7 @@ using namespace std;
 
 #pragma region Constructeurs
 Tear::Tear() :
-	GameObject(),
-	healthPoints{ 0 },
-	scrollingPenalty{ 0 },
-	damage{ 0 },
-	goldReward{ 0 }
+	GameObject()
 {}
 
 Tear::Tear(Transform const& transform, double speed, string const& texturePath, int healthPoints, double scrollingPenalty, double damage, int goldReward):
@@ -20,11 +16,7 @@ Tear::Tear(Transform const& transform, double speed, string const& texturePath, 
 {}
 
 Tear::Tear(const pugi::xml_node& node) :
-	GameObject{ Transform{{node.attribute("x").as_double(), node.attribute("y").as_double()}, {node.attribute("size_x").as_double(), node.attribute("size_y").as_double()}, 0}, 0, "resources/Sprites/Basic_Tear.png" },
-	healthPoints{ 100 },
-	scrollingPenalty{ 1 },
-	damage{ 10 },
-	goldReward{ 10 }
+	GameObject{ node, 0, "resources/Sprites/Basic_Tear.png" }
 {}
 
 Tear::Tear(Tear const& tear) :

@@ -73,10 +73,16 @@ void Level::Update(double deltaTime, float windowLenght) {
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end()) {
 		auto const& gameObject = *it;
+
+		// Check if object is out of view
 		if (gameObject->isOutofView(view.getCenter().y + windowLenght)) {
 			scrollingSpeed += gameObject->exitView();
 			it = gameObjects.erase(it);
 		}
+
+		// Check if object collide with another
+
+
 		else {
 			++it;
 		}

@@ -2,6 +2,7 @@
 
 #include "pugixml.hpp"
 #include "Tear.h"
+#include "Guided_Tear.h"
 
 class Patern {
 public :
@@ -15,6 +16,6 @@ public :
 private :
     int                                     id;
     std::string                             name;
-    Vector2                                 size;
+    Vector2                                 size = { 0, 0 };
     std::vector<std::unique_ptr<Tear>>      tears;
 };

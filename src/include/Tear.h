@@ -15,7 +15,7 @@ public:
 	explicit Tear(Tear const& tear);
 
 	// Construct Level
-	std::unique_ptr<Tear> copy() const;
+	virtual std::unique_ptr<Tear> copy() const;
 
 	void		doDamage(GameObject gameObject, double playerMultiplier) const override;
 	bool		takeDamage(double damages) override;
@@ -26,8 +26,8 @@ public:
 	bool		hit(Player const& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override;
 	
 private:
-	int			healthPoints;
-	double		scrollingPenalty;
-	double		damage;
-	int			goldReward;
+	int			healthPoints = 100;
+	double		scrollingPenalty = 1;
+	double		damage = 10;
+	int			goldReward = 10;
 };

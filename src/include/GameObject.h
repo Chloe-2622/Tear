@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "ResourceManager.h"
+#include "pugixml.hpp"
 #include <string>
 #include <vector>
 
@@ -21,10 +22,11 @@ struct Transform {
 class GameObject {
     public:
         // Constructeurs
-        GameObject();
+        explicit GameObject();
         virtual ~GameObject() = default;
-        GameObject(Transform const& transform, double speed, std::string const& texturePath);
-        GameObject(GameObject const& gameObject);
+        explicit GameObject(Transform const& transform, double speed, std::string const& texturePath);
+        explicit GameObject(const pugi::xml_node& node, double speed, std::string texturePath);
+        explicit GameObject(GameObject const& gameObject);
 
         // Update & Render
         virtual void    Update(double deltaTime);
