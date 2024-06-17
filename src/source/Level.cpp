@@ -19,7 +19,7 @@ Level::Level(int levelNumber) {
 	}
 }
 
-#pragma region initialize Level
+#pragma region Initialize Level
 sf::View Level::initView(float const windowWidth, float const windowLenght) {
 	// Set view
 	view.reset(sf::FloatRect(0, 0, windowWidth, windowLenght));
@@ -53,7 +53,7 @@ void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
 		gameObjects.push_back(std::move(tear));
 	}
 }
-#pragma endregion initialize Level
+#pragma endregion Initialize Level
 
 sf::View Level::UpdateView(double const deltaTime) {
 	//cout << "view: " << view.getCenter().y << "\n";
@@ -68,6 +68,10 @@ sf::View Level::UpdateView(double const deltaTime) {
 }
 
 void Level::Update(double deltaTime, float windowLenght) {
+	cout << gameObjects.size();
+
+
+
 	for (auto const& gameObject : gameObjects) {
 		gameObject->Update(deltaTime);
 

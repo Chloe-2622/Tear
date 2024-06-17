@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+class Player : public GameObject {};
+
 struct Vector2 {
     double x;
     double y;
@@ -18,29 +20,38 @@ struct Transform {
 
 class GameObject {
     public:
+        // Constructeurs
         GameObject();
-        GameObject(Transform transform, double speed);
-        GameObject(Transform transform, double speed, std::string texturePath);
-
+        virtual ~GameObject() = default;
+        GameObject(Transform const& transform, double speed, std::string const& texturePath);
         GameObject(GameObject const& gameObject);
 
-        void            Update(double deltaTime);
+        // Update & Render
+        virtual void    Update(double deltaTime);
         void            Render(sf::RenderWindow &window) const;
 
-        void            move(Vector2 movement);
-        virtual bool    isOutofView(float const viewBottomBoarder) const = 0;
+        virtual bool    isOutofView(float const viewBottomBoarder) const;
         virtual double  exitView() const;
 
-        std::string     dump(std::string const& indent = "") const;
+        virtual bool    hit(Player player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const;
+        virtual void    doDamage(GameObject const& gameObject, double playerMultiplier) const;
+        virtual bool    takeDamage(double damages);
 
+
+        void            move(Vector2 movement);
+
+        // Getter
         Vector2         getPosition() const;
         Vector2         getSize() const;
         double          getRotation() const;
 
+        // Debug
+        std::string     dump(std::string const& indent = "") const;
 
-    protected:
+    private:
         Transform       transform;
         double          speed;
         std::string     texturePath;
+
 
 };

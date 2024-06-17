@@ -2,27 +2,29 @@
 
 #include "GameObject.h"
 #include "pugixml.hpp"
+#include "Player.h"
 
 
 class Tear : public GameObject {
 public:
+	// Constructeurs
 	explicit Tear();
+	~Tear() override = default;
 	explicit Tear(Transform const& transform, double speed, std::string const& texturePath, int healthPoints, double scrollingPenalty, double damage, int goldreward);
 	explicit Tear(const pugi::xml_node& node);
 	explicit Tear(Tear const& tear);
 
-	bool		isOutofView(float const viewBottomBoarder) const override;
-	double		exitView() const override;
-
+	// Construct Level
 	std::unique_ptr<Tear> copy() const;
 
-	void		doDamage();
-	bool		takeDamage();
-	double		exitScreen();
+	void		doDamage(GameObject const& gameObject, double playerMultiplier) const override;
+	bool		takeDamage(double damages) override;
 
-	void update(double deltaTime) override {};
-	void render(sf::RenderWindow& window) override {};
-
+	// Test eaxh frames
+	bool		isOutofView(float const viewBottomBoarder) const override;
+	double		exitView() const override; // Result if true
+	bool		hit(Player player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override;
+	
 private:
 	int			healthPoints;
 	double		scrollingPenalty;
