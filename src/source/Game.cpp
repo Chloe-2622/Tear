@@ -55,7 +55,7 @@ void Game::run()
 			update(TimePerFrame);
 		}
 
-		mWindow.clear(sf::Color::White);
+		mWindow.clear(sf::Color::Black);
 		render();
 		mWindow.display();
 	}
@@ -83,7 +83,7 @@ void Game::processEvents()
 
 void Game::update(sf::Time elapsedTime) {
 	mWindow.setView(currentLevel.UpdateView(static_cast<double>(elapsedTime.asMilliseconds())));
-	currentLevel.Update(static_cast<double>(elapsedTime.asMilliseconds()));
+	currentLevel.Update(static_cast<double>(elapsedTime.asSeconds()));
 }
 
 void Game::render() {
@@ -91,7 +91,5 @@ void Game::render() {
 }
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
-	if (key == sf::Keyboard::Z || key == sf::Keyboard::Q || key == sf::Keyboard::S || key == sf::Keyboard::D) {
-		currentLevel.getPlayer()->handleInput(key, isPressed);
-	}
+	currentLevel.getPlayer()->handleInput(key, isPressed);
 }

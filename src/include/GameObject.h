@@ -41,7 +41,7 @@ class GameObject {
         virtual void    Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0, Vector2 playerPosition = {0, 0});
         void            Render(sf::RenderWindow &window) const;
 
-        virtual bool    isOutofView(float const viewBottomBoarder) const;
+        virtual bool    isOutofView(sf::FloatRect currentViewBox) const;
         virtual double  exitView() const;
 
         virtual bool    hit(Player const& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const;

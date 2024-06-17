@@ -72,6 +72,9 @@ sf::View Level::UpdateView(double const deltaTime) {
 	if (!hasReachedEnd) {
 		view.move(0, -static_cast<float>(scrollingSpeed*deltaTime));
 		player.get()->move({ 0, -static_cast<float>(scrollingSpeed*deltaTime) });
+		for (auto& projectile : projectiles) {
+			projectile->move({ 0, -static_cast<float>(scrollingSpeed*deltaTime) });
+		}
 	}
 	return view;
 }
@@ -84,17 +87,34 @@ void Level::Update(double deltaTime) {
 		view.setCenter(view.getCenter().x, windowSize.y / 2);
 		offsetY -= view.getCenter().y;
 		player.get()->setPosition({ player.get()->getPosition().x, player.get()->getPosition().y - offsetY});
+		for (auto& projectile : projectiles) {
+			projectile->setPosition({ projectile->getPosition().x, projectile->getPosition().y - offsetY });
+		}
 	}
 
-	player->UpdatePlayer(deltaTime, scrollingSpeed, view.getCenter().y - windowSize.y / 2, windowSize.y, windowSize.x);
+	player->UpdatePlayer(deltaTime, view.getCenter().y - windowSize.y / 2, windowSize.y, windowSize.x, projectiles);
 
+	std::cout << "Number of projectiles: " << projectiles.size() << std::endl;
+	auto itProjectile = projectiles.begin();
+	while (itProjectile != projectiles.end()) {
+		auto const& projectile = *itProjectile;
+		projectile->UpdateProjectile(deltaTime, view.getCenter().y - windowSize.y / 2, windowSize.y, windowSize.x);
+		if (projectile->isOutofView(sf::FloatRect(view.getCenter().x - windowSize.x / 2, view.getCenter().y - windowSize.y / 2, windowSize.x, windowSize.y))) {
+			itProjectile = projectiles.erase(itProjectile);
+		}
+		else {
+			++itProjectile;
+		}
+	}
+
+	std::cout << "Number of tears: " << gameObjects.size() << std::endl;
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end()) {
 		auto const& gameObject = *it;
 		gameObject->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowSize.y / 2, windowSize.y, player->getPosition());
 
 		// Check if object is still ont the screen (below screen for tears, above for projectiles)
-		if (gameObject->isOutofView(static_cast<float>(view.getCenter().y + windowSize.y / 2))) {
+		if (gameObject->isOutofView(sf::FloatRect(view.getCenter().x - windowSize.x / 2, view.getCenter().y - windowSize.y / 2, windowSize.x, windowSize.y))) {
 			scrollingSpeed += gameObject->exitView();
 			it = gameObjects.erase(it);
 		}
@@ -123,6 +143,9 @@ void Level::Update(double deltaTime) {
 void Level::Render(sf::RenderWindow& window) const {
 	for (auto const& gameObject : gameObjects) {
 		gameObject->Render(window);
+	}
+	for (auto const& projectile : projectiles) {
+		projectile->Render(window);
 	}
 	player->Render(window);
 }

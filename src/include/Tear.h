@@ -21,7 +21,7 @@ public:
 	bool		takeDamage(double damages) override;
 
 	// Test eaxh frames
-	bool		isOutofView(float const viewBottomBoarder) const override;
+	bool		isOutofView(sf::FloatRect currentViewBox) const override;
 	double		exitView() const override; // Result if true
 	bool		hit(Player const& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override;
 

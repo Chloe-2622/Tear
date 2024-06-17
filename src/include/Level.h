@@ -1,6 +1,8 @@
 #include "vector"
 #include "Tear.h"
 #include "Patern.h"
+#include "Player.h"
+#include "Projectile.h"
 
 class Level {
 public:
@@ -26,6 +28,7 @@ private:
 	double											scrollingSpeed = .1;
 	bool											hasReachedEnd = false;
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
+	std::vector<std::unique_ptr<Projectile>>		projectiles;
 	std::unique_ptr<Player>							player;
 	Vector2											windowSize;
 };
