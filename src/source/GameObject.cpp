@@ -80,6 +80,7 @@ bool GameObject::takeDamage(double damages) { return false; }
 Vector2 GameObject::getPosition() const { return transform.position; }
 Vector2 GameObject::getSize() const { return transform.size; }
 double GameObject::getRotation() const { return transform.rotation; }
+double GameObject::getSpeed() const { return speed; }
 #pragma endregion Getter
 
 // Debug

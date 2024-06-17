@@ -18,7 +18,9 @@ class Player : public GameObject {
         void upgrade(Upgrade upgrade);
 
         // Override
-        void        Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength) override;
+        void        UpdatePlayer(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength, float windowWidth);
+
+        void handleInput(sf::Keyboard::Key keyPressed, bool isPressed);
 
     private:
         // Health
@@ -35,5 +37,11 @@ class Player : public GameObject {
         int projectileDuplication = 1.0;
 
         bool hasSetPlayerEnd = false;
+
+        // Movements
+        bool isMovingUp = false;
+        bool isMovingDown = false;
+        bool isMovingLeft = false;
+        bool isMovingRight = false;
         
 };

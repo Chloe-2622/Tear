@@ -19,7 +19,7 @@ void Game::initPaterns() {
 	}
 
 	for (pugi::xml_node patern : doc.child("Paterns").children()) {
-		paterns.push_back(make_unique<Patern>(patern, player));
+		paterns.push_back(make_unique<Patern>(patern));
 	}
 
 	for (auto const& patern : paterns) {
@@ -71,15 +71,27 @@ void Game::processEvents()
 			case sf::Event::Closed:
 				mWindow.close();
 				break;
+			case sf::Event::KeyPressed:
+				handlePlayerInput(event.key.code, true);
+				break;
+			case sf::Event::KeyReleased:
+				handlePlayerInput(event.key.code, false);
+				break;
 		}
 	}
 }
 
 void Game::update(sf::Time elapsedTime) {
 	mWindow.setView(currentLevel.UpdateView(static_cast<double>(elapsedTime.asMilliseconds())));
-	currentLevel.Update(static_cast<double>(elapsedTime.asMilliseconds()), static_cast<float>(mWindow.getSize().y));
+	currentLevel.Update(static_cast<double>(elapsedTime.asMilliseconds()), static_cast<float>(mWindow.getSize().y), static_cast<float>(mWindow.getSize().x));
 }
 
 void Game::render() {
 	currentLevel.Render(mWindow);
+}
+
+void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
+	if (key == sf::Keyboard::Z || key == sf::Keyboard::Q || key == sf::Keyboard::S || key == sf::Keyboard::D) {
+		currentLevel.getPlayer()->handleInput(key, isPressed);
+	}
 }

@@ -11,8 +11,11 @@ public:
 	void											buildLevel(std::vector<std::unique_ptr<Patern>> const& paterns, float const windowWidth, float const windowLenght);
 
 	sf::View										UpdateView(double deltaTime);
-	void											Update(double deltaTime, float const windowLenght);
+	void											Update(double deltaTime, float const windowLenght, float windowWidth);
 	void											Render(sf::RenderWindow& window) const;
+
+	// Getter
+	std::unique_ptr<Player> const&					getPlayer() const { return player; }
 
 private:
 	void											spawnPatern(Patern const& patern, Vector2 const& offset);
@@ -20,7 +23,7 @@ private:
 	sf::View										view;
 
 	double											lenght = 2*1080;
-	double											scrollingSpeed = 1;
+	double											scrollingSpeed = .1;
 	bool											hasReachedEnd = false;
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
 	std::unique_ptr<Player>							player;

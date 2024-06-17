@@ -51,10 +51,12 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const wi
 void Level::spawnPlayer(float const windowWidth, float const windowLenght) {
 
 	Transform initPlayerTransform = { Vector2(windowWidth / 2, lenght - 100 + windowLenght), Vector2(100, 100), 0 };
-	std::unique_ptr<Player> player = std::make_unique<Player>(initPlayerTransform, 100, "resources/Sprites/Tetine.png");
+	std::unique_ptr<Player> player = std::make_unique<Player>(initPlayerTransform, 5, "resources/Sprites/Tetine.png");
+
+
 	
 	// Spawn player
-	gameObjects.push_back(std::move(player));
+	this->player = std::move(player);
 }
 
 void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
@@ -72,16 +74,22 @@ sf::View Level::UpdateView(double const deltaTime) {
 
 	if (!hasReachedEnd) {
 		view.move(0, -static_cast<float>(scrollingSpeed*deltaTime));
+		player.get()->move({ 0, -static_cast<float>(scrollingSpeed*deltaTime) });
 	}
 	return view;
 }
 
-void Level::Update(double deltaTime, float windowLenght) {
+void Level::Update(double deltaTime, float windowLenght, float windowWidth) {
 
 	if (view.getCenter().y - windowLenght / 2 <= 0 && !hasReachedEnd) {
 		hasReachedEnd = true;
+		float offsetY = view.getCenter().y;
 		view.setCenter(view.getCenter().x, windowLenght / 2);
+		offsetY -= view.getCenter().y;
+		player.get()->setPosition({ player.get()->getPosition().x, player.get()->getPosition().y - offsetY});
 	}
+
+	player->UpdatePlayer(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght, windowWidth);
 
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end()) {
@@ -109,5 +117,6 @@ void Level::Render(sf::RenderWindow& window) const {
 	for (auto const& gameObject : gameObjects) {
 		gameObject->Render(window);
 	}
+	player->Render(window);
 }
 

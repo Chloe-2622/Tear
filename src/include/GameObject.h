@@ -46,6 +46,7 @@ class GameObject {
         Vector2         getPosition() const;
         Vector2         getSize() const;
         double          getRotation() const;
+        double          getSpeed() const;
 
         // Setter
         void            setPosition(Vector2 position) {transform.position = position;};
