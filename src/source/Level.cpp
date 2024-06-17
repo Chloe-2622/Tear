@@ -32,6 +32,9 @@ sf::View Level::initView(float const windowWidth, float const windowLenght) {
 }
 
 void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const windowWidth, float const windowLenght) {
+
+	spawnPlayer(windowWidth, windowLenght);
+
 	// Choose random patern
 	//int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
 	int paternId = 1;
@@ -43,6 +46,15 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns, float const wi
 	//cout << "id: " << paternId << " offset: " << offset_x << ", offset max: " << paterns[paternId]->getMaxSpawnable_x(windowDimensions.x) << "\n";
 
 	spawnPatern(*paterns[paternId], { offset_x, offset_y });
+}
+
+void Level::spawnPlayer(float const windowWidth, float const windowLenght) {
+
+	Transform initPlayerTransform = { Vector2(windowWidth / 2, lenght - 100 + windowLenght), Vector2(100, 100), 0 };
+	std::unique_ptr<Player> player = std::make_unique<Player>(initPlayerTransform, 100, "resources/Sprites/Tetine.png");
+	
+	// Spawn player
+	gameObjects.push_back(std::move(player));
 }
 
 void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
@@ -57,23 +69,26 @@ void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
 #pragma endregion Initialize Level
 
 sf::View Level::UpdateView(double const deltaTime) {
-	// cout << "view: " << view.getCenter().y << "\n";
-	if (view.getCenter().y > 0) {
-		view.move(0, -static_cast<float>(scrollingSpeed*deltaTime));
 
-		if (view.getCenter().y < 0) {
-			view.move(0, -view.getCenter().y);
-		}
+	if (!hasReachedEnd) {
+		view.move(0, -static_cast<float>(scrollingSpeed*deltaTime));
 	}
 	return view;
 }
 
 void Level::Update(double deltaTime, float windowLenght) {
 
+	if (view.getCenter().y - windowLenght / 2 <= 0 && !hasReachedEnd) {
+		hasReachedEnd = true;
+		view.setCenter(view.getCenter().x, windowLenght / 2);
+	}
+
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end()) {
 		auto const& gameObject = *it;
-		if (gameObject->isOutofView(view.getCenter().y + windowLenght)) {
+		gameObject->Update(deltaTime, scrollingSpeed, view.getCenter().y - windowLenght / 2, windowLenght);
+
+		if (gameObject->isOutofView(view.getCenter().y + windowLenght / 2)) {
 			scrollingSpeed += gameObject->exitView();
 			it = gameObjects.erase(it);
 		}
@@ -81,6 +96,8 @@ void Level::Update(double deltaTime, float windowLenght) {
 			++it;
 		}
 	}
+
+	
 
 }
 

@@ -7,4 +7,6 @@ Player::Player(Transform transform, double speed, std::string texturePath) :
     GameObject(transform, speed, texturePath)
 {}
 
-void Player::Update(double deltaTime) {};
+void Player::Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength) {
+};
+

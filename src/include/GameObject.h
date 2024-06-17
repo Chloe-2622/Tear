@@ -27,7 +27,7 @@ class GameObject {
         GameObject(GameObject const& gameObject);
 
         // Update & Render
-        virtual void    Update(double deltaTime);
+        virtual void    Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0);
         void            Render(sf::RenderWindow &window) const;
 
         virtual bool    isOutofView(float const viewBottomBoarder) const;
@@ -44,6 +44,9 @@ class GameObject {
         Vector2         getPosition() const;
         Vector2         getSize() const;
         double          getRotation() const;
+
+        // Setter
+        void            setPosition(Vector2 position) {transform.position = position;};
 
         // Debug
         std::string     dump(std::string const& indent = "") const;
