@@ -23,5 +23,5 @@ private:
 	double											scrollingSpeed = 1;
 	bool											hasReachedEnd = false;
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
-	Player											player;
+	std::unique_ptr<Player>							player;
 };
