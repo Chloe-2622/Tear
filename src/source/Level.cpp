@@ -53,7 +53,9 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 void Level::spawnPlayer() {
 
 	Transform initPlayerTransform = { {windowSize.y / 2, lenght - 100 + windowSize.y}, {100, 100}, 0 };
-	this->player = std::make_unique<Player>(initPlayerTransform, 100, "resources/Sprites/Tetine.png");
+	std::unique_ptr<Player> player = std::make_unique<Player>(initPlayerTransform, 5, "resources/Sprites/Tetine.png");
+
+	this->player = std::move(player);
 }
 
 void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
