@@ -40,7 +40,7 @@ GameObject::GameObject(GameObject const& gameObject) :
 #pragma endregion Constructeurs
 
 // Render
-void GameObject::Update(double deltaTime) {}
+void GameObject::Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength) {}
 void GameObject::Render(sf::RenderWindow &window) const {
 
     sf::Texture texture;

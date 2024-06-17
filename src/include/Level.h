@@ -16,10 +16,12 @@ public:
 
 private:
 	void											spawnPatern(Patern const& patern, Vector2 const& offset);
+	void 										    spawnPlayer(float const windowWidth, float const windowLenght);
 	sf::View										view;
 
 	double											lenght = 2*1080;
 	double											scrollingSpeed = 1;
+	bool											hasReachedEnd = false;
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
 	Player											player;
 };

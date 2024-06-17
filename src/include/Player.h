@@ -14,11 +14,11 @@ class Player : public GameObject {
 
 
         void shootProjectile();
-        bool takeDamage(double damage);
+        bool takeDamage(double damage) override {return false;};
         void upgrade(Upgrade upgrade);
 
         // Override
-        void        Update(double deltaTime) override;
+        void        Update(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength) override;
 
     private:
         // Health
@@ -33,5 +33,7 @@ class Player : public GameObject {
 
         // Projectiles
         int projectileDuplication = 1.0;
+
+        bool hasSetPlayerEnd = false;
         
 };
