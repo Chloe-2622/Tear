@@ -2,6 +2,13 @@
 
 using namespace std;
 
+void Guided_Tear::setParams() {
+	setHealthPoints(100);
+	setDamage(10);
+	setGoldReward(100);
+	setScrollingPenalty(0.1);
+}
+
 #pragma region Constructeurs
 Guided_Tear::Guided_Tear() :
 	Tear()
@@ -13,11 +20,9 @@ Guided_Tear::Guided_Tear(Transform const& transform, double speed, string const&
 
 Guided_Tear::Guided_Tear(const pugi::xml_node& node) :
 	Tear(node)
-{}
-
-Guided_Tear::Guided_Tear(Guided_Tear const& guided_Tear) :
-	Tear(guided_Tear)
-{}
+{
+	setParams();
+}
 #pragma endregion Constructeurs
 
 std::unique_ptr<Tear> Guided_Tear::copy() const {

@@ -2,7 +2,6 @@
 #include "iostream"
 #include <random>
 
-
 using namespace std;
 
 int randint(int const nMin, int const nbMax)
@@ -36,6 +35,7 @@ sf::View Level::initView(float const windowWidth, float const windowLenght) {
 void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 
 	spawnPlayer();
+	spawnGoal();
 
 	// Choose random patern
 	//int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
@@ -54,6 +54,11 @@ void Level::spawnPlayer() {
 
 	Transform initPlayerTransform = { {windowSize.y / 2, lenght - 100 + windowSize.y}, {100, 100}, 0 };
 	this->player = std::make_unique<Player>(initPlayerTransform, 5, "resources/Sprites/Tetine.png");
+}
+
+void Level::spawnGoal() {
+	double goalSize = 100;
+	goal = make_unique<Goal>(Transform{ {windowSize.x - (goalSize / 2), 0}, {goalSize, goalSize}, 0 }, "resources/Sprites/Bebe.png");
 }
 
 void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
@@ -125,5 +130,6 @@ void Level::Render(sf::RenderWindow& window) const {
 		gameObject->Render(window);
 	}
 	player->Render(window);
+	goal->Render(window);
 }
 

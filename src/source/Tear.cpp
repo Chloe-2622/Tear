@@ -28,10 +28,6 @@ Tear::Tear(Tear const& tear) :
 {}
 #pragma endregion Constructeurs
 
-std::unique_ptr<Tear> Tear::copy() const{
-	return make_unique<Tear>(*this);
-}
-
 bool Tear::isOutofView(float const viewBottomBoarder) const {
 	//cout << "Bottom: " << viewBottomBoarder << ", Position: " << transform.position.y << "\n";
 
@@ -42,14 +38,15 @@ double Tear::exitView() const {
 	return scrollingPenalty;
 }
 
-bool Tear::hit(Player const& player, vector<unique_ptr<GameObject>> const& gameObjects) const {
-	return (abs(player.getPosition().x - getPosition().x) < getSize().x) && (abs(player.getPosition().y - getPosition().y) < getSize().y);
-}
+//void Tear::doDamage(GameObject gameObject, double playerMultiplier) const { gameObject.takeDamage(damage * playerMultiplier); }
+//bool Tear::takeDamage(double damages) {
+//	healthPoints -= (int)damages;
+//	return healthPoints < 0;
+//}
 
-void Tear::doDamage(GameObject gameObject, double playerMultiplier) const { gameObject.takeDamage(damage * playerMultiplier); }
-bool Tear::takeDamage(double damages) {
-	healthPoints -= (int)damages;
-	return healthPoints < 0;
-}
 
+
+void Tear::setHealthPoints(int healthPointsNew) { healthPoints = healthPointsNew; }
 void Tear::setScrollingPenalty(double scrollingPenaltyNew) { scrollingPenalty = scrollingPenaltyNew; }
+void Tear::setDamage(double damageNew) { damage = damageNew; }
+void Tear::setGoldReward(int goldRewardNew) { goldReward = goldRewardNew; }

@@ -17,6 +17,10 @@ struct Vector2 {
         y = y / sqrt(pow(x, 2) + pow(y, 2));
     }
 
+    double distance(Vector2 v) const {
+        return sqrt(pow(v.x - x, 2) + pow(v.y - y, 2));
+    }
+
     Vector2 operator+(const Vector2 v) const { return { x + v.x, y + v.y }; }
     Vector2 operator-(const Vector2 v) const { return { x - v.x, y - v.y }; }
     Vector2 operator*(const double k) const { return { k*x, k*y }; }
@@ -38,15 +42,15 @@ class GameObject {
         explicit GameObject(GameObject const& gameObject);
 
         // Update & Render
-        virtual void    Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0, Vector2 playerPosition = {0, 0});
-        void            Render(sf::RenderWindow &window) const;
+        virtual void            Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0, Vector2 playerPosition = {0, 0});
+        void                    Render(sf::RenderWindow &window) const;
 
-        virtual bool    isOutofView(float const viewBottomBoarder) const;
-        virtual double  exitView() const;
+        virtual bool            isOutofView(float const viewBottomBoarder) const;
+        virtual double          exitView() const;
 
-        virtual bool    hit(Player const& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const;
-        virtual void    doDamage(GameObject gameObject, double playerMultiplier) const;
-        virtual bool    takeDamage(double damages);
+        //virtual unique_ptr<GameObject> hit(Player & player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const = 0;
+        //virtual void            doDamage(GameObject gameObject, double playerMultiplier) const;
+        virtual bool            takeDamage(double damages);
 
 
         void            move(Vector2 movement);

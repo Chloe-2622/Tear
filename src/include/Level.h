@@ -1,6 +1,7 @@
 #include "vector"
 #include "Tear.h"
 #include "Patern.h"
+#include "Goal.h"
 
 class Level {
 public:
@@ -20,6 +21,7 @@ public:
 private:
 	void											spawnPatern(Patern const& patern, Vector2 const& offset);
 	void 										    spawnPlayer();
+	void											spawnGoal();
 	sf::View										view;
 
 	double											lenght = 2*1080;
@@ -28,4 +30,5 @@ private:
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
 	std::unique_ptr<Player>							player;
 	Vector2											windowSize;
+	std::unique_ptr<Goal>							goal;
 };

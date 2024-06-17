@@ -14,12 +14,15 @@ Patern::Patern(const pugi::xml_node& node) :
 
     for (pugi::xml_node tear : node.children()) {
 
-        if (tear.name() == "Tear"s) {
+        if (tear.name() == "Basic_Tear"s) {
             tears.push_back(make_unique<Tear>(tear));
         }
-        // if (tear.name() == "Guided_Tear"s) {
-        //     tears.push_back(make_unique<Guided_Tear>(tear));
-        // }
+        else if (tear.name() == "Guided_Tear"s) {
+            tears.push_back(make_unique<Guided_Tear>(tear));
+        }
+        else if (tear.name() == "River_Tear"s) {
+            tears.push_back(make_unique<Guided_Tear>(tear));
+        }
 
         if (!tears.empty()) {
             double compar_x = tears.back()->getPosition().x + tears.back()->getSize().x;

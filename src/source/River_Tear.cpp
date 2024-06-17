@@ -2,6 +2,13 @@
 
 using namespace std;
 
+void River_Tear::setParams() {
+	setHealthPoints(100);
+	setDamage(10);
+	setGoldReward(0);
+	setScrollingPenalty(0);
+}
+
 #pragma region Constructeurs
 River_Tear::River_Tear() :
 	Tear()
@@ -18,12 +25,8 @@ River_Tear::River_Tear(Transform const& transform, double speed, string const& t
 River_Tear::River_Tear(const pugi::xml_node& node) :
 	Tear(node)
 {
-	setScrollingPenalty(0);
+	setParams();
 }
-
-River_Tear::River_Tear(River_Tear const& guided_Tear) :
-	Tear(guided_Tear)
-{}
 #pragma endregion Constructeurs
 
 std::unique_ptr<Tear> River_Tear::copy() const {

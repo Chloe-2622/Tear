@@ -10,7 +10,8 @@ public:
 	~River_Tear() override = default;
 	explicit River_Tear(Transform const& transform, double speed, std::string const& texturePath, int healthPoints, double scrollingPenalty, double damage, int goldReward);
 	explicit River_Tear(const pugi::xml_node& node);
-	explicit River_Tear(River_Tear const& river_tear);
+	explicit River_Tear(River_Tear const& river_tear) = default;
+	void setParams();
 
 	// Construct Level
 	std::unique_ptr<Tear> copy() const override;

@@ -14,6 +14,8 @@ class Player : public GameObject {
 
         // Override
         void                        UpdatePlayer(double deltaTime, double scrollingSpeed, float viewPositionY, float windowLength, float windowWidth);
+        virtual unique_ptr<GameObject> hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
+
 
         void                        handleInput(sf::Keyboard::Key keyPressed, bool isPressed);
 
