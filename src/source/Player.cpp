@@ -23,7 +23,7 @@ void Player::UpdatePlayer(double deltaTime, float viewPositionY, float windowLen
     }
     if (isShooting && shootingCooldown <= 0.0) {
         std::cout << "Shooting" << std::endl;
-        shootingCooldown = 0.5;
+        shootingCooldown = shootingSpeed;
         shootProjectile(projectiles);
     }
     
@@ -53,6 +53,6 @@ void Player::shootProjectile(std::vector<std::unique_ptr<Projectile>>& projectil
     Vector2 projectilePosition = {getPosition().x + getSize().x/2 - projectileSize.x/2, getPosition().y - projectileSize.y};
     Transform projectileTransform = {projectilePosition, projectileSize, 0};
     std::string projectileTexturePath = "resources/Sprites/Basic_Projectile.png";
-    std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(projectileTransform, 20, projectileTexturePath);
+    std::unique_ptr<Projectile> projectile = std::make_unique<Basic_Projectile>(projectileTransform, 100, projectileTexturePath);
     projectiles.push_back(std::move(projectile));
 }

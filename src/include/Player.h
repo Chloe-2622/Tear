@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "Shop.h"
-#include "Projectile.h"
+#include "Basic_Projectile.h"
 
 class Player : public GameObject {
     public:
@@ -39,5 +39,6 @@ class Player : public GameObject {
 
         bool                        isShooting = false;
         double                      shootingCooldown = 0.0;
+        double                      shootingSpeed = 0.1;
         
 };

@@ -99,7 +99,6 @@ void Level::Update(double deltaTime) {
 
 	player->UpdatePlayer(deltaTime, view.getCenter().y - windowSize.y / 2, windowSize.y, windowSize.x, projectiles);
 
-	std::cout << "Number of projectiles: " << projectiles.size() << std::endl;
 	auto itProjectile = projectiles.begin();
 	while (itProjectile != projectiles.end()) {
 		auto const& projectile = *itProjectile;
@@ -112,7 +111,6 @@ void Level::Update(double deltaTime) {
 		}
 	}
 
-	std::cout << "Number of tears: " << gameObjects.size() << std::endl;
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end()) {
 		auto const& gameObject = *it;
