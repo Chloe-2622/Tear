@@ -36,7 +36,7 @@ void Menu::Render(sf::RenderWindow& window) const
     if (showBlinkText)
     {
         sf::Texture blinkTexture;
-        blinkTexture.loadFromFile("resources/Menu/Press_Enter.png");
+        blinkTexture.loadFromFile("resources/Sprites/Menu/Press_Enter.png");
 
         sf::Sprite blinkSprite;
         blinkSprite.setTexture(blinkTexture);

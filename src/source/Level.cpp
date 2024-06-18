@@ -141,6 +141,7 @@ sf::View Level::Update(double deltaTime) {
 			if (gameObject->doDamage(*hitObject, player->getDamageMultiplier())) { 
 				killed.push_back(hitObject);
 				player->addGold(hitObject->killReward(player->getGoldMultiplier()));
+				ResourceManager::playSound("resources/Audio/pickupCoin.wav");
 			
 			}
 
@@ -155,6 +156,8 @@ sf::View Level::Update(double deltaTime) {
 			if (gameObject->doDamage(*player, player->getDamageMultiplier())) { 
 			
 				cout << "FIN DE PARTIE" << endl;
+
+				game->changeState(GameState::GAMEOVER);
 			}
 
 			// Si l'objet doit se détruire au contact
@@ -188,8 +191,14 @@ sf::View Level::Update(double deltaTime) {
 	}
 
 	if (goal->isReached(*player)) {
-		cout << "C'est la fin !!!!";
-		game->changeState(GameState::SHOP);
+		game->changeState(GameState::VICTORY);
+
+		ResourceManager::playSound("resources/Audio/Applause.wav");
+		ResourceManager::playSound("resources/Audio/Baby_Sound.wav");
+		
+		player->setPosition({ goal->getPosition().x+53, goal->getPosition().y + 140});
+
+		//game->changeState(GameState::SHOP);
 	}
 
 	return view;

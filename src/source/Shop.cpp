@@ -10,6 +10,10 @@ Shop::Shop(Game* game)
     this->game = game;
 }
 
+void Shop::Update()
+{
+}
+
 void Shop::Render(sf::RenderWindow& window) const
 {
     

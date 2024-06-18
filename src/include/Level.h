@@ -4,6 +4,7 @@
 #include "Goal.h"
 #include "Player.h"
 #include "Projectile.h"
+#include <SFML/Audio.hpp>
 #include <memory>
 
 class Level {

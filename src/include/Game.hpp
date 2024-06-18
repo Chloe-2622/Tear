@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "ResourceManager.h"
 #include "GameObject.h"
 #include "Patern.h"
 #include "Menu.h"
@@ -33,6 +34,8 @@ class Game {
         void                                    handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
         void                                    handleMenuInput(sf::Keyboard::Key key, bool isPressed);
         void                                    handleShopInput(sf::Keyboard::Key key, bool isPressed);
+        void                                    handleVictoryInput(sf::Keyboard::Key key, bool isPressed);
+        void                                    handleGameoverInput(sf::Keyboard::Key key, bool isPressed);
         void                                    Update(sf::Time elapsedTime);
         void                                    UpdateLevel(sf::Time elapsedTime);
         void                                    Render();
