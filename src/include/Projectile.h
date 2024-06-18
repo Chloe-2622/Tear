@@ -1,6 +1,8 @@
 #pragma once
 
 #include "GameObject.h"
+#include <iostream>
+#include <sstream>
 
 class Tear;
 
@@ -23,6 +25,10 @@ class Projectile : public GameObject {
 
         // Setter
         void                        setDamage(double newDamage);
+
+        // Debug
+        std::string				    dump(std::string const& indent = "") const override;
+
 
     private:
         double                      damage;

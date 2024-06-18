@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 #include "pugixml.hpp"
+#include <iostream>
+#include <sstream>
 
 
 class Tear : public GameObject {
@@ -29,12 +31,16 @@ class Tear : public GameObject {
 		bool                                doDamage(GameObject& gameObject, double playerMultiplier) const override; // True si kill
 		bool                                takeDamage(double damages) override; // True si mort
 	
-		// Getter
+		// Setter
 		void								setHealthPoints(int healthPointsNew);
 		void								setScrollingPenalty(double scrollingPenaltyNew);
 		void								setDamage(double damageNew);
 		void								setGoldReward(int goldRewardNew);
-		
+
+		// Debug
+		std::string							dump(std::string const& indent = "") const override;
+
+
 	private:
 		int									healthPoints = 100;
 		double								scrollingPenalty = 1;

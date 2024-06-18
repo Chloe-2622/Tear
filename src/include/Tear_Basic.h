@@ -13,4 +13,7 @@ class Tear_Basic : public Tear {
 
 		// Construct Level
 		std::unique_ptr<Tear>		copy() const override;
+
+		// Debug
+		std::string					dump(std::string const& indent = "") const override;
 };

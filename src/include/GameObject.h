@@ -61,7 +61,7 @@ class GameObject {
         virtual double                                              exitViewValue() const;
 
         // Damages
-        std::vector<std::unique_ptr<GameObject>>::const_iterator    hasHitSomething(const std::vector<std::unique_ptr<GameObject>>* gameObjects) const;
+        GameObject*                                                 hasHitSomething(const std::vector<std::unique_ptr<GameObject>>* gameObjects) const;
         virtual bool                                                hasHitObject(GameObject const& gameObject) const;
         virtual bool                                                hasCollided(GameObject const& gameObject) const = 0;
         virtual bool                                                doDamage(GameObject & gameObject, double playerMultiplier) const = 0; // True si kill
@@ -72,6 +72,7 @@ class GameObject {
         Vector2                                                     getSize() const;
         double                                                      getRotation() const;
         double                                                      getSpeed() const;
+        bool                                                        isDestroyedOnHit() const;
 
         // Setter
         void                                                        setPosition(Vector2 position);
@@ -79,13 +80,16 @@ class GameObject {
         void                                                        setTexturePath(std::string_view const& newTexturePath);
         void                                                        setSpeed(double newSpeed);
         void                                                        setRotation(double newRotation);            
+        void                                                        setIsDestroyedOnHit(bool newDestroyOnHit);
+
 
         // Debug
-        std::string                                                 dump(std::string const& indent = "") const;
+        virtual std::string                                         dump(std::string const& indent = "") const;
 
     private:
         Transform                                                   transform = { {0, 0}, {0, 0}, 0 };
         std::string                                                 texturePath = "";
         double                                                      speed = 0;
         Faction                                                     faction = Faction::Ally;
+        bool                                                        destroyOnHit = false;
 };

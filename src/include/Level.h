@@ -18,6 +18,7 @@ public:
 
 	// Update the level
 	sf::View										Update(double deltaTime);
+	//void											handleCollisions(std::vector<std::unique_ptr<GameObject>>::iterator it);
 	void											Render(sf::RenderWindow& window) const;
 	void 											renderBackground(sf::RenderWindow& window) const;
 
