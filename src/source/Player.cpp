@@ -71,6 +71,7 @@ unique_ptr<GameObject> Player::Update(double deltaTime, sf::View const& view, Ve
     if (isShooting && shootingCooldown <= 0.0) {
         cout << "Shooting" << endl;
         shootingCooldown = shootingTime;
+        ResourceManager::playSound("resources/Audio/laserShoot.wav");
         return shootProjectile();
     }
     return nullptr;

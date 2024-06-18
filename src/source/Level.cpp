@@ -153,6 +153,7 @@ sf::View Level::Update(double deltaTime) {
 			if (gameObject->doDamage(*hitObject, player->getDamageMultiplier())) { 
 				killed.push_back(hitObject);
 				player->addGold(hitObject->killReward(player->getGoldMultiplier()));
+				ResourceManager::playSound("resources/Audio/pickupCoin.wav");
 			
 			}
 
@@ -201,7 +202,9 @@ sf::View Level::Update(double deltaTime) {
 
 	if (goal->isReached(*player)) {
 		game->changeState(GameState::VICTORY);
-		// Play the victory sound
+
+		ResourceManager::playSound("resources/Audio/Applause.wav");
+		ResourceManager::playSound("resources/Audio/Baby_Sound.wav");
 		
 		player->setPosition({ goal->getPosition().x+53, goal->getPosition().y + 140});
 

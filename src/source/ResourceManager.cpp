@@ -2,6 +2,9 @@
 
 std::map<std::string, sf::Texture, std::less<>> ResourceManager::textures;
 
+std::unordered_map<std::string, sf::SoundBuffer> ResourceManager::buffers;
+std::vector<sf::Sound> ResourceManager::sounds;
+
 sf::Texture ResourceManager::getTexture(std::string const& texturePath) {
 
     if (textures.contains(texturePath)) {
@@ -24,23 +27,20 @@ sf::Texture ResourceManager::getTexture(std::string const& texturePath) {
     }
 }
 
-sf::SoundBuffer ResourceManager::getSound(std::string const& soundPath) {
+void ResourceManager::playSound(std::string const& soundPath) {
 
-    if (sounds.contains(soundPath)) {
-        return sounds[soundPath];
-    }
-
-    else {
-        std::cout << "Loading new texture: " << soundPath << std::endl;
-
-        sf::SoundBuffer sound;
-        if (!sound.loadFromFile(soundPath))
-        {
+    if (buffers.find(soundPath) == buffers.end()) {
+        // Load the sound buffer if it's not already loaded
+        sf::SoundBuffer buffer;
+        if (!buffer.loadFromFile(soundPath)) {
             std::cout << "Loading failed: " << soundPath << std::endl;
-            return sound;
+            return;
         }
-        sounds[soundPath] = sound;
-
-        return sound;
+        buffers[soundPath] = buffer;
     }
+
+    sf::Sound sound(buffers[soundPath]);
+
+    sounds.emplace_back(sound);
+    sounds.back().play();
 }
