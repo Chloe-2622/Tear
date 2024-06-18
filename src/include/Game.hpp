@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "ResourceManager.h"
 #include "GameObject.h"
 #include "Patern.h"
 #include "Menu.h"

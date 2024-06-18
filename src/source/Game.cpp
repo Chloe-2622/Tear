@@ -172,9 +172,23 @@ void Game::RenderPause() {
 }
 
 void Game::RenderVictory() {
+	sf::Texture victoryTexture;
+	victoryTexture = ResourceManager::getTexture("resources/Sprites/Victory.png");
+
+	sf::Sprite victorySprite;
+	victorySprite.setTexture(victoryTexture);
+
+	mWindow.draw(victorySprite);
 }
 
 void Game::RenderGameover() {
+	sf::Texture gameoverTexture;
+	gameoverTexture = ResourceManager::getTexture("resources/Sprites/GameOver.png");
+
+	sf::Sprite gameoverSprite;
+	gameoverSprite.setTexture(gameoverTexture);
+
+	mWindow.draw(gameoverSprite);
 }
 
 void Game::RenderShop() {

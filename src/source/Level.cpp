@@ -196,8 +196,12 @@ sf::View Level::Update(double deltaTime) {
 	}
 
 	if (goal->isReached(*player)) {
-		cout << "C'est la fin !!!!";
-		game->changeState(GameState::SHOP);
+		game->changeState(GameState::VICTORY);
+		// Play the victory sound
+		
+		player->setPosition({ goal->getPosition().x+53, goal->getPosition().y + 140});
+
+		//game->changeState(GameState::SHOP);
 	}
 
 	return view;

@@ -11,6 +11,8 @@ class Goal {
 		bool isReached(Player const& player) const;
 		void Render(sf::RenderWindow& window) const;
 
+		Vector2 getPosition() const { return transform.position; }
+
 	private:
 		Transform		transform = { {0, 0}, { 100, 100 }, 0 };
 		std::string		texturePath = "resources/Sprites/Bebe.png";
