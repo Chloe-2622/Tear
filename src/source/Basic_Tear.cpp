@@ -7,6 +7,7 @@ void Basic_Tear::setParams() {
 	setDamage(10);
 	setGoldReward(100);
 	setScrollingPenalty(0.1);
+	setTexturePath("resources/Sprites/Tears/Basic_Tear.png");
 }
 
 #pragma region Constructeurs

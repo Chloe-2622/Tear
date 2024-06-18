@@ -48,6 +48,13 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 	//cout << "id: " << paternId << " offset: " << offset_x << ", offset max: " << paterns[paternId]->getMaxSpawnable_x(windowDimensions.x) << "\n";
 
 	spawnPatern(*paterns[paternId], { offset_x, offset_y });
+
+	// Build backgrounds
+	int backgroundSize = 1080;
+	int nbBackgrounds = static_cast<int>(lenght / backgroundSize) + 1;
+	for (int i = 0; i < nbBackgrounds; i++) {
+		backgroundsPositions.push_back({ 0, i * backgroundSize });
+	}
 }
 
 void Level::spawnPlayer() {
@@ -143,7 +150,24 @@ void Level::Update(double deltaTime) {
 
 }
 
+void Level::renderBackground(sf::RenderWindow& window) const {
+	for (auto const& backgroundPosition : backgroundsPositions) {
+		sf::Texture texture;
+		texture = ResourceManager::getTexture("resources/Sprites/Background.png");
+
+		sf::Sprite sprite;
+		sprite.setTexture(texture);
+
+		sprite.setScale(static_cast<float>(windowSize.x/texture.getSize().x) , static_cast<float>(windowSize.y / texture.getSize().y));
+		sprite.setPosition(backgroundPosition.first, backgroundPosition.second);
+
+		//Draw the sprite
+		window.draw(sprite);
+	}
+}
+
 void Level::Render(sf::RenderWindow& window) const {
+	renderBackground(window);
 	for (auto const& gameObject : gameObjects) {
 		gameObject->Render(window);
 	}

@@ -82,7 +82,7 @@ void Game::processEvents()
 }
 
 void Game::update(sf::Time elapsedTime) {
-	mWindow.setView(currentLevel.UpdateView(static_cast<double>(elapsedTime.asMilliseconds())));
+	mWindow.setView(currentLevel.UpdateView(static_cast<double>(elapsedTime.asSeconds())));
 	currentLevel.Update(static_cast<double>(elapsedTime.asSeconds()));
 }
 

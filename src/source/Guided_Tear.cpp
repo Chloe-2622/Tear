@@ -7,6 +7,8 @@ void Guided_Tear::setParams() {
 	setDamage(10);
 	setGoldReward(100);
 	setScrollingPenalty(0.1);
+	setTexturePath("resources/Sprites/Tears/Guided_Tear.png");
+	setSpeed(100);
 }
 
 #pragma region Constructeurs
@@ -33,7 +35,10 @@ void Guided_Tear::Update(double deltaTime, double scrollingSpeed, float viewPosi
 	Vector2 direction = playerPosition - getPosition();
 	direction.normalize();
 
-	move(direction * getSpeed());
+	//std::cout << "Moving by " << direction.x << ", " << direction.y << "\n";
+	std::cout << "Speed : " << getSpeed() << "\n";
+
+	move(direction * getSpeed() * deltaTime);
 }
 
 

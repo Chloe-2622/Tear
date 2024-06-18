@@ -16,6 +16,7 @@ public:
 	sf::View										UpdateView(double deltaTime);
 	void											Update(double deltaTime);
 	void											Render(sf::RenderWindow& window) const;
+	void 											renderBackground(sf::RenderWindow& window) const;
 
 	// Getter
 	std::unique_ptr<Player> const&					getPlayer() const { return player; }
@@ -27,10 +28,11 @@ private:
 	sf::View										view;
 
 	double											lenght = 2*1080;
-	double											scrollingSpeed = .1;
+	double											scrollingSpeed = 200;
 	bool											hasReachedEnd = false;
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
 	std::vector<std::unique_ptr<Projectile>>		projectiles;
+	std::vector<std::pair<int, int>> 				backgroundsPositions;
 	std::unique_ptr<Player>							player;
 	Vector2											windowSize;
 	std::unique_ptr<Goal>							goal;

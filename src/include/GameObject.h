@@ -63,6 +63,8 @@ class GameObject {
 
         // Setter
         void            setPosition(Vector2 position) {transform.position = position;};
+        void            setTexturePath(std::string const& texturePath) {this->texturePath = texturePath;};
+        void            setSpeed(double speed) {this->speed = speed;};
 
         // Debug
         std::string     dump(std::string const& indent = "") const;

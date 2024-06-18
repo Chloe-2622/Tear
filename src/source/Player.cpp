@@ -49,7 +49,6 @@ void Player::handleInput(sf::Keyboard::Key keyPressed, bool isPressed) {
 
 void Player::shootProjectile(std::vector<std::unique_ptr<Projectile>>& projectiles) {
     Vector2 projectileSize = {32, 56};
-    std::cout << "Playze size : " << getSize().x << ", " << getSize().y << std::endl;
     Vector2 projectilePosition = {getPosition().x + getSize().x/2 - projectileSize.x/2, getPosition().y - projectileSize.y};
     Transform projectileTransform = {projectilePosition, projectileSize, 0};
     std::string projectileTexturePath = "resources/Sprites/Basic_Projectile.png";

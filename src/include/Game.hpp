@@ -4,6 +4,15 @@
 #include "GameObject.h"
 #include "Level.h"
 
+enum GameState {
+    MENU,
+    GAME,
+    PAUSE,
+    VICTORY,
+    GAMEOVER,
+    SHOP
+};
+
 
 class Game {
     public:
@@ -23,4 +32,6 @@ class Game {
         std::vector<std::unique_ptr<Patern>>    paterns;
         int                                     levelNumber;
         Level                                   currentLevel{ 0 };
+
+        GameState                               gameState = MENU;
 };
