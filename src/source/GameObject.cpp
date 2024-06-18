@@ -134,6 +134,7 @@ void GameObject::setPosition(Vector2 position) { transform.position = position; 
 void GameObject::move(Vector2 movement) { transform.position += movement; }
 void GameObject::setTexturePath(string_view const& newTexturePath) { texturePath = newTexturePath; }
 void GameObject::setSpeed(double newSpeed) { speed = newSpeed; }
+void GameObject::setRotation(double newRotation) { transform.rotation = newRotation; }
 #pragma endregion Setter
 
 // Getter

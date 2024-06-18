@@ -1,6 +1,6 @@
-#include "Level.h"
 #include "iostream"
 #include <random>
+#include "Game.hpp"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ int randint(int const nMin, int const nbMax)
 }
 
 // Constructeur
-Level::Level(int levelNumber) {
+Level::Level(int levelNumber, Game* game) : game(game) {
 	for (int i = 0; i < levelNumber; i++) {
 		lenght += lenght * 10 / 100;
 	}
@@ -39,16 +39,31 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 	spawnPlayer();
 	spawnGoal();
 
-	// Choose random patern
-	int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
+	int paternSpawnNumber = static_cast<int>(lenght / windowSize.y) * 5;
 
-	// Choose random location
-	auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowSize.x - paterns[paternId]->getMaxSpawnable_x(windowSize.x))));
-	auto offset_y = lenght;
+	for (int i = 0; i < paternSpawnNumber - 2; i++) {
+		// Choose random patern
+		int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
 
-	//cout << "id: " << paternId << " offset: " << offset_x << ", offset max: " << paterns[paternId]->getMaxSpawnable_x(windowDimensions.x) << "\n";
+		// Choose random location
+		std::cout << "window size" << windowSize.x << " " << windowSize.y << std::endl;
+		double offset_x = static_cast<double>(randint(0, static_cast<int>(paterns[paternId]->getMaxSpawnable_x(windowSize.x))));
+		double offset_y = lenght - i * (windowSize.y / 5);
 
-	spawnPatern(*paterns[paternId], { offset_x, offset_y });
+		spawnPatern(*paterns[paternId], { offset_x, offset_y });
+	}
+
+	// // Choose random patern
+	// int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
+
+	// // Choose random location
+	// auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowSize.x - paterns[paternId]->getMaxSpawnable_x(windowSize.x))));
+	// auto offset_y = lenght;
+
+	// //cout << "id: " << paternId << " offset: " << offset_x << ", offset max: " << paterns[paternId]->getMaxSpawnable_x(windowDimensions.x) << "\n";
+
+	// spawnPatern(*paterns[paternId], { offset_x, offset_y });
+	
 
 	// Build backgrounds
 	int backgroundSize = 1080;
@@ -84,7 +99,7 @@ void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
 #pragma region Update
 void Level::UpdateView(double const deltaTime) {
 
-	// Si on n'a pas atteint le bout du niveau, on d�place la cam�ra
+	// Si on n'a pas atteint le bout du niveau, on déplace la caméra
 	if (!hasReachedEnd) {
 		Vector2 cameraMovement{ 0, -scrollingSpeed * deltaTime };
 
@@ -97,7 +112,7 @@ void Level::UpdateView(double const deltaTime) {
 		}
 		player->followView(cameraMovement);
 
-		// La premi�re fois qu'on atteint le bout
+		// La première fois qu'on atteint le bout
 		if (view.getCenter().y - windowSize.y / 2 <= 0) {
 			hasReachedEnd = true;
 
@@ -174,6 +189,7 @@ sf::View Level::Update(double deltaTime) {
 
 	if (goal->isReached(*player)) {
 		cout << "C'est la fin !!!!";
+		game->changeState(GameState::SHOP);
 	}
 
 	return view;

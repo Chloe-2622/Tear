@@ -8,7 +8,7 @@
 
 class Level {
 public:
-	explicit Level(int levelNumber);
+	explicit Level(int levelNumber, Game* game);
 	Level() = default;
 
 	// Initialize the level
@@ -47,4 +47,6 @@ private:
 	Vector2											windowSize;
 	std::unique_ptr<Goal>							goal;
 	sf::View										view;
+
+	Game*											game;
 };

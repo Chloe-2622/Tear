@@ -49,7 +49,7 @@ class GameObject {
         explicit GameObject(GameObject const& gameObject) = default;
 
         // Render
-        void                                                        Render(sf::RenderWindow &window) const;
+        virtual void                                                Render(sf::RenderWindow &window) const;
 
         // Update
         virtual std::unique_ptr<GameObject>                         Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition);
@@ -78,6 +78,7 @@ class GameObject {
         void                                                        move(Vector2 movement);
         void                                                        setTexturePath(std::string_view const& newTexturePath);
         void                                                        setSpeed(double newSpeed);
+        void                                                        setRotation(double newRotation);            
 
         // Debug
         std::string                                                 dump(std::string const& indent = "") const;

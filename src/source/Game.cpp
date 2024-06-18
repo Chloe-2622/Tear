@@ -1,5 +1,4 @@
 #include "Game.hpp"
-
 #include "iostream"
 #include <string>
 
@@ -35,8 +34,7 @@ void Game::run()
 	initPaterns();
 
 	// Apply the view
-	mWindow.setView(currentLevel.initView(static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)));
-	currentLevel.buildLevel(paterns);
+	//currentLevel.buildLevel(paterns);
 
 	// mWindow.setVerticalSyncEnabled(true);
 	mWindow.setFramerateLimit(60);
@@ -70,10 +68,14 @@ void Game::processEvents()
 				mWindow.close();
 				break;
 			case sf::Event::KeyPressed:
-				handlePlayerInput(event.key.code, true);
+				if (gameState == GAME) handlePlayerInput(event.key.code, true);
+				if (gameState == MENU) handleMenuInput(event.key.code, true);
+				if (gameState == SHOP) handleShopInput(event.key.code, true);
 				break;
 			case sf::Event::KeyReleased:
-				handlePlayerInput(event.key.code, false);
+				if (gameState == GAME) handlePlayerInput(event.key.code, false);
+				if (gameState == MENU) handleMenuInput(event.key.code, false);
+				if (gameState == SHOP) handleShopInput(event.key.code, false);
 				break;
 		}
 	}
@@ -83,10 +85,97 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
 	currentLevel.getPlayerPtr().handleInput(key, isPressed);
 }
 
+void Game::handleMenuInput(sf::Keyboard::Key key, bool isPressed) {
+	menu.handleInput(key, isPressed);
+}
+
+void Game::handleShopInput(sf::Keyboard::Key key, bool isPressed) {
+	shop.handleInput(key, isPressed);
+}
+
 void Game::Update(sf::Time elapsedTime) {
-	mWindow.setView(currentLevel.Update(static_cast<double>(elapsedTime.asSeconds())));
+	switch (gameState) {
+		case MENU:
+			menu.Update(static_cast<double>(elapsedTime.asSeconds()));
+			break;
+		case GAME:
+			UpdateLevel(elapsedTime);
+			break;
+		case PAUSE:
+			break;
+		case VICTORY:
+			break;
+		case GAMEOVER:
+			break;
+		case SHOP:
+			break;
+	}
+}
+
+void Game::UpdateLevel(sf::Time elapsedTime) {
+	sf::View newView = currentLevel.Update(static_cast<double>(elapsedTime.asSeconds()));
+	if (gameState == GAME) mWindow.setView(newView);
+	std::cout << "Changing view center to : " << mWindow.getView().getCenter().x << ", " << mWindow.getView().getCenter().y << std::endl;
+}
+
+void Game::changeState(GameState state) {
+	GameState oldGameState = gameState;
+
+	if ((oldGameState == MENU || oldGameState == SHOP) && state == GAME) {
+		levelNumber++;
+		currentLevel = Level(levelNumber, this);
+		mWindow.setView(currentLevel.initView(static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)));
+		
+		currentLevel.buildLevel(paterns);
+	}
+	if (state == SHOP) {
+		std::cout << "Shop" << std::endl;
+		mWindow.setView(sf::View(sf::FloatRect(0, 0, static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y))));
+		std::cout << "View center : " << mWindow.getView().getCenter().x << ", " << mWindow.getView().getCenter().y << std::endl;
+	}
+
+	gameState = state;
 }
 
 void Game::Render() {
-	currentLevel.Render(mWindow);
+	switch (gameState) {
+		case MENU:
+			RenderMenu();
+			break;
+		case GAME:
+			currentLevel.Render(mWindow);
+			break;
+		case PAUSE:
+			currentLevel.Render(mWindow);
+			RenderPause();
+			break;
+		case VICTORY:
+			currentLevel.Render(mWindow);
+			RenderVictory();
+			break;
+		case GAMEOVER:
+			currentLevel.Render(mWindow);
+			RenderGameover();
+			break;
+		case SHOP:
+			RenderShop();
+			break;
+	}
+}
+
+void Game::RenderMenu() {
+	menu.Render(mWindow);
+}
+
+void Game::RenderPause() {
+}
+
+void Game::RenderVictory() {
+}
+
+void Game::RenderGameover() {
+}
+
+void Game::RenderShop() {
+	shop.Render(mWindow);
 }

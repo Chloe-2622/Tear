@@ -2,10 +2,10 @@
 
 using namespace std;
 
-// Paramètres
+// Paramï¿½tres
 void Tear_Guided::setParams() {
 	// GameObject
-	setSpeed(1);
+	setSpeed(100);
 	setTexturePath("resources/Sprites/Tears/Guided_Tear.png");
 
 	//Tear
@@ -33,6 +33,11 @@ unique_ptr<Tear> Tear_Guided::copy() const { return make_unique<Tear_Guided>(*th
 
 // Update
 unique_ptr<GameObject> Tear_Guided::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
+	this->playerPosition = playerPosition;
+
+	// Sets new rotation to face the plaayer
+	setRotation(-90 + atan2(playerPosition.y - getPosition().y, playerPosition.x - getPosition().x) * 180 / M_PI);
+
 	Vector2 direction = playerPosition - getPosition();
 	direction.normalize();
 

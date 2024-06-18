@@ -28,9 +28,9 @@ class Player : public GameObject {
         void                            upgrade(Upgrade upgrade);
 
         // Getter
-        double                         getDamageMultiplier() const;
+        double                          getDamageMultiplier() const;
 
-
+        void                            Render(sf::RenderWindow& window) const override;
 
     private:
         int                         healthPoints = 100;

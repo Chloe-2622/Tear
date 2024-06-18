@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// Paramètres
+// Paramï¿½tres
 void Tear_Basic::setParams() {
 	// GameObject
 	setSpeed(0);
@@ -10,7 +10,7 @@ void Tear_Basic::setParams() {
 
 	//Tear
 	setHealthPoints(100);
-	setScrollingPenalty(0.1);
+	setScrollingPenalty(10);
 	setDamage(10);
 	setGoldReward(100);
 }

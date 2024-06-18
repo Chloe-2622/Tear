@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// Paramètres
+// Paramï¿½tres
 void Projectile_Guided::setParams() {
 	// GameObject
 	setSpeed(100);

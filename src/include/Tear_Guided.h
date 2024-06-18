@@ -1,6 +1,8 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
 #include "Tear.h"
+#include <math.h>
 
 class Tear_Guided : public Tear {
 	public:
@@ -16,4 +18,7 @@ class Tear_Guided : public Tear {
 	
 		// Update
 		std::unique_ptr<GameObject>		Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) override;
+	
+	private:
+		Vector2 playerPosition;
 };
