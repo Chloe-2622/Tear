@@ -2,59 +2,51 @@
 
 using namespace std;
 
+// Constructeurs
 #pragma region Constructeurs
-Tear::Tear() :
-	GameObject()
-{}
-
 Tear::Tear(Transform const& transform, double speed, string const& texturePath, int healthPoints, double scrollingPenalty, double damage, int goldReward):
-	GameObject(transform, speed, texturePath),
+	GameObject{transform, speed, texturePath, Faction::Enemie},
 	healthPoints{ healthPoints },
 	scrollingPenalty{ scrollingPenalty },
 	damage{ damage },
 	goldReward{ goldReward }
 {}
 
-Tear::Tear(const pugi::xml_node& node) :
-	GameObject{ node, 0, "resources/Sprites/Basic_Tear.png" }
-{}
-
-Tear::Tear(Tear const& tear) :
-	GameObject(tear),
-	healthPoints{ tear.healthPoints },
-	scrollingPenalty{ tear.scrollingPenalty },
-	damage{ tear.damage },
-	goldReward{ tear.goldReward }
+Tear::Tear(const pugi::xml_node& node, std::string const& texturePath) :
+	GameObject{ node, 0, texturePath, Faction::Enemie}
 {}
 #pragma endregion Constructeurs
 
-bool Tear::isOutofView(sf::FloatRect currentViewBox) const {
-	//cout << "Bottom: " << viewBottomBoarder << ", Position: " << transform.position.y << "\n";
+// Update
+void Tear::supressOffset(Vector2 offset) {/* Les tears ne se déplacent pas dans le niveau, il n'y a donc pas besoin de les bouger avec la camera*/};
 
-	return getPosition().y > currentViewBox.top + currentViewBox.height;
+// Out of view
+#pragma region Out of view
+bool Tear::isOutofView(sf::FloatRect currentViewBox) const { return getPosition().y > currentViewBox.top + currentViewBox.height; }
+
+double Tear::exitViewValue() const { return scrollingPenalty; }
+#pragma endregion Out of view
+
+// Damages
+#pragma region Damages
+bool Tear::hasCollided(GameObject const& gameObject) const {
+	return getPosition().distance(gameObject.getPosition()) < getSize().x;
 }
 
-double Tear::exitView() const {
-	return scrollingPenalty;
+bool Tear::doDamage(GameObject& gameObject, double playerMultiplier) const {
+	return gameObject.takeDamage(damage);
 }
 
-//void Tear::doDamage(GameObject gameObject, double playerMultiplier) const { gameObject.takeDamage(damage * playerMultiplier); }
-//bool Tear::takeDamage(double damages) {
-//	healthPoints -= (int)damages;
-//	return healthPoints < 0;
-//}
 bool Tear::takeDamage(double damages) {
 	healthPoints -= static_cast<int>(damages);
-	return healthPoints > 0;
+	return healthPoints <= 0;
 }
+#pragma endregion Damages
 
-void Tear::doDamage(GameObject & gameObject, double playerMultiplier) const {
-	gameObject.takeDamage(damage);
-}
-
-
-
+// Setter
+#pragma region Setter
 void Tear::setHealthPoints(int healthPointsNew) { healthPoints = healthPointsNew; }
 void Tear::setScrollingPenalty(double scrollingPenaltyNew) { scrollingPenalty = scrollingPenaltyNew; }
 void Tear::setDamage(double damageNew) { damage = damageNew; }
 void Tear::setGoldReward(int goldRewardNew) { goldReward = goldRewardNew; }
+#pragma endregion Setter

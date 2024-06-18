@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-class Player;
-
 struct Vector2 {
     double x;
     double y;
@@ -22,6 +20,7 @@ struct Vector2 {
     }
 
     Vector2 operator+(const Vector2 v) const { return { x + v.x, y + v.y }; }
+    void operator+=(const Vector2 v) { x += v.x; y += v.y; }
     Vector2 operator-(const Vector2 v) const { return { x - v.x, y - v.y }; }
     Vector2 operator*(const double k) const { return { k*x, k*y }; }
 };
@@ -32,42 +31,59 @@ struct Transform {
     double rotation;
 };
 
+enum class Faction {
+    Ally,
+    Enemie
+};
+
+
+
+
 class GameObject {
     public:
         // Constructeurs
-        explicit GameObject();
+        explicit GameObject() = default;
         virtual ~GameObject() = default;
-        explicit GameObject(Transform const& transform, double speed, std::string const& texturePath);
-        explicit GameObject(const pugi::xml_node& node, double speed, std::string texturePath);
-        explicit GameObject(GameObject const& gameObject);
+        explicit GameObject(Transform const& transform, double speed, std::string const& texturePath, Faction faction);
+        explicit GameObject(const pugi::xml_node& node, double speed, std::string const& texturePath, Faction faction);
+        explicit GameObject(GameObject const& gameObject) = default;
 
-        // Update & Render
-        virtual void            Update(double deltaTime, double scrollingSpeed = 0, float viewPositionY = 0, float windowLenght = 0, Vector2 playerPosition = {0, 0});
-        void                    Render(sf::RenderWindow &window) const;
+        // Render
+        void                                                    Render(sf::RenderWindow &window) const;
 
-        virtual bool            isOutofView(sf::FloatRect currentViewBox) const;
-        virtual double          exitView() const;
+        // Update
+        virtual std::unique_ptr<GameObject>                     Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition);
+        virtual void                                            supressOffset(Vector2 offset) = 0;
 
-        virtual void hit(Player & player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const = 0;
-        virtual void            doDamage(GameObject & gameObject, double playerMultiplier) const = 0;
-        virtual bool            takeDamage(double damages) = 0;
+        // Out of view
+        virtual bool                                            isOutofView(sf::FloatRect currentViewBox) const = 0;
+        virtual double                                          exitViewValue() const;
 
-
-        void            move(Vector2 movement);
+        // Damages
+        std::vector<std::unique_ptr<GameObject>>::iterator      hasHitSomething(std::vector<std::unique_ptr<GameObject>> gameObjects) const;
+        virtual bool                                            hasHitObject(std::unique_ptr<GameObject> gameObject) const = 0;
+        virtual bool                                            hasCollided(GameObject const& gameObject) const = 0;
+        virtual bool                                            doDamage(GameObject & gameObject, double playerMultiplier) const = 0; // True si kill
+        virtual bool                                            takeDamage(double damages) = 0; // True si mort
 
         // Getter
-        Vector2         getPosition() const;
-        Vector2         getSize() const;
-        double          getRotation() const;
-        double          getSpeed() const;
+        Vector2                                                 getPosition() const;
+        Vector2                                                 getSize() const;
+        double                                                  getRotation() const;
+        double                                                  getSpeed() const;
 
         // Setter
-        void            setPosition(Vector2 position) {transform.position = position;};
+        void                                                    setPosition(Vector2 position);
+        void                                                    move(Vector2 movement);
+        void                                                    setTexturePath(std::string_view const& newTexturePath);
+        void                                                    setSpeed(double newSpeed);
 
         // Debug
-        std::string     dump(std::string const& indent = "") const;
+        std::string                                             dump(std::string const& indent = "") const;
+
     private:
-        Transform       transform;
-        double          speed;
-        std::string     texturePath;
+        Transform                                               transform = { {0, 0}, {0, 0}, 0 };
+        std::string                                             texturePath = "";
+        double                                                  speed = 0;
+        Faction                                                 faction = Faction::Ally;
 };

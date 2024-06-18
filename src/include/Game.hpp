@@ -11,12 +11,15 @@ class Game {
         void                                    run();
 
     private:
+        // Initialize
         void                                    initPaterns();
-        void                                    processEvents();
-        void                                    update(sf::Time elapsedTime);
-        void                                    render();
-        void                                    handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
+        // Runtime
+        void                                    processEvents();
+        void                                    Update(sf::Time elapsedTime);
+        void                                    Render();
+
+        // Parameters
         sf::RenderWindow                        mWindow{ sf::VideoMode{720, 1080}, "SFML Application", sf::Style::Close };
         static const sf::Time                   TimePerFrame;
 

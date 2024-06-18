@@ -1,11 +1,10 @@
 #include "Patern.h"
 #include "iostream"
-#include "vector"
 #include <sstream>
-#include <string>
 
 using namespace std;
 
+// Constructeur
 Patern::Patern(const pugi::xml_node& node) :
     id{ node.attribute("id").as_int() },
     name{ node.attribute("name").as_string() }
@@ -14,14 +13,14 @@ Patern::Patern(const pugi::xml_node& node) :
 
     for (pugi::xml_node tear : node.children()) {
 
-        if (tear.name() == "Basic_Tear"s) {
-            tears.push_back(make_unique<Basic_Tear>(tear));
+        if (tear.name() == "Tear_Basic"s) {
+            tears.push_back(make_unique<Tear_Basic>(tear));
         }
-        else if (tear.name() == "Guided_Tear"s) {
-            tears.push_back(make_unique<Guided_Tear>(tear));
+        else if (tear.name() == "Tear_Guided"s) {
+            tears.push_back(make_unique<Tear_Guided>(tear));
         }
-        else if (tear.name() == "River_Tear"s) {
-            tears.push_back(make_unique<River_Tear>(tear));
+        else if (tear.name() == "Tear_River"s) {
+            tears.push_back(make_unique<Tear_River>(tear));
         }
 
         if (!tears.empty()) {
@@ -35,6 +34,8 @@ Patern::Patern(const pugi::xml_node& node) :
     cout << "Loading successful with " << tears.size() << " tears" << endl;
 }
 
+// Build level
+#pragma region Build level
 vector<unique_ptr<Tear>> Patern::copyTears() const {
 
     cout << tears.size() << "\n";
@@ -53,8 +54,10 @@ double Patern::getMaxSpawnable_x(double const windowWidth) const {
 double Patern::getMaxSpawnable_y(double const windowLenght) const {
     return windowLenght - size.y;
 }
+#pragma endregion Build level
 
-std::string Patern::dump(std::string indent) const {
+// Debug
+std::string Patern::dump(std::string const& indent) const {
     std::ostringstream oss;
     oss << indent
         << "id: " << id
