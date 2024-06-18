@@ -16,6 +16,7 @@ class Game {
 
         // Runtime
         void                                    processEvents();
+        void                                    handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
         void                                    Update(sf::Time elapsedTime);
         void                                    Render();
 

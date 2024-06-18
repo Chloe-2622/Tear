@@ -17,10 +17,11 @@ class Tear : public GameObject {
 		virtual std::unique_ptr<Tear>		copy() const = 0;
 	
 		// Update
-		void								supressOffset(Vector2 offset) override;
+		void								followView(Vector2 movement) override;
+		void								supressViewOffset(Vector2 offset) override;
 	
 		// Out of view
-		bool								isOutofView(sf::FloatRect currentViewBox) const override;
+		bool								isOutofView(sf::View const& view, Vector2 windowSize) const override;
 		double								exitViewValue() const override;
 	
 		// Damages

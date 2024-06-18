@@ -18,11 +18,14 @@ Tear::Tear(const pugi::xml_node& node, std::string const& texturePath) :
 #pragma endregion Constructeurs
 
 // Update
-void Tear::supressOffset(Vector2 offset) {/* Les tears ne se déplacent pas dans le niveau, il n'y a donc pas besoin de les bouger avec la camera*/};
+void Tear::followView(Vector2 movement) { /*Les larmes ne suivent pas la camera*/ }
+void Tear::supressViewOffset(Vector2 offset) {/* Les tears ne se déplacent pas dans le niveau, il n'y a donc pas besoin de les bouger avec la camera*/};
 
 // Out of view
 #pragma region Out of view
-bool Tear::isOutofView(sf::FloatRect currentViewBox) const { return getPosition().y > currentViewBox.top + currentViewBox.height; }
+bool Tear::isOutofView(sf::View const& view, Vector2 windowSize) const { 
+	return getPosition().y > view.getCenter().y + windowSize.y/2;
+}
 
 double Tear::exitViewValue() const { return scrollingPenalty; }
 #pragma endregion Out of view

@@ -12,6 +12,7 @@ int randint(int const nMin, int const nbMax)
 	return distribution(engine);
 }
 
+// Constructeur
 Level::Level(int levelNumber) {
 	for (int i = 0; i < levelNumber; i++) {
 		lenght += lenght * 10 / 100;
@@ -78,19 +79,31 @@ void Level::UpdateView(double const deltaTime) {
 
 	// Si on n'a pas atteint le bout du niveau, on déplace la caméra
 	if (!hasReachedEnd) {
-		view.move(0, -static_cast<float>(scrollingSpeed * deltaTime));
+		Vector2 cameraMovement{ 0, -scrollingSpeed * deltaTime };
+
+		view.move(static_cast<float>(cameraMovement.x), static_cast<float>(cameraMovement.y));
+
+		cout << scrollingSpeed * deltaTime << "\n";
+
+		for (auto const& gameObject : gameObjects) {
+			gameObject->followView(cameraMovement);
+		}
+		player->followView(cameraMovement);
 
 		// La première fois qu'on atteint le bout
 		if (view.getCenter().y - windowSize.y / 2 <= 0) {
 			hasReachedEnd = true;
 
-			float offsetY = view.getCenter().x - static_cast<float>(windowSize.y / 2);
+			float offsetY = view.getCenter().y - static_cast<float>(windowSize.y / 2);
 
 			// On fixe la caméra au bon endroit
 			view.move(0, -offsetY);
+			
+			
+			
 			// On redécale tout les objets pour pas qu'il y a de saut de position apparente
 			for (auto const& gameObject : gameObjects) {
-				gameObject->supressOffset({ 0, -offsetY });
+				gameObject->supressViewOffset({ 0, -offsetY });
 			}
 		}
 	}
@@ -100,44 +113,43 @@ sf::View Level::Update(double deltaTime) {
 
 	UpdateView(deltaTime);
 
-	std::cout << "Number of gameObjects: " << gameObjects.size() << std::endl;
+	//std::cout << "Number of gameObjects: " << gameObjects.size() << std::endl;
 	auto it = gameObjects.begin();
 
-
+	const vector<unique_ptr<GameObject>>* gameObjectsPtr;
+	gameObjectsPtr = &gameObjects;
+	
 	while (it != gameObjects.end()) {
 		auto const& gameObject = *it;
 
-		auto newGameObject = gameObject->Update(deltaTime, view.getViewport(), windowSize, player->getPosition());
-
 		// Check if a new gameObject (a projectile) has been created
-		if (newGameObject != nullptr) {
+		if (auto newGameObject = gameObject->Update(deltaTime, view, windowSize, player->getPosition()); newGameObject != nullptr) {
 			gameObjects.push_back(move(newGameObject));
 		}
 		
-		// Check if something has be hit by the object
-		auto itHit = gameObject->hasHitSomething(gameObjects);
-
-		if (itHit != gameObjects.end()) {
+		// Check if something has been hit by the object
+		if (auto itHit = gameObject->hasHitSomething(gameObjectsPtr); itHit != gameObjects.end() && gameObject->doDamage(**itHit, player->getDamageMultiplier())) {
 			// Si la cible est tuée
-			if (gameObject->doDamage(**itHit, player->getDamageMultiplier())) {
+			gameObjects.erase(itHit);
 
-				gameObjects.erase(itHit);
+			if (itHit < it) { it--; } // Si on supprime dans la liste avant it, on doit redécaler it
+		}
+		
+		// Check if the player has been hit by the object
+		if (gameObject->hasHitObject(*player)) {
+			cout << "Touche\n";
 
-				if (itHit < it) { it--; } // Si on supprime dans la liste avant it, on doit redécaler it
+			if (gameObject->doDamage(*player, player->getDamageMultiplier())) {
+				// Si la cible est tuée
+				cout << "Fin de la Partie" << endl;
 			}
 		}
-
-		auto itHit = gameObject->hasHitObject(player)
-
-
-
-
 
 		/*
 		Check if the object is outside the view
 		For the projectiles, it means that they are above the view, and for the tears, they are outside
 		*/
-		if (gameObject->isOutofView(view.getViewport())) {
+		if (gameObject->isOutofView(view, windowSize)) {
 			scrollingSpeed += gameObject->exitViewValue();
 
 			it = gameObjects.erase(it);
@@ -147,11 +159,22 @@ sf::View Level::Update(double deltaTime) {
 		}
 	}
 
+	// Finalement, on update le player
+	// Check if a new gameObject (a projectile) has been created
+	if (auto newGameObject = player->Update(deltaTime, view, windowSize, player->getPosition()); newGameObject != nullptr) {
+		gameObjects.push_back(move(newGameObject));
+	}
 
+	if (goal->isReached(*player)) {
+		cout << "C'est la fin !!!!";
+	}
 
 	return view;
 }
 #pragma endregion Update
+
+// Getter
+Player& Level::getPlayerPtr() { return *player; }
 
 // Render
 void Level::Render(sf::RenderWindow& window) const {
@@ -159,4 +182,5 @@ void Level::Render(sf::RenderWindow& window) const {
 		gameObject->Render(window);
 	}
 	goal->Render(window);
+	player->Render(window);
 }

@@ -5,7 +5,7 @@ using namespace std;
 // Paramètres
 void Projectile_Basic::setParams() {
 	// GameObject
-	setSpeed(1);
+	setSpeed(100);
 	setTexturePath("resources/Sprites/Basic_Projectile.png");
 
 	//Projectile
@@ -20,7 +20,7 @@ Projectile_Basic::Projectile_Basic(Transform const& transform, double speed, std
 }
 
 // Update
-unique_ptr<GameObject> Projectile_Basic::Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition) {
+unique_ptr<GameObject> Projectile_Basic::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
 	move({ 0, -10 * getSpeed() * deltaTime });
 	return nullptr;
 };

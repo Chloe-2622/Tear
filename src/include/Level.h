@@ -20,6 +20,9 @@ public:
 	sf::View										Update(double deltaTime);
 	void											Render(sf::RenderWindow& window) const;
 
+	// Getter
+	Player&											getPlayerPtr();
+
 
 private:
 	// Initialize the level
@@ -34,11 +37,11 @@ private:
 
 	// Parameters
 	double											lenght = 2*1080;
-	double											scrollingSpeed = .1;
+	double											scrollingSpeed = 200;
 	bool											hasReachedEnd = false;
 	std::vector<std::unique_ptr<GameObject>>		gameObjects;
 
-	unique_ptr<Player>								player;
+	std::unique_ptr<Player>							player;
 	Vector2											windowSize;
 	std::unique_ptr<Goal>							goal;
 	sf::View										view;

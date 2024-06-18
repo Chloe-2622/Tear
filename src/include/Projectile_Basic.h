@@ -10,6 +10,6 @@ public:
 	void setParams();
 
 	// Update
-	std::unique_ptr<GameObject>		Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition) override;
+	std::unique_ptr<GameObject>		Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) override;
 
 };

@@ -9,10 +9,13 @@ Projectile::Projectile(Transform const& transform, double speed, std::string con
 {}
 
 // Update
-void Projectile::supressOffset(Vector2 offset) { move(offset); }
+void Projectile::followView(Vector2 movement) { move(movement); }
+void Projectile::supressViewOffset(Vector2 offset) { move(offset); }
 
 // Out of view
-bool Projectile::isOutofView(sf::FloatRect currentViewBox) const { return getPosition().y < currentViewBox.top - getSize().y; }
+bool Projectile::isOutofView(sf::View const& view, Vector2 windowSize) const { 
+    return getPosition().y < view.getCenter().y - windowSize.y/2 - getSize().y;
+}
 
 // Damages
 #pragma region Damages

@@ -5,10 +5,10 @@
 <!-- Les valeurs de x et y doivent être positives									-->
 <Paterns>	
 	<Patern id="0" name="Single Drop">
-		<Basic_Tear x="0" y="0" size_x="150" size_y="150"/>
+		<Tear_Basic x="0" y="0" size_x="150" size_y="150"/>
 	</Patern>
 	<Patern id="1" name="Two Drops">
-		<Basic_Tear x="0" y="0" size_x="100" size_y="100"/>
+		<Tear_Basic x="0" y="0" size_x="100" size_y="100"/>
 		<Basic_Tear x="100" y="0" size_x="90" size_y="90"/>
 	</Patern>	
 </Paterns>

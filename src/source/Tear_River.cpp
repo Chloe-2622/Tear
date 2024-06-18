@@ -32,7 +32,7 @@ Tear_River::Tear_River(const pugi::xml_node& node) :
 unique_ptr<Tear> Tear_River::copy() const { return make_unique<Tear_River>(*this); }
 
 // Update
-unique_ptr<GameObject> Tear_River::Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition) {
+unique_ptr<GameObject> Tear_River::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
 	// Scrolling de la texture a implémenté si il y a le temps
 	return nullptr;
 };

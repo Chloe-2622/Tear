@@ -79,6 +79,10 @@ void Game::processEvents()
 	}
 }
 
+void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
+	currentLevel.getPlayerPtr().handleInput(key, isPressed);
+}
+
 void Game::Update(sf::Time elapsedTime) {
 	mWindow.setView(currentLevel.Update(static_cast<double>(elapsedTime.asSeconds())));
 }

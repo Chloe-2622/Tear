@@ -5,8 +5,14 @@ Goal::Goal(Transform const& transform, std::string const& texturePath) :
 	texturePath{ texturePath }
 {}
 
-bool Goal::isReached(Vector2 playerPosition) const {
-    return transform.position.distance(playerPosition) < transform.size.x;
+bool Goal::isReached(Player const& player) const {
+    // Same line on X
+    if (player.getPosition().x < transform.position.x + transform.size.x && player.getPosition().x + player.getSize().x > transform.position.x) {
+
+        // Same column on Y 
+        return player.getPosition().y < transform.position.y + transform.size.y && player.getPosition().y + player.getSize().y > transform.position.y;
+    }
+    return false;
 }
 
 void Goal::Render(sf::RenderWindow& window) const {

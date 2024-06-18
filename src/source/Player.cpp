@@ -10,7 +10,7 @@ Player::Player(Transform const& transform, double speed, string const& texturePa
 
 // Update
 #pragma region Update
-void Player::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
+void Player::handleInput(sf::Keyboard::Key key, bool isPressed) {
     if (key == sf::Keyboard::Z) {
         isMovingUp = isPressed;
     }
@@ -28,19 +28,19 @@ void Player::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
     }
 }
 
-unique_ptr<GameObject> Player::Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition) {
+unique_ptr<GameObject> Player::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
     Vector2 movement{ 0.f, 0.f };
 
-    if (isMovingUp && getPosition().y > currentViewBox.top) {
+    if (isMovingUp && getPosition().y > view.getCenter().y - windowSize.y/2) {
         movement.y -= getSpeed();
-    }
-    if (isMovingDown && getPosition().y < currentViewBox.top + currentViewBox.height - getSize().y) {
+    }    
+    if (isMovingDown && getPosition().y < view.getCenter().y + windowSize.y / 2 - getSize().y) {
         movement.y += getSpeed();
     }
     if (isMovingLeft && getPosition().x > 0) {
         movement.x -= getSpeed();
     }
-    if (isMovingRight && getPosition().x < currentViewBox.width - getSize().x) {
+    if (isMovingRight && getPosition().x < view.getCenter().x + windowSize.x / 2 - getSize().x) {
         movement.x += getSpeed();
     }
     move(movement);
@@ -68,11 +68,12 @@ unique_ptr<Projectile> Player::shootProjectile() const {
     return make_unique<Projectile_Basic>(projectileTransform, 20, projectileTexturePath, 10);
 }
 
-void Player::supressOffset(Vector2 offset) { move(offset); }
+void Player ::followView(Vector2 movement) { move(movement); }
+void Player::supressViewOffset(Vector2 offset) { move(offset); }
 #pragma endregion Update
 
 // Out of view
-bool Player::isOutofView(sf::FloatRect currentViewBox) const { return false; }
+bool Player::isOutofView(sf::View const& view, Vector2 windowSize) const { return false; }
 
 // Damages
 #pragma region Damages

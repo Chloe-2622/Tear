@@ -49,41 +49,42 @@ class GameObject {
         explicit GameObject(GameObject const& gameObject) = default;
 
         // Render
-        void                                                    Render(sf::RenderWindow &window) const;
+        void                                                        Render(sf::RenderWindow &window) const;
 
         // Update
-        virtual std::unique_ptr<GameObject>                     Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition);
-        virtual void                                            supressOffset(Vector2 offset) = 0;
+        virtual std::unique_ptr<GameObject>                         Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition);
+        virtual void                                                followView(Vector2 movement) = 0;
+        virtual void                                                supressViewOffset(Vector2 offset) = 0;
 
         // Out of view
-        virtual bool                                            isOutofView(sf::FloatRect currentViewBox) const = 0;
-        virtual double                                          exitViewValue() const;
+        virtual bool                                                isOutofView(sf::View const& view, Vector2 windowSize) const = 0;
+        virtual double                                              exitViewValue() const;
 
         // Damages
-        std::vector<std::unique_ptr<GameObject>>::iterator      hasHitSomething(std::vector<std::unique_ptr<GameObject>> gameObjects) const;
-        virtual bool                                            hasHitObject(std::unique_ptr<GameObject> gameObject) const = 0;
-        virtual bool                                            hasCollided(GameObject const& gameObject) const = 0;
-        virtual bool                                            doDamage(GameObject & gameObject, double playerMultiplier) const = 0; // True si kill
-        virtual bool                                            takeDamage(double damages) = 0; // True si mort
+        std::vector<std::unique_ptr<GameObject>>::const_iterator    hasHitSomething(const std::vector<std::unique_ptr<GameObject>>* gameObjects) const;
+        virtual bool                                                hasHitObject(GameObject const& gameObject) const;
+        virtual bool                                                hasCollided(GameObject const& gameObject) const = 0;
+        virtual bool                                                doDamage(GameObject & gameObject, double playerMultiplier) const = 0; // True si kill
+        virtual bool                                                takeDamage(double damages) = 0; // True si mort
 
         // Getter
-        Vector2                                                 getPosition() const;
-        Vector2                                                 getSize() const;
-        double                                                  getRotation() const;
-        double                                                  getSpeed() const;
+        Vector2                                                     getPosition() const;
+        Vector2                                                     getSize() const;
+        double                                                      getRotation() const;
+        double                                                      getSpeed() const;
 
         // Setter
-        void                                                    setPosition(Vector2 position);
-        void                                                    move(Vector2 movement);
-        void                                                    setTexturePath(std::string_view const& newTexturePath);
-        void                                                    setSpeed(double newSpeed);
+        void                                                        setPosition(Vector2 position);
+        void                                                        move(Vector2 movement);
+        void                                                        setTexturePath(std::string_view const& newTexturePath);
+        void                                                        setSpeed(double newSpeed);
 
         // Debug
-        std::string                                             dump(std::string const& indent = "") const;
+        std::string                                                 dump(std::string const& indent = "") const;
 
     private:
-        Transform                                               transform = { {0, 0}, {0, 0}, 0 };
-        std::string                                             texturePath = "";
-        double                                                  speed = 0;
-        Faction                                                 faction = Faction::Ally;
+        Transform                                                   transform = { {0, 0}, {0, 0}, 0 };
+        std::string                                                 texturePath = "";
+        double                                                      speed = 0;
+        Faction                                                     faction = Faction::Ally;
 };

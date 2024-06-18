@@ -47,7 +47,7 @@ void GameObject::Render(sf::RenderWindow &window) const {
 }
 
 // Update
-std::unique_ptr<GameObject> GameObject::Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition) {
+std::unique_ptr<GameObject> GameObject::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
     return nullptr; // Les objets qui n'ont pas d'update ou qui ne rajoutent pas de gameObjects retournent un pointeur null
 }
 
@@ -55,13 +55,14 @@ std::unique_ptr<GameObject> GameObject::Update(double deltaTime, sf::FloatRect c
 double GameObject::exitViewValue() const { return 0; };
 
 // Damages
-vector<unique_ptr<GameObject>>::iterator GameObject::hasHitSomething(vector<unique_ptr<GameObject>> gameObjects) const {
-    auto it = gameObjects.begin();
+#pragma region Damages
+vector<unique_ptr<GameObject>>::const_iterator GameObject::hasHitSomething(const vector<unique_ptr<GameObject>>* gameObjects) const {
 
-    while (it != gameObjects.end()) {
-        auto const& gameObject = *it;
+    auto it = gameObjects->begin();
 
-        if (gameObject->faction != this->faction && hasCollided(*gameObject)) {
+    while (it != gameObjects->end()) {
+
+        if (hasHitObject(**it)) {
             return it;
         }
         else {
@@ -70,6 +71,62 @@ vector<unique_ptr<GameObject>>::iterator GameObject::hasHitSomething(vector<uniq
     }
     return it;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//void GameObject::hasHitSomething(std::vector<unique_ptr<GameObject>>* gameObjects) const {
+
+
+
+    /*
+    for (auto & gameObject : gameObjects) {
+        if (hasHitObject(*gameObject)) {
+            cout << "Coucou\n";
+        }
+    }
+    
+    //auto it = gameObjects.begin();
+
+    
+    for (auto const& gameObject : gameObjects) {
+        if (hasHitObject(*gameObject)) {
+            return gameObjects.end();
+        }
+    }
+
+    return gameObjects.end();
+    
+    //auto it = gameObjects.end();
+
+    
+    while (it != gameObjects.end()) {
+        //auto const& gameObject = *it;
+
+        
+        if (hasHitObject(*gameObject)) {
+            return it;
+        }
+        else {
+            ++it;
+        }
+    }
+    //return it;*/
+//}
+
+bool GameObject::hasHitObject(GameObject const& gameObject) const {
+    return gameObject.faction != this->faction && hasCollided(gameObject);
+}
+#pragma endregion Damages
 
 // Setter
 #pragma region Setter

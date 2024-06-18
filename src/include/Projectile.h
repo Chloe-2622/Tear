@@ -10,10 +10,11 @@ class Projectile : public GameObject {
         explicit                    Projectile(Transform const &transform, double speed, std::string const &texturePath, double damage);
     
         // Update
-        void                        supressOffset(Vector2 offset) override;
+        void                        followView(Vector2 movement) override;
+        void                        supressViewOffset(Vector2 offset) override;
     
         // Out of view
-        bool                        isOutofView(sf::FloatRect currentViewBox) const override;
+        bool                        isOutofView(sf::View const& view, Vector2 windowSize) const override;
     
         // Damages
         bool                        hasCollided(GameObject const& gameObject) const override;

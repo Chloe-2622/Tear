@@ -32,10 +32,10 @@ Tear_Guided::Tear_Guided(const pugi::xml_node& node) :
 unique_ptr<Tear> Tear_Guided::copy() const { return make_unique<Tear_Guided>(*this); }
 
 // Update
-unique_ptr<GameObject> Tear_Guided::Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition) {
+unique_ptr<GameObject> Tear_Guided::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
 	Vector2 direction = playerPosition - getPosition();
 	direction.normalize();
 
-	move(direction * getSpeed());
+	move(direction * getSpeed() * deltaTime);
 	return nullptr;
 };

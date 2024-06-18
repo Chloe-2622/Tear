@@ -10,13 +10,14 @@ class Player : public GameObject {
         explicit Player(Transform const& transform, double speed, std::string const& texturePath);
 
         // Update
-        void                            handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-        std::unique_ptr<GameObject>     Update(double deltaTime, sf::FloatRect currentViewBox, Vector2 windowSize, Vector2 playerPosition) override;
+        void                            handleInput(sf::Keyboard::Key key, bool isPressed);
+        std::unique_ptr<GameObject>     Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) override;
         std::unique_ptr<Projectile>     shootProjectile() const;
-        void                            supressOffset(Vector2 offset) override;
+        void                            followView(Vector2 movement) override;
+        void                            supressViewOffset(Vector2 offset) override;
 
         // Out of view
-        bool                            isOutofView(sf::FloatRect currentViewBox) const override;
+        bool                            isOutofView(sf::View const& view, Vector2 windowSize) const override;
 
         // Damages
         bool                            hasCollided(GameObject const& gameObject) const override;
