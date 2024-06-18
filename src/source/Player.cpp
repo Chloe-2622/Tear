@@ -119,18 +119,3 @@ void Player::upgrade(Upgrade upgrade) {}
 
 // Getter
 double Player::getDamageMultiplier() const { return damageMultiplier; }
-
-void Player::Render(sf::RenderWindow& window) const {
-    GameObject::Render(window);
-
-    // // Render trail
-    // sf::Texture trailTexture;
-    // trailTexture.loadFromFile("resources/Sprites/Trail.png");
-
-    // sf::Sprite trailSprite;
-    // trailSprite.setTexture(trailTexture);
-
-    // trailSprite.setPosition(getPosition().x - 10, getPosition().y + getSize().y - 10);
-
-    // window.draw(trailSprite);
-}

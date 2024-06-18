@@ -33,8 +33,6 @@ class Player : public GameObject {
         // Getter
         double                          getDamageMultiplier() const;
 
-        void                            Render(sf::RenderWindow& window) const override;
-
     private:
         int                         healthPoints = 100;
 
