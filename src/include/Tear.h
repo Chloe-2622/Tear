@@ -30,6 +30,8 @@ class Tear : public GameObject {
 		bool								hasCollided(GameObject const& gameObject) const override;
 		bool                                doDamage(GameObject& gameObject, double playerMultiplier) const override; // True si kill
 		bool                                takeDamage(double damages) override; // True si mort
+		int		                            killReward(double playerMultiplier) const override;
+
 	
 		// Setter
 		void								setHealthPoints(int healthPointsNew);

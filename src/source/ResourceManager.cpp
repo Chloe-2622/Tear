@@ -23,3 +23,24 @@ sf::Texture ResourceManager::getTexture(std::string const& texturePath) {
         return texture;
     }
 }
+
+sf::SoundBuffer ResourceManager::getSound(std::string const& soundPath) {
+
+    if (sounds.contains(soundPath)) {
+        return sounds[soundPath];
+    }
+
+    else {
+        std::cout << "Loading new texture: " << soundPath << std::endl;
+
+        sf::SoundBuffer sound;
+        if (!sound.loadFromFile(soundPath))
+        {
+            std::cout << "Loading failed: " << soundPath << std::endl;
+            return sound;
+        }
+        sounds[soundPath] = sound;
+
+        return sound;
+    }
+}

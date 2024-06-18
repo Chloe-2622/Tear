@@ -32,6 +32,10 @@ class Player : public GameObject {
 
         // Getter
         double                          getDamageMultiplier() const;
+        double                          getGoldMultiplier() const;
+
+        // Setter
+        void                            addGold(int gold);
 
     private:
         int                         healthPoints = 100;

@@ -119,3 +119,7 @@ void Player::upgrade(Upgrade upgrade) {}
 
 // Getter
 double Player::getDamageMultiplier() const { return damageMultiplier; }
+double Player::getGoldMultiplier() const { return goldMultiplier; }
+
+// Setter
+void Player::addGold(int gold) { goldCount += gold; }
