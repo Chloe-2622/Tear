@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "Shop.h"
-#include "Basic_Projectile.h"
+#include "Projectile_Basic.h"
 
 class Player : public GameObject {
     public:

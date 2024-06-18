@@ -6,7 +6,7 @@ using namespace std;
 void Tear_Guided::setParams() {
 	// GameObject
 	setSpeed(1);
-	setTexturePath("resources/Sprites/Guided_Tear.png");
+	setTexturePath("resources/Sprites/Tears/Guided_Tear.png");
 
 	//Tear
 	setHealthPoints(100);

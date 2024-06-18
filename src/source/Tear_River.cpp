@@ -6,7 +6,7 @@ using namespace std;
 void Tear_River::setParams() {
 	// GameObject
 	setSpeed(0);
-	setTexturePath("resources/Sprites/River_Tear.png");
+	setTexturePath("resources/Sprites/Tears/River_Tear.png");
 
 	//Tear
 	setHealthPoints(100);

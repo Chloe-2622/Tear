@@ -6,7 +6,7 @@ using namespace std;
 void Tear_Basic::setParams() {
 	// GameObject
 	setSpeed(0);
-	setTexturePath("resources/Sprites/Basic_Tear.png");
+	setTexturePath("resources/Sprites/Tears/Basic_Tear.png");
 
 	//Tear
 	setHealthPoints(100);
