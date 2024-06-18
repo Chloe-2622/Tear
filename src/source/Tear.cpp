@@ -50,6 +50,9 @@ bool Tear::takeDamage(double damages) {
 	healthPoints -= static_cast<int>(damages);
 	return healthPoints <= 0;
 }
+
+int Tear::killReward(double playerMultiplier) const { return static_cast<int>(goldReward * playerMultiplier); }
+
 #pragma endregion Damages
 
 // Setter

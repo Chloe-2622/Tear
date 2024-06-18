@@ -66,6 +66,7 @@ class GameObject {
         virtual bool                                                hasCollided(GameObject const& gameObject) const = 0;
         virtual bool                                                doDamage(GameObject & gameObject, double playerMultiplier) const = 0; // True si kill
         virtual bool                                                takeDamage(double damages) = 0; // True si mort
+        virtual int                                                 killReward(double playerMultiplier) const;
 
         // Getter
         Vector2                                                     getPosition() const;

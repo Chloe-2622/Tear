@@ -69,6 +69,8 @@ GameObject* GameObject::hasHitSomething(const vector<unique_ptr<GameObject>>* ga
 bool GameObject::hasHitObject(GameObject const& gameObject) const {
     return gameObject.faction != this->faction && hasCollided(gameObject);
 }
+
+int GameObject::killReward(double playerMultiplier) const { return 0; }
 #pragma endregion Damages
 
 // Setter

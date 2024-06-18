@@ -150,7 +150,11 @@ sf::View Level::Update(double deltaTime) {
 		if (auto hitObject = gameObject->hasHitSomething(gameObjectsPtr); hitObject != nullptr) {
 
 			// and then if it destroyed that thing
-			if (gameObject->doDamage(*hitObject, player->getDamageMultiplier())) { killed.push_back(hitObject); }
+			if (gameObject->doDamage(*hitObject, player->getDamageMultiplier())) { 
+				killed.push_back(hitObject);
+				player->addGold(hitObject->killReward(player->getGoldMultiplier()));
+			
+			}
 
 			// Si l'objet doit se détruire au contact
 			if (gameObject->isDestroyedOnHit()) { std::cout << "Destroyed on hit\n"; killed.push_back(gameObject.get()); }
