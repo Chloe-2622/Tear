@@ -168,6 +168,8 @@ sf::View Level::Update(double deltaTime) {
 			if (gameObject->doDamage(*player, player->getDamageMultiplier())) { 
 			
 				cout << "FIN DE PARTIE" << endl;
+
+				game->changeState(GameState::GAMEOVER);
 			}
 
 			// Si l'objet doit se détruire au contact

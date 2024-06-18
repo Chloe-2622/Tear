@@ -68,14 +68,18 @@ void Game::processEvents()
 				mWindow.close();
 				break;
 			case sf::Event::KeyPressed:
-				if (gameState == GAME) handlePlayerInput(event.key.code, true);
-				if (gameState == MENU) handleMenuInput(event.key.code, true);
-				if (gameState == SHOP) handleShopInput(event.key.code, true);
+				if (gameState == GAME) 	  handlePlayerInput(event.key.code, true);
+				if (gameState == MENU) 	  handleMenuInput(event.key.code, true);
+				if (gameState == SHOP) 	  handleShopInput(event.key.code, true);
+				if (gameState == VICTORY) handleVictoryInput(event.key.code, true);
+				if (gameState == GAMEOVER) handleGameoverInput(event.key.code, true);
 				break;
 			case sf::Event::KeyReleased:
 				if (gameState == GAME) handlePlayerInput(event.key.code, false);
 				if (gameState == MENU) handleMenuInput(event.key.code, false);
 				if (gameState == SHOP) handleShopInput(event.key.code, false);
+				if (gameState == VICTORY) handleVictoryInput(event.key.code, false);
+				if (gameState == GAMEOVER) handleGameoverInput(event.key.code, false);
 				break;
 		}
 	}
@@ -91,6 +95,18 @@ void Game::handleMenuInput(sf::Keyboard::Key key, bool isPressed) {
 
 void Game::handleShopInput(sf::Keyboard::Key key, bool isPressed) {
 	shop.handleInput(key, isPressed);
+}
+
+void Game::handleVictoryInput(sf::Keyboard::Key key, bool isPressed) {
+	if (key == sf::Keyboard::Space) {
+		changeState(SHOP);
+	}
+}
+
+void Game::handleGameoverInput(sf::Keyboard::Key key, bool isPressed) {
+	if (key == sf::Keyboard::Space) {
+		changeState(MENU);
+	}
 }
 
 void Game::Update(sf::Time elapsedTime) {
