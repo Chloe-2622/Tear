@@ -108,7 +108,7 @@ void Game::Update(sf::Time elapsedTime) {
 		case GAMEOVER:
 			break;
 		case SHOP:
-			shop.Update();
+			//shop.Update();
 			break;
 	}
 }

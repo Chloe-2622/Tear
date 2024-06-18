@@ -38,19 +38,19 @@ void Player::handleInput(sf::Keyboard::Key key, bool isPressed) {
 unique_ptr<GameObject> Player::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
     Vector2 movement{ 0.f, 0.f };
 
-    if (isMovingUp && getPosition().y > view.getCenter().y - windowSize.y/2) {
+    if (isMovingUp && getPosition().y > view.getCenter().y - windowSize.y/2 + getSpeed() * deltaTime) {
         movement.y -= getSpeed();
     }    
-    if (isMovingDown && getPosition().y < view.getCenter().y + windowSize.y / 2 - getSize().y) {
+    if (isMovingDown && getPosition().y < view.getCenter().y + windowSize.y / 2 - getSize().y - getSpeed() * deltaTime) {
         movement.y += getSpeed();
     }
-    if (isMovingLeft && getPosition().x > 0) {
+    if (isMovingLeft && getPosition().x > getSpeed() * deltaTime) {
         movement.x -= getSpeed();
     }
-    if (isMovingRight && getPosition().x < view.getCenter().x + windowSize.x / 2 - getSize().x) {
+    if (isMovingRight && getPosition().x < view.getCenter().x + windowSize.x / 2 - getSize().x - getSpeed() * deltaTime) {
         movement.x += getSpeed();
     }
-    move(movement);
+    move(movement*deltaTime);
 
     // Cooldowns
     if (invulnerabilityCooldown > 0.0) {

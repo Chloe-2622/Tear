@@ -37,6 +37,10 @@ class Player : public GameObject {
         // Setter
         void                            addGold(int gold);
 
+        //Debug
+        bool						    operator==(const Player&) const = default;
+
+
     private:
         int                         healthPoints = 100;
 

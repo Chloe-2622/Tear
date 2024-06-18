@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 
 std::map<std::string, sf::Texture, std::less<>> ResourceManager::textures;
+//std::map<std::string, sf::SoundBuffer, std::less<>> ResourceManager::sounds;
 
 sf::Texture ResourceManager::getTexture(std::string const& texturePath) {
 
@@ -24,6 +25,7 @@ sf::Texture ResourceManager::getTexture(std::string const& texturePath) {
     }
 }
 
+/*
 sf::SoundBuffer ResourceManager::getSound(std::string const& soundPath) {
 
     if (sounds.contains(soundPath)) {
@@ -43,4 +45,4 @@ sf::SoundBuffer ResourceManager::getSound(std::string const& soundPath) {
 
         return sound;
     }
-}
+}*/

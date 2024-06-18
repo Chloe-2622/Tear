@@ -20,7 +20,7 @@ class Shop {
         Shop(Game* game);
 
 
-        void Update();
+        //void Update();
         void Render(sf::RenderWindow& window) const;
 
         void handleInput(sf::Keyboard::Key key, bool isPressed);

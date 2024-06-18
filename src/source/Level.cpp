@@ -51,19 +51,7 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 		double offset_y = lenght - i * (windowSize.y / 5);
 
 		spawnPatern(*paterns[paternId], { offset_x, offset_y });
-	}
-
-	// // Choose random patern
-	// int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
-
-	// // Choose random location
-	// auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowSize.x - paterns[paternId]->getMaxSpawnable_x(windowSize.x))));
-	// auto offset_y = lenght;
-
-	// //cout << "id: " << paternId << " offset: " << offset_x << ", offset max: " << paterns[paternId]->getMaxSpawnable_x(windowDimensions.x) << "\n";
-
-	// spawnPatern(*paterns[paternId], { offset_x, offset_y });
-	
+	}	
 
 	// Build backgrounds
 	int backgroundSize = 1080;
@@ -76,7 +64,7 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 void Level::spawnPlayer() {
 
 	Transform initPlayerTransform = { {windowSize.y / 2, lenght - 100 + windowSize.y}, {100, 100}, 0 };
-	player = std::make_unique<Player>(initPlayerTransform, 5, "resources/Sprites/Tetine.png");
+	player = std::make_unique<Player>(initPlayerTransform, 250, "resources/Sprites/Tetine.png");
 }
 
 void Level::spawnGoal() {
