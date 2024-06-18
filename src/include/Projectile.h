@@ -4,20 +4,26 @@
 
 class Tear;
 
-class Projectile : public GameObject
-{
-public:
-    Projectile() = default;
-    explicit                    Projectile(Transform const &transform, double speed, std::string const &texturePath);
+class Projectile : public GameObject {
+    public:
+        Projectile() = default;
+        explicit                    Projectile(Transform const &transform, double speed, std::string const &texturePath, double damage);
+    
+        // Update
+        void                        followView(Vector2 movement) override;
+        void                        supressViewOffset(Vector2 offset) override;
+    
+        // Out of view
+        bool                        isOutofView(sf::View const& view, Vector2 windowSize) const override;
+    
+        // Damages
+        bool                        hasCollided(GameObject const& gameObject) const override;
+        bool                        doDamage(GameObject& gameObject, double playerMultiplier) const override; // True si kill
+        bool                        takeDamage(double damages) override; // True si mort
 
-    bool		                isOutofView(sf::FloatRect currentViewBox) const override;
+        // Setter
+        void                        setDamage(double newDamage);
 
-    void                        UpdateProjectile(double deltaTime, float viewPositionY, float windowLength, float windowWidth);
-
-    bool                        takeDamage(double damages) override;
-    //void                        doDamage(const Tear& tear) {};
-    //void                        doDamage(GameObject& gameObject, double playerMultiplier) const override {};
-
-    void hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
-
+    private:
+        double                      damage;
 };

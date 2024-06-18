@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 void Game::initPaterns() {
@@ -39,7 +38,6 @@ void Game::run()
 	mWindow.setView(currentLevel.initView(static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)));
 	currentLevel.buildLevel(paterns);
 
-
 	// mWindow.setVerticalSyncEnabled(true);
 	mWindow.setFramerateLimit(60);
 	while (mWindow.isOpen())
@@ -52,11 +50,11 @@ void Game::run()
 			timeSinceLastUpdate -= TimePerFrame;
 
 			processEvents();
-			update(TimePerFrame);
+			Update(TimePerFrame);
 		}
 
 		mWindow.clear(sf::Color::Black);
-		render();
+		Render();
 		mWindow.display();
 	}
 }
@@ -81,15 +79,14 @@ void Game::processEvents()
 	}
 }
 
-void Game::update(sf::Time elapsedTime) {
-	mWindow.setView(currentLevel.UpdateView(static_cast<double>(elapsedTime.asSeconds())));
-	currentLevel.Update(static_cast<double>(elapsedTime.asSeconds()));
-}
-
-void Game::render() {
-	currentLevel.Render(mWindow);
-}
-
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
-	currentLevel.getPlayer()->handleInput(key, isPressed);
+	currentLevel.getPlayerPtr().handleInput(key, isPressed);
+}
+
+void Game::Update(sf::Time elapsedTime) {
+	mWindow.setView(currentLevel.Update(static_cast<double>(elapsedTime.asSeconds())));
+}
+
+void Game::Render() {
+	currentLevel.Render(mWindow);
 }

@@ -1,19 +1,46 @@
 #include "Player.h"
+#include "Projectile_Basic.h"
 
-Player::Player(Transform const& transform, double speed, std::string const& texturePath) : GameObject(transform, speed, texturePath) {}
+using namespace std;
 
-void Player::UpdatePlayer(double deltaTime, float viewPositionY, float windowLength, float windowWidth, std::vector<std::unique_ptr<Projectile>>& projectiles) {
-    Vector2 movement(0.f, 0.f);
-    if (isMovingUp && getPosition().y > viewPositionY) {
-        movement.y -= getSpeed();
+// Constructeur
+Player::Player(Transform const& transform, double speed, string const& texturePath) : 
+    GameObject{ transform, speed, texturePath, Faction::Ally } 
+{}
+
+// Update
+#pragma region Update
+void Player::handleInput(sf::Keyboard::Key key, bool isPressed) {
+    if (key == sf::Keyboard::Z) {
+        isMovingUp = isPressed;
     }
-    if (isMovingDown && getPosition().y < viewPositionY + windowLength - getSize().y) {
+    if (key == sf::Keyboard::S) {
+        isMovingDown = isPressed;
+    }
+    if (key == sf::Keyboard::Q) {
+        isMovingLeft = isPressed;
+    }
+    if (key == sf::Keyboard::D) {
+        isMovingRight = isPressed;
+    }
+    if (key == sf::Keyboard::Space) {
+        isShooting = isPressed;
+    }
+}
+
+unique_ptr<GameObject> Player::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
+    Vector2 movement{ 0.f, 0.f };
+
+    if (isMovingUp && getPosition().y > view.getCenter().y - windowSize.y/2) {
+        movement.y -= getSpeed();
+    }    
+    if (isMovingDown && getPosition().y < view.getCenter().y + windowSize.y / 2 - getSize().y) {
         movement.y += getSpeed();
     }
     if (isMovingLeft && getPosition().x > 0) {
         movement.x -= getSpeed();
     }
-    if (isMovingRight && getPosition().x < windowWidth - getSize().x) {
+    if (isMovingRight && getPosition().x < view.getCenter().x + windowSize.x / 2 - getSize().x) {
         movement.x += getSpeed();
     }
     move(movement);
@@ -22,36 +49,48 @@ void Player::UpdatePlayer(double deltaTime, float viewPositionY, float windowLen
         shootingCooldown -= deltaTime;
     }
     if (isShooting && shootingCooldown <= 0.0) {
-        std::cout << "Shooting" << std::endl;
-        shootingCooldown = shootingSpeed;
-        shootProjectile(projectiles);
+        cout << "Shooting" << endl;
+        shootingCooldown = 0.5;
+        return shootProjectile();
     }
-    
-};
-
-void Player::handleInput(sf::Keyboard::Key keyPressed, bool isPressed) {
-    if (keyPressed == sf::Keyboard::Z) {
-        isMovingUp = isPressed;
-    }
-    if (keyPressed == sf::Keyboard::S) {
-        isMovingDown = isPressed;
-    }
-    if (keyPressed == sf::Keyboard::Q) {
-        isMovingLeft = isPressed;
-    }
-    if (keyPressed == sf::Keyboard::D) {
-        isMovingRight = isPressed;
-    }
-    if (keyPressed == sf::Keyboard::Space) {
-        isShooting = isPressed;
-    }
+    return nullptr;
 }
 
-void Player::shootProjectile(std::vector<std::unique_ptr<Projectile>>& projectiles) {
-    Vector2 projectileSize = {32, 56};
-    Vector2 projectilePosition = {getPosition().x + getSize().x/2 - projectileSize.x/2, getPosition().y - projectileSize.y};
-    Transform projectileTransform = {projectilePosition, projectileSize, 0};
-    std::string projectileTexturePath = "resources/Sprites/Basic_Projectile.png";
-    std::unique_ptr<Projectile> projectile = std::make_unique<Basic_Projectile>(projectileTransform, 100, projectileTexturePath);
-    projectiles.push_back(std::move(projectile));
+unique_ptr<Projectile> Player::shootProjectile() const {
+    Vector2 projectileSize = { 32, 56 };
+
+    cout << "Playze size : " << getSize().x << ", " << getSize().y << endl;
+
+    Vector2 projectilePosition = { getPosition().x + getSize().x / 2 - projectileSize.x / 2, getPosition().y - projectileSize.y };
+    Transform projectileTransform = { projectilePosition, projectileSize, 0 };
+    string projectileTexturePath = "resources/Sprites/Basic_Projectile.png";
+
+    return make_unique<Projectile_Basic>(projectileTransform, 20, projectileTexturePath, 10);
 }
+
+void Player ::followView(Vector2 movement) { move(movement); }
+void Player::supressViewOffset(Vector2 offset) { move(offset); }
+#pragma endregion Update
+
+// Out of view
+bool Player::isOutofView(sf::View const& view, Vector2 windowSize) const { return false; }
+
+// Damages
+#pragma region Damages
+bool Player::hasCollided(GameObject const& gameObject) const { return false; } // The player cannot do damage by contact
+
+bool Player::doDamage(GameObject& gameObject, double playerMultiplier) const { return false; } // Il ne fait vraiment pas de d�g�ts
+
+bool Player::takeDamage(double damages) { // Par contre il en prend
+    healthPoints -= static_cast<int>(damages);
+    return healthPoints <= 0;
+}
+#pragma endregion Damages
+
+// Upgrades
+void Player::upgrade(Upgrade upgrade) {}
+
+// Getter
+double Player::getDamageMultiplier() const { return damageMultiplier; }
+
+

@@ -9,21 +9,31 @@ class Player : public GameObject {
         Player() = default;
         explicit Player(Transform const& transform, double speed, std::string const& texturePath);
 
-        void                        shootProjectile(std::vector<std::unique_ptr<Projectile>>& projectiles);
-        void                        doDamage(GameObject& gameObject, double playerMultiplier) const override {};
-        bool                        takeDamage(double damage) override {return false;};
-        void                        upgrade(Upgrade upgrade);
+        // Update
+        void                            handleInput(sf::Keyboard::Key key, bool isPressed);
+        std::unique_ptr<GameObject>     Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) override;
+        std::unique_ptr<Projectile>     shootProjectile() const;
+        void                            followView(Vector2 movement) override;
+        void                            supressViewOffset(Vector2 offset) override;
 
-        // Override
-        //virtual unique_ptr<GameObject> hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
-        void                        UpdatePlayer(double deltaTime, float viewPositionY, float windowLength, float windowWidth, std::vector<std::unique_ptr<Projectile>>& projectiles);
-        void hit(Player& player, std::vector<std::unique_ptr<GameObject>> const& gameObjects) const override {};
+        // Out of view
+        bool                            isOutofView(sf::View const& view, Vector2 windowSize) const override;
+
+        // Damages
+        bool                            hasCollided(GameObject const& gameObject) const override;
+        bool                            doDamage(GameObject& gameObject, double playerMultiplier) const override;
+        bool                            takeDamage(double damages) override; // True si mort
+
+        // Upgrades
+        void                            upgrade(Upgrade upgrade);
+
+        // Getter
+        double                         getDamageMultiplier() const;
 
 
-        void                        handleInput(sf::Keyboard::Key keyPressed, bool isPressed);
 
     private:
-        int                         healthPoint = 100;
+        int                         healthPoints = 100;
 
         double                      damageMultiplier = 1.0;
 
