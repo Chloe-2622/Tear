@@ -9,6 +9,9 @@ class Player : public GameObject {
         Player() = default;
         explicit Player(Transform const& transform, double speed, std::string const& texturePath);
 
+        // Render
+        void                            Render(sf::RenderWindow& window) const override;
+
         // Update
         void                            handleInput(sf::Keyboard::Key key, bool isPressed);
         std::unique_ptr<GameObject>     Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) override;
@@ -48,7 +51,13 @@ class Player : public GameObject {
         bool                        isMovingRight = false;
 
         bool                        isShooting = false;
+        double                      shootingTime = 0.1;
         double                      shootingCooldown = 0.0;
         double                      shootingSpeed = 0.1;
         
+        double                      invulnerabilityTime = 1;
+        double                      invulnerabilityCooldown = 0.0;
+        double                      blinkTime = 0.1;
+        double                      blinkCooldown = 0.0;
+        bool                        isRendered = true;
 };

@@ -40,7 +40,8 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 	spawnGoal();
 
 	// Choose random patern
-	int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
+	//int paternId = randint(0, static_cast<int>(paterns.size()) - 1);
+	int paternId = 1;
 
 	// Choose random location
 	auto offset_x = static_cast<double>(randint(0, static_cast<int>(windowSize.x - paterns[paternId]->getMaxSpawnable_x(windowSize.x))));
@@ -66,12 +67,12 @@ void Level::spawnPlayer() {
 
 void Level::spawnGoal() {
 	double goalSize = 200;
-	goal = make_unique<Goal>(Transform{ {(windowSize.x - goalSize ) / 2, 0}, {goalSize, goalSize}, 0 }, "resources/Sprites/Bebe.png");
+	goal = make_unique<Goal>(Transform{ {(windowSize.x - goalSize) / 2, 0}, {goalSize, goalSize}, 0 }, "resources/Sprites/Bebe.png");
 }
 
 void Level::spawnPatern(Patern const& patern, Vector2 const& offset) {
 	std::vector<std::unique_ptr<Tear>> newTears = patern.copyTears();
-	
+
 	for (auto& tear : newTears) {
 		tear->move(offset);
 
@@ -90,14 +91,12 @@ void Level::UpdateView(double const deltaTime) {
 
 		view.move(static_cast<float>(cameraMovement.x), static_cast<float>(cameraMovement.y));
 
-		cout << scrollingSpeed * deltaTime << "\n";
-
 		for (auto const& gameObject : gameObjects) {
 			gameObject->followView(cameraMovement);
 		}
 		player->followView(cameraMovement);
 
-		// La premi�re fois qu'on atteint le bout
+		// La premiere fois qu'on atteint le bout
 		if (view.getCenter().y - windowSize.y / 2 <= 0) {
 			hasReachedEnd = true;
 
@@ -105,9 +104,9 @@ void Level::UpdateView(double const deltaTime) {
 
 			// On fixe la cam�ra au bon endroit
 			view.move(0, -offsetY);
-			
-			
-			
+
+
+
 			// On red�cale tout les objets pour pas qu'il y a de saut de position apparente
 			for (auto const& gameObject : gameObjects) {
 				gameObject->supressViewOffset({ 0, -offsetY });
@@ -120,36 +119,40 @@ sf::View Level::Update(double deltaTime) {
 
 	UpdateView(deltaTime);
 
-	//std::cout << "Number of gameObjects: " << gameObjects.size() << std::endl;
-	auto it = gameObjects.begin();
-
 	const vector<unique_ptr<GameObject>>* gameObjectsPtr;
 	gameObjectsPtr = &gameObjects;
-	
-	while (it != gameObjects.end()) {
-		auto const& gameObject = *it;
+
+	vector<vector<unique_ptr<GameObject>>::const_iterator> itsKilled;
+	vector<GameObject*> killed;
+
+	for (auto const& gameObject : gameObjects) {
 
 		// Check if a new gameObject (a projectile) has been created
 		if (auto newGameObject = gameObject->Update(deltaTime, view, windowSize, player->getPosition()); newGameObject != nullptr) {
 			gameObjects.push_back(move(newGameObject));
 		}
-		
-		// Check if something has been hit by the object
-		if (auto itHit = gameObject->hasHitSomething(gameObjectsPtr); itHit != gameObjects.end() && gameObject->doDamage(**itHit, player->getDamageMultiplier())) {
-			// Si la cible est tu�e
-			gameObjects.erase(itHit);
 
-			if (itHit < it) { it--; } // Si on supprime dans la liste avant it, on doit red�caler it
+		// Chech if gameObject collide with something
+		if (auto hitObject = gameObject->hasHitSomething(gameObjectsPtr); hitObject != nullptr) {
+
+			// and then if it destroyed that thing
+			if (gameObject->doDamage(*hitObject, player->getDamageMultiplier())) { killed.push_back(hitObject); }
+
+			// Si l'objet doit se détruire au contact
+			if (gameObject->isDestroyedOnHit()) { std::cout << "Destroyed on hit\n"; killed.push_back(gameObject.get()); }
 		}
-		
-		// Check if the player has been hit by the object
-		if (gameObject->hasHitObject(*player)) {
-			cout << "Touche\n";
 
-			if (gameObject->doDamage(*player, player->getDamageMultiplier())) {
-				// Si la cible est tu�e
-				cout << "Fin de la Partie" << endl;
+		// Chech if gameObject collide with player
+		if (auto hitObject = gameObject->hasHitObject(*player)) {
+
+			// and then if it destroyed that thing
+			if (gameObject->doDamage(*player, player->getDamageMultiplier())) { 
+			
+				cout << "FIN DE PARTIE" << endl;
 			}
+
+			// Si l'objet doit se détruire au contact
+			if (gameObject->isDestroyedOnHit()) { std::cout << "Destroyed on hit\n"; killed.push_back(gameObject.get()); }
 		}
 
 		/*
@@ -159,12 +162,18 @@ sf::View Level::Update(double deltaTime) {
 		if (gameObject->isOutofView(view, windowSize)) {
 			scrollingSpeed += gameObject->exitViewValue();
 
-			it = gameObjects.erase(it);
-		}
-		else {
-			++it;
+			killed.push_back(gameObject.get());
 		}
 	}
+
+	// Marquer les objets à supprimer
+	auto it = ranges::remove_if(gameObjects.begin(), gameObjects.end(),
+		[&](const std::unique_ptr<GameObject>& obj) {
+			return ranges::find(killed.begin(), killed.end(), obj.get()) != killed.end();
+		});
+
+	// Supprimer les objets marqués
+	gameObjects.erase(it.begin(), it.end());
 
 	// Finalement, on update le player
 	// Check if a new gameObject (a projectile) has been created
@@ -173,7 +182,7 @@ sf::View Level::Update(double deltaTime) {
 	}
 
 	if (goal->isReached(*player)) {
-		cout << "C'est la fin !!!!";
+		cout << "C'est la fin !!!!\n";
 	}
 
 	return view;

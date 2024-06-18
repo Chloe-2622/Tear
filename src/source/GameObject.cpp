@@ -56,72 +56,15 @@ double GameObject::exitViewValue() const { return 0; };
 
 // Damages
 #pragma region Damages
-vector<unique_ptr<GameObject>>::const_iterator GameObject::hasHitSomething(const vector<unique_ptr<GameObject>>* gameObjects) const {
+GameObject* GameObject::hasHitSomething(const vector<unique_ptr<GameObject>>* gameObjects) const {
 
-    auto it = gameObjects->begin();
-
-    while (it != gameObjects->end()) {
-
-        if (hasHitObject(**it)) {
-            return it;
-        }
-        else {
-            ++it;
+    for (auto& gameObject : *gameObjects) {
+        if (hasHitObject(*gameObject)) {
+            return gameObject.get();
         }
     }
-    return it;
+    return nullptr;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//void GameObject::hasHitSomething(std::vector<unique_ptr<GameObject>>* gameObjects) const {
-
-
-
-    /*
-    for (auto & gameObject : gameObjects) {
-        if (hasHitObject(*gameObject)) {
-            cout << "Coucou\n";
-        }
-    }
-    
-    //auto it = gameObjects.begin();
-
-    
-    for (auto const& gameObject : gameObjects) {
-        if (hasHitObject(*gameObject)) {
-            return gameObjects.end();
-        }
-    }
-
-    return gameObjects.end();
-    
-    //auto it = gameObjects.end();
-
-    
-    while (it != gameObjects.end()) {
-        //auto const& gameObject = *it;
-
-        
-        if (hasHitObject(*gameObject)) {
-            return it;
-        }
-        else {
-            ++it;
-        }
-    }
-    //return it;*/
-//}
 
 bool GameObject::hasHitObject(GameObject const& gameObject) const {
     return gameObject.faction != this->faction && hasCollided(gameObject);
@@ -134,6 +77,7 @@ void GameObject::setPosition(Vector2 position) { transform.position = position; 
 void GameObject::move(Vector2 movement) { transform.position += movement; }
 void GameObject::setTexturePath(string_view const& newTexturePath) { texturePath = newTexturePath; }
 void GameObject::setSpeed(double newSpeed) { speed = newSpeed; }
+void GameObject::setIsDestroyedOnHit(bool newDestroyOnHit) { destroyOnHit = newDestroyOnHit; }
 #pragma endregion Setter
 
 // Getter
@@ -142,6 +86,7 @@ Vector2 GameObject::getPosition() const { return transform.position; }
 Vector2 GameObject::getSize() const { return transform.size; }
 double GameObject::getRotation() const { return transform.rotation; }
 double GameObject::getSpeed() const { return speed; }
+bool GameObject::isDestroyedOnHit() const { return destroyOnHit; }
 #pragma endregion Getter
 
 // Debug

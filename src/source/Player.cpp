@@ -8,6 +8,13 @@ Player::Player(Transform const& transform, double speed, string const& texturePa
     GameObject{ transform, speed, texturePath, Faction::Ally } 
 {}
 
+// Render
+void Player::Render(sf::RenderWindow& window) const {
+    if (isRendered) {
+        GameObject::Render(window);
+    }
+}
+
 // Update
 #pragma region Update
 void Player::handleInput(sf::Keyboard::Key key, bool isPressed) {
@@ -45,12 +52,25 @@ unique_ptr<GameObject> Player::Update(double deltaTime, sf::View const& view, Ve
     }
     move(movement);
 
+    // Cooldowns
+    if (invulnerabilityCooldown > 0.0) {
+        invulnerabilityCooldown -= deltaTime;
+        if (blinkCooldown > 0.0) {
+            blinkCooldown -= deltaTime;
+        }
+        else {
+            blinkCooldown = blinkTime;
+            isRendered = !isRendered;
+        }
+    }
+    else { isRendered = true; }
     if (shootingCooldown > 0.0) {
         shootingCooldown -= deltaTime;
     }
+
     if (isShooting && shootingCooldown <= 0.0) {
         cout << "Shooting" << endl;
-        shootingCooldown = 0.5;
+        shootingCooldown = shootingTime;
         return shootProjectile();
     }
     return nullptr;
@@ -82,8 +102,15 @@ bool Player::hasCollided(GameObject const& gameObject) const { return false; } /
 bool Player::doDamage(GameObject& gameObject, double playerMultiplier) const { return false; } // Il ne fait vraiment pas de d�g�ts
 
 bool Player::takeDamage(double damages) { // Par contre il en prend
-    healthPoints -= static_cast<int>(damages);
-    return healthPoints <= 0;
+    if (invulnerabilityCooldown <= 0) {
+        healthPoints -= static_cast<int>(damages);
+        invulnerabilityCooldown = invulnerabilityTime;
+        return healthPoints <= 0;
+    }
+    else {
+        cout << "Dont take damage\n";
+    }
+    return false;
 }
 #pragma endregion Damages
 

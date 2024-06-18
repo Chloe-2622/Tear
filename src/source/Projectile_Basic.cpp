@@ -9,7 +9,7 @@ void Projectile_Basic::setParams() {
 	setTexturePath("resources/Sprites/Basic_Projectile.png");
 
 	//Projectile
-	setDamage(10);
+	setDamage(100);
 }
 
 // Constructeurs

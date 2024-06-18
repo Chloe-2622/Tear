@@ -9,10 +9,9 @@
 	</Patern>
 	<Patern id="1" name="Two Drops">
 		<Tear_Basic x="0" y="0" size_x="75" size_y="150"/>
-		<Tear_Basic x="100" y="0" size_x="75" size_y="50"/>
+		<Tear_Basic x="100" y="0" size_x="75" size_y="150"/>
 	</Patern>
 	<Patern id="2" name="Guided_Tear">
 		<Tear_Guided x="0" y="0" size_x="75" size_y="150"/>
 	</Patern>
 </Paterns>
-

@@ -30,3 +30,11 @@ Tear_Basic::Tear_Basic(const pugi::xml_node& node) :
 
 // Construct Level
 unique_ptr<Tear> Tear_Basic::copy() const { return make_unique<Tear_Basic>(*this); }
+
+//Debug
+std::string Tear_Basic::dump(std::string const& indent) const {
+	ostringstream oss;
+	oss << "Basic Tear, " << Tear::dump() << endl;
+	return oss.str();
+}
+

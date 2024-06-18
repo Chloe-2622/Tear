@@ -33,7 +33,13 @@ double Tear::exitViewValue() const { return scrollingPenalty; }
 // Damages
 #pragma region Damages
 bool Tear::hasCollided(GameObject const& gameObject) const {
-	return getPosition().distance(gameObject.getPosition()) < getSize().x;
+	// Same line on X
+	if (gameObject.getPosition().x < getPosition().x + getSize().x && gameObject.getPosition().x + gameObject.getSize().x > getPosition().x) {
+
+		// Same column on Y 
+		return gameObject.getPosition().y < getPosition().y + getSize().y && gameObject.getPosition().y + gameObject.getSize().y > getPosition().y;
+	}
+	return false;
 }
 
 bool Tear::doDamage(GameObject& gameObject, double playerMultiplier) const {
@@ -53,3 +59,10 @@ void Tear::setScrollingPenalty(double scrollingPenaltyNew) { scrollingPenalty = 
 void Tear::setDamage(double damageNew) { damage = damageNew; }
 void Tear::setGoldReward(int goldRewardNew) { goldReward = goldRewardNew; }
 #pragma endregion Setter
+
+// Debug
+std::string	Tear::dump(std::string const& indent) const {
+	ostringstream oss;
+	oss << "HP: " << healthPoints << endl;
+	return oss.str();
+}
