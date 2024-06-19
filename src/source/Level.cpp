@@ -55,7 +55,7 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 
 	// Build backgrounds
 	int backgroundSize = 1080;
-	int nbBackgrounds = static_cast<int>(lenght / backgroundSize) + 1;
+	int nbBackgrounds = static_cast<int>(lenght / backgroundSize) + 2;
 	for (int i = 0; i < nbBackgrounds; i++) {
 		backgroundsPositions.push_back({ 0, i * backgroundSize });
 	}

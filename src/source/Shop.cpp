@@ -26,7 +26,16 @@ void Shop::Render(sf::RenderWindow& window) const
     menuBackground.setTexture(menuBackgroundTexture);
 
     window.draw(menuBackground);
+    
+    sf::Texture menuTextTexture;
+    menuTextTexture.loadFromFile("resources/Sprites/Press_Enter_Continue.png");
 
+    sf::Sprite menuTextSprite;
+    menuTextSprite.setTexture(menuTextTexture);
+
+    menuTextSprite.setPosition(window.getView().getCenter() - window.getView().getSize() / 2.f);
+
+    window.draw(menuTextSprite);
 }
 
 void Shop::upgrade(Upgrade upgrade)

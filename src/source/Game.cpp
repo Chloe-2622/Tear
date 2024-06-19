@@ -150,6 +150,9 @@ void Game::changeState(GameState state) {
 		mWindow.setView(sf::View(sf::FloatRect(0, 0, static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y))));
 		std::cout << "View center : " << mWindow.getView().getCenter().x << ", " << mWindow.getView().getCenter().y << std::endl;
 	}
+	if (state == GAMEOVER) {
+		levelNumber = -1;
+	}
 
 	gameState = state;
 }
@@ -195,16 +198,36 @@ void Game::RenderVictory() {
 	victorySprite.setTexture(victoryTexture);
 
 	mWindow.draw(victorySprite);
+
+	sf::Texture victoryTextTexture;
+	victoryTextTexture = ResourceManager::getTexture("resources/Sprites/Press_Space.png");
+
+	sf::Sprite victoryTextSprite;
+	victoryTextSprite.setTexture(victoryTextTexture);
+
+	victoryTextSprite.setPosition(mWindow.getView().getCenter() - mWindow.getView().getSize() / 2.f);
+
+	mWindow.draw(victoryTextSprite);
 }
 
 void Game::RenderGameover() {
 	sf::Texture gameoverTexture;
-	gameoverTexture = ResourceManager::getTexture("resources/Sprites/GameOver.png");
+	gameoverTexture = ResourceManager::getTexture("resources/Sprites/Press_Space_Restart.png");
 
 	sf::Sprite gameoverSprite;
 	gameoverSprite.setTexture(gameoverTexture);
 
 	mWindow.draw(gameoverSprite);
+
+	sf::Texture gameoverTextTexture;
+	gameoverTextTexture = ResourceManager::getTexture("resources/Sprites/Press_Space_Restart.png");
+
+	sf::Sprite gameoverTextSprite;
+	gameoverTextSprite.setTexture(gameoverTextTexture);
+
+	gameoverTextSprite.setPosition(mWindow.getView().getCenter() - mWindow.getView().getSize() / 2.f);
+
+	mWindow.draw(gameoverTextSprite);
 }
 
 void Game::RenderShop() {

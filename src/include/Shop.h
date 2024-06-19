@@ -23,6 +23,8 @@ class Shop {
         //void Update();
         void Render(sf::RenderWindow& window) const;
 
+        void Update();
+
         void handleInput(sf::Keyboard::Key key, bool isPressed);
 
     private:
