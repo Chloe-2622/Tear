@@ -23,7 +23,7 @@ struct Vector2 {
     void operator+=(const Vector2 v) { x += v.x; y += v.y; }
     Vector2 operator-(const Vector2 v) const { return { x - v.x, y - v.y }; }
     Vector2 operator*(const double k) const { return { k*x, k*y }; }
-    bool operator==(const Vector2& v) const { return x == v.x && y == v.y; }
+    bool operator==(const Vector2& v) const = default;
 
 };
 
