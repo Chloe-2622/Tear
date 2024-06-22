@@ -6,10 +6,6 @@
 #include <iostream>
 
 
-TEST(TestCase, TestName) {
-    EXPECT_EQ(true, false);
-}
-
 // Mouvement
 TEST(Movement, Gauche) {
     Player player{ {{360 , 540}, {100, 100}, 0}, 200, "" };

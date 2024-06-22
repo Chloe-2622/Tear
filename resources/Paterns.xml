@@ -14,7 +14,4 @@
 	<Patern id="2" name="Guided_Tear">
 		<Tear_Guided x="0" y="0" size_x="40" size_y="80"/>
 	</Patern>
-	<Patern id="3" name="River">
-		<Tear_River x="0" y="0" size_x="40" size_y="1080"/>
-	</Patern>
 </Paterns>

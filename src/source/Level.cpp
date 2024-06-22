@@ -15,7 +15,7 @@ int randint(int const nMin, int const nbMax)
 // Constructeur
 Level::Level(int levelNumber, Game* game) : game(game) {
 	for (int i = 0; i < levelNumber; i++) {
-		lenght += lenght * 10 / 100;
+		lenght += lenght * 50 / 100;
 	}
 }
 

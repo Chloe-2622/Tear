@@ -10,7 +10,7 @@ void Tear_Guided::setParams() {
 
 	//Tear
 	setHealthPoints(100);
-	setScrollingPenalty(0.1);
+	setScrollingPenalty(30);
 	setDamage(10);
 	setGoldReward(100);
 }

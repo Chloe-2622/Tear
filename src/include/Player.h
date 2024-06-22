@@ -57,9 +57,9 @@ class Player : public GameObject {
         bool                        isMovingRight = false;
 
         bool                        isShooting = false;
-        double                      shootingTime = 0.1;
+        double                      shootingTime = 0.5;
         double                      shootingCooldown = 0.0;
-        double                      shootingSpeed = 0.1;
+        double                      shootingSpeed = 0.2;
         
         double                      invulnerabilityTime = 1;
         double                      invulnerabilityCooldown = 0.0;
