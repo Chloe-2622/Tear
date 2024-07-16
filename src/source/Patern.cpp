@@ -1,6 +1,6 @@
-#include "Patern.h"
-#include "iostream"
+#include <iostream>
 #include <sstream>
+#include "Patern.h"
 
 using namespace std;
 

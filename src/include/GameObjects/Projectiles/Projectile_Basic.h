@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Projectile.h"
+#include "GameObjects/Projectiles/Projectile.h"
 
 class Projectile_Basic : public Projectile {
 public:
@@ -10,6 +10,5 @@ public:
 	void setParams();
 
 	// Update
-	std::unique_ptr<GameObject>		Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) override;
-
+	void		Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition, std::vector<std::unique_ptr<GameObject>>* gameObjects, LevelUpdateValues* levelUpdateValues) override;
 };

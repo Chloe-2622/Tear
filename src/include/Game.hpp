@@ -2,11 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 #include "ResourceManager.h"
-#include "GameObject.h"
+#include "GameObjects/GameObject.h"
+#include "Scenes/Scene.h"   
 #include "Patern.h"
-#include "Menu.h"
-#include "Shop.h"
-#include "Level.h"
 
 enum GameState {
     MENU,
@@ -31,21 +29,13 @@ class Game {
 
         // Runtime
         void                                    processEvents();
-        void                                    handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-        void                                    handleMenuInput(sf::Keyboard::Key key, bool isPressed);
-        void                                    handleShopInput(sf::Keyboard::Key key, bool isPressed);
-        void                                    handleVictoryInput(sf::Keyboard::Key key, bool isPressed);
-        void                                    handleGameoverInput(sf::Keyboard::Key key, bool isPressed);
-        void                                    Update(sf::Time elapsedTime);
-        void                                    UpdateLevel(sf::Time elapsedTime);
-        void                                    Render();
-        void                                    RenderMenu();
-        void                                    RenderPause();
-        void                                    RenderVictory();
-        void                                    RenderGameover();
-        void                                    RenderShop();
+        void                                    handleInput(sf::Keyboard::Key key, bool isPressed);
 
-        
+        // Update
+        void                                    Update(sf::Time elapsedTime);
+
+        // Render
+        void                                    Render();        
 
         // Parameters
         sf::RenderWindow                        mWindow{ sf::VideoMode{720, 1080}, "SFML Application", sf::Style::Close };
@@ -53,11 +43,8 @@ class Game {
 
         std::vector<std::unique_ptr<Patern>>    paterns;
         int                                     levelNumber{-1};
-        Level                                   currentLevel{ 0, this };
+        std::unique_ptr<Scene>                  scene;
 
-        Menu                                    menu{this};
-        Shop                                    shop{this};
-
-        GameState                               gameState = MENU;
+        GameState                               gameState = GameState::MENU;
 
 };

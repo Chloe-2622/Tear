@@ -1,16 +1,11 @@
-#include "Menu.h"
 #include "Game.hpp"
+#include "Scenes/Menu.h"
 
-Menu::Menu()
-{
-}
+Menu::Menu(Game* game) :
+    Scene(game, "resources/Sprites/Menu/Menu.png")
+{}
 
-Menu::Menu(Game *game)
-{
-    this->game = game;
-}
-
-void Menu::Update(double deltaTime)
+sf::View Menu::Update(double deltaTime)
 {
     blinkTime += deltaTime;
 
@@ -19,24 +14,18 @@ void Menu::Update(double deltaTime)
         showBlinkText = !showBlinkText;
         blinkTime = 0;
     }
+    return Scene::Update(deltaTime);
 }
 
 void Menu::Render(sf::RenderWindow& window) const
 {
-    // Menu Background
-    sf::Texture menuBackgroundTexture;
-    menuBackgroundTexture.loadFromFile("resources/Sprites/Menu/Menu.png");
-
-    sf::Sprite menuBackground;
-    menuBackground.setTexture(menuBackgroundTexture);
-
-    window.draw(menuBackground);
+    Scene::Render(window);
 
     // Blink text
     if (showBlinkText)
     {
         sf::Texture blinkTexture;
-        blinkTexture.loadFromFile("resources/Sprites/Menu/Press_Enter.png");
+        blinkTexture = ResourceManager::getTexture(pessEnterPath);
 
         sf::Sprite blinkSprite;
         blinkSprite.setTexture(blinkTexture);
@@ -56,5 +45,5 @@ void Menu::handleInput(sf::Keyboard::Key key, bool isPressed)
 
 void Menu::startGame()
 {
-    game->changeState(GameState::GAME);
+    getGame()->changeState(GameState::GAME);
 }

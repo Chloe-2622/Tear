@@ -1,4 +1,4 @@
-#include "Tear_Basic.h"
+#include "GameObjects/Tears/Tear_Basic.h"
 
 using namespace std;
 
@@ -8,11 +8,16 @@ void Tear_Basic::setParams() {
 	setSpeed(0);
 	setTexturePath("resources/Sprites/Tears/Basic_Tear.png");
 
-	//Tear
+	// Tear
 	setHealthPoints(100);
 	setScrollingPenalty(30);
 	setDamage(10);
 	setGoldReward(100);
+
+	// Booleans
+	setFriendlyFire(false);
+	setFollowingView(false);
+	setDestroyOnHit(false);
 }
 
 // Constructeurs

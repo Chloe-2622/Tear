@@ -1,6 +1,6 @@
-#include "iostream"
 #include <random>
-#include "Game.hpp"
+#include <iostream>
+#include "Scenes/Level.h"
 
 using namespace std;
 
@@ -13,11 +13,24 @@ int randint(int const nMin, int const nbMax)
 }
 
 // Constructeur
-Level::Level(int levelNumber, Game* game) : game(game) {
+#pragma region Constructeurs
+Level::Level(Game* game, int levelNumber) :
+	Scene(game, "resources/Sprites/Background.png")
+{
 	for (int i = 0; i < levelNumber; i++) {
 		lenght += lenght * 50 / 100;
 	}
 }
+
+Level::Level(Game* game, int levelNumber, Player* player) :
+	Scene(game, "resources/Sprites/Background.png"),
+	player{ move(player) }
+{
+	for (int i = 0; i < levelNumber; i++) {
+		lenght += lenght * 50 / 100;
+	}
+}
+#pragma endregion Constructeurs
 
 // Initialize Level
 #pragma region Initialize Level
@@ -36,7 +49,7 @@ sf::View Level::initView(float const windowWidth, float const windowLenght) {
 
 void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 
-	spawnPlayer();
+	if (player == nullptr) { spawnPlayer(); }
 	spawnGoal();
 
 	int paternSpawnNumber = static_cast<int>(lenght / windowSize.y) * 5;
@@ -47,7 +60,7 @@ void Level::buildLevel(vector<unique_ptr<Patern>> const& paterns) {
 
 		// Choose random location
 		std::cout << "window size" << windowSize.x << " " << windowSize.y << std::endl;
-		double offset_x = static_cast<double>(randint(0, static_cast<int>(paterns[paternId]->getMaxSpawnable_x(windowSize.x))));
+		auto offset_x = static_cast<double>(randint(0, static_cast<int>(paterns[paternId]->getMaxSpawnable_x(windowSize.x))));
 		double offset_y = lenght - i * (windowSize.y / 5);
 
 		spawnPatern(*paterns[paternId], { offset_x, offset_y });
@@ -107,89 +120,64 @@ void Level::UpdateView(double const deltaTime) {
 			// On fixe la cam�ra au bon endroit
 			view.move(0, -offsetY);
 
-
-
 			// On red�cale tout les objets pour pas qu'il y a de saut de position apparente
 			for (auto const& gameObject : gameObjects) {
-				gameObject->supressViewOffset({ 0, -offsetY });
+				gameObject->followView({ 0, -offsetY });
 			}
 		}
 	}
 }
 
 sf::View Level::Update(double deltaTime) {
+	struct LevelUpdateValues levelUpdateValues;
+	struct PlayerModifiersValue playerModifiersValue { player->getDamageMultiplier(), player->getGoldMultiplier() };
 
+	//cout << "Start : Gold: " << levelUpdateValues.goldEarned << " scrolling: " << levelUpdateValues.scrollingPenalty << "player killed: " << levelUpdateValues.playerKilled << endl;
+
+	// Update the level view
 	UpdateView(deltaTime);
 
-	const vector<unique_ptr<GameObject>>* gameObjectsPtr;
-	gameObjectsPtr = &gameObjects;
+	// Update du Player
+	player->Update(deltaTime, view, windowSize, player->getPosition(), &gameObjects, &levelUpdateValues);
 
-	vector<vector<unique_ptr<GameObject>>::const_iterator> itsKilled;
-	vector<GameObject*> killed;
-
+	// Update de tous les gameObjects
 	for (auto const& gameObject : gameObjects) {
 
-		// Check if a new gameObject (a projectile) has been created
-		if (auto newGameObject = gameObject->Update(deltaTime, view, windowSize, player->getPosition()); newGameObject != nullptr) {
-			gameObjects.push_back(move(newGameObject));
-		}
+		// Update the gameObject
+		gameObject->Update(deltaTime, view, windowSize, player->getPosition(), &gameObjects, &levelUpdateValues);
 
-		// Chech if gameObject collide with something
-		if (auto hitObject = gameObject->hasHitSomething(gameObjectsPtr); hitObject != nullptr) {
+		// Handle collisions with all gameObjects
+		gameObject->handleCollisions(&gameObjects, playerModifiersValue, &levelUpdateValues);
 
-			// and then if it destroyed that thing
-			if (gameObject->doDamage(*hitObject, player->getDamageMultiplier())) { 
-				killed.push_back(hitObject);
-				player->addGold(hitObject->killReward(player->getGoldMultiplier()));
-				ResourceManager::playSound("resources/Audio/pickupCoin.wav");
-			
-			}
-
-			// Si l'objet doit se détruire au contact
-			if (gameObject->isDestroyedOnHit()) { std::cout << "Destroyed on hit\n"; killed.push_back(gameObject.get()); }
-		}
-
-		// Chech if gameObject collide with player
-		if (auto hitObject = gameObject->hasHitObject(*player)) {
-
-			// and then if it destroyed that thing
-			if (gameObject->doDamage(*player, player->getDamageMultiplier())) { 
-			
-				cout << "FIN DE PARTIE" << endl;
-
-				game->changeState(GameState::GAMEOVER);
-			}
-
-			// Si l'objet doit se détruire au contact
-			if (gameObject->isDestroyedOnHit()) { std::cout << "Destroyed on hit\n"; killed.push_back(gameObject.get()); }
-		}
-
-		/*
-		Check if the object is outside the view
-		For the projectiles, it means that they are above the view, and for the tears, they are outside
-		*/
-		if (gameObject->isOutofView(view, windowSize)) {
-			scrollingSpeed += gameObject->exitViewValue();
-
-			killed.push_back(gameObject.get());
-		}
+		// Handle collision with the player
+		gameObject->handleCollision(*player, playerModifiersValue, &levelUpdateValues);
 	}
 
+	//cout << "End : Gold: " << levelUpdateValues.goldEarned << " scrolling: " << levelUpdateValues.scrollingPenalty << "player killed: " << levelUpdateValues.playerKilled << endl;
+
+	// If player is killed
+	if (levelUpdateValues.playerKilled) {
+		cout << "GAMEOVER" << endl;
+		game->changeState(GameState::GAMEOVER);
+	}
+
+	// Apply level updates
+	scrollingSpeed += levelUpdateValues.scrollingPenalty;
+	
+	// Supprimer les objets détruits de la liste gameObjects
 	// Marquer les objets à supprimer
 	auto it = ranges::remove_if(gameObjects.begin(), gameObjects.end(),
 		[&](const std::unique_ptr<GameObject>& obj) {
-			return ranges::find(killed.begin(), killed.end(), obj.get()) != killed.end();
+			return ranges::find(levelUpdateValues.killedObjects.begin(), levelUpdateValues.killedObjects.end(), obj.get()) != levelUpdateValues.killedObjects.end();
 		});
 
 	// Supprimer les objets marqués
 	gameObjects.erase(it.begin(), it.end());
 
-	// Finalement, on update le player
-	// Check if a new gameObject (a projectile) has been created
-	if (auto newGameObject = player->Update(deltaTime, view, windowSize, player->getPosition()); newGameObject != nullptr) {
-		gameObjects.push_back(move(newGameObject));
-	}
+	// Add rewards to player
+	player->addGold(levelUpdateValues.goldEarned);
 
+	// 
 	if (goal->isReached(*player)) {
 		game->changeState(GameState::VICTORY);
 
@@ -205,26 +193,23 @@ sf::View Level::Update(double deltaTime) {
 }
 #pragma endregion Update
 
+// Render
 void Level::renderBackground(sf::RenderWindow& window) const {
 	for (auto const& backgroundPosition : backgroundsPositions) {
 		sf::Texture texture;
-		texture = ResourceManager::getTexture("resources/Sprites/Background.png");
+		texture = ResourceManager::getTexture(getBackgroundPath());
 
 		sf::Sprite sprite;
 		sprite.setTexture(texture);
 
 		sprite.setScale(static_cast<float>(windowSize.x/texture.getSize().x) , static_cast<float>(windowSize.y / texture.getSize().y));
-		sprite.setPosition(backgroundPosition.first, backgroundPosition.second);
+		sprite.setPosition(static_cast<float>(backgroundPosition.first), static_cast<float>(backgroundPosition.second));
 
 		//Draw the sprite
 		window.draw(sprite);
 	}
 }
 
-// Getter
-Player& Level::getPlayerPtr() { return *player; }
-
-// Render
 void Level::Render(sf::RenderWindow& window) const {
 	renderBackground(window);
 	for (auto const& gameObject : gameObjects) {
@@ -233,3 +218,11 @@ void Level::Render(sf::RenderWindow& window) const {
 	goal->Render(window);
 	player->Render(window);
 }
+
+// Handle input
+void Level::handleInput(sf::Keyboard::Key key, bool isPressed) {
+	player->handleInput(key, isPressed);
+}
+
+// Getter
+unique_ptr<Player> Level::getPlayerPtr() { return std::move(player); }

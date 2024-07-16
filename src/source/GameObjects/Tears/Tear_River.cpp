@@ -1,4 +1,4 @@
-#include "Tear_River.h"
+#include "GameObjects/Tears/Tear_River.h"
 
 using namespace std;
 
@@ -13,6 +13,11 @@ void Tear_River::setParams() {
 	setScrollingPenalty(0);
 	setDamage(10);
 	setGoldReward(0);
+
+	// Booleans
+	setFriendlyFire(true);
+	setFollowingView(false);
+	setDestroyOnHit(true);
 }
 
 // Constructeurs
@@ -31,13 +36,10 @@ Tear_River::Tear_River(const pugi::xml_node& node) :
 // Construct Level
 unique_ptr<Tear> Tear_River::copy() const { return make_unique<Tear_River>(*this); }
 
-// Update
-unique_ptr<GameObject> Tear_River::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
-	// Scrolling de la texture a implémenté si il y a le temps
-	return nullptr;
-};
-
-// Damages
-bool Tear_River::takeDamage(double damages) { // Une rivière ne peut pas être tapée
+// Collision
+bool Tear_River::onCollisionActionReaction(Action action, double actionValue, PlayerModifiersValue const playerModifiersValue, LevelUpdateValues* levelUpdateValues) { // Une rivière ne peut pas être tapée
+	if (action == Action::DAMAGE) {
+		return true;
+	}
 	return false;
 }

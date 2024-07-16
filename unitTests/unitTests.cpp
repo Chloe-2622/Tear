@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <SFML/Graphics.hpp>
 #include "pugixml.hpp"
-#include <Player.h>
+#include <GameObjects/Player.h>
 #include <Patern.h>
 #include <iostream>
 

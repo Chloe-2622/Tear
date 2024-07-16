@@ -1,10 +1,9 @@
 #pragma once
 
-#include "GameObject.h"
-#include "pugixml.hpp"
 #include <iostream>
 #include <sstream>
-
+#include "pugixml.hpp"
+#include "GameObjects/GameObject.h"
 
 class Tear : public GameObject {
 	public:
@@ -18,19 +17,13 @@ class Tear : public GameObject {
 		// Construct Level
 		virtual std::unique_ptr<Tear>		copy() const = 0;
 	
-		// Update
-		void								followView(Vector2 movement) override;
-		void								supressViewOffset(Vector2 offset) override;
-	
 		// Out of view
-		bool								isOutofView(sf::View const& view, Vector2 windowSize) const override;
-		double								exitViewValue() const override;
+		bool								isOutRenderZone(sf::View const& view, Vector2 windowSize) const override;
+		void								exitRenderZone(LevelUpdateValues* levelUpdateValues) override;
 	
-		// Damages
-		bool								hasCollided(GameObject const& gameObject) const override;
-		bool                                doDamage(GameObject& gameObject, double playerMultiplier) const override; // True si kill
-		bool                                takeDamage(double damages) override; // True si mort
-		int		                            killReward(double playerMultiplier) const override;
+		// Collision
+		bool								onCollissionAction(GameObject& gameObject, PlayerModifiersValue const playerModifiersValue, LevelUpdateValues* levelUpdateValues) override;
+		bool								onCollisionActionReaction(Action action, double actionValue, PlayerModifiersValue const playerModifiersValue, LevelUpdateValues* levelUpdateValues) override;
 
 	
 		// Setter

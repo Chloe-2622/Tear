@@ -1,6 +1,6 @@
-#include "Game.hpp"
-#include "iostream"
+#include <iostream>
 #include <string>
+#include "Game.hpp"
 
 
 using namespace std;
@@ -68,18 +68,10 @@ void Game::processEvents()
 				mWindow.close();
 				break;
 			case sf::Event::KeyPressed:
-				if (gameState == GAME) 	  handlePlayerInput(event.key.code, true);
-				if (gameState == MENU) 	  handleMenuInput(event.key.code, true);
-				if (gameState == SHOP) 	  handleShopInput(event.key.code, true);
-				if (gameState == VICTORY) handleVictoryInput(event.key.code, true);
-				if (gameState == GAMEOVER) handleGameoverInput(event.key.code, true);
+				scene->handleInput(event.key.code, true);
 				break;
 			case sf::Event::KeyReleased:
-				if (gameState == GAME) handlePlayerInput(event.key.code, false);
-				if (gameState == MENU) handleMenuInput(event.key.code, false);
-				if (gameState == SHOP) handleShopInput(event.key.code, false);
-				if (gameState == VICTORY) handleVictoryInput(event.key.code, false);
-				if (gameState == GAMEOVER) handleGameoverInput(event.key.code, false);
+				scene->handleInput(event.key.code, false);
 				break;
 		}
 	}
@@ -190,25 +182,7 @@ void Game::RenderMenu() {
 void Game::RenderPause() {
 }
 
-void Game::RenderVictory() {
-	sf::Texture victoryTexture;
-	victoryTexture = ResourceManager::getTexture("resources/Sprites/Victory.png");
 
-	sf::Sprite victorySprite;
-	victorySprite.setTexture(victoryTexture);
-
-	mWindow.draw(victorySprite);
-
-	sf::Texture victoryTextTexture;
-	victoryTextTexture = ResourceManager::getTexture("resources/Sprites/Press_Space.png");
-
-	sf::Sprite victoryTextSprite;
-	victoryTextSprite.setTexture(victoryTextTexture);
-
-	victoryTextSprite.setPosition(mWindow.getView().getCenter() - mWindow.getView().getSize() / 2.f);
-
-	mWindow.draw(victoryTextSprite);
-}
 
 void Game::RenderGameover() {
 	sf::Texture gameoverTexture;

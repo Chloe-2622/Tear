@@ -1,4 +1,4 @@
-#include "Projectile_Basic.h"
+#include "GameObjects/Projectiles/Projectile_Basic.h"
 
 using namespace std;
 
@@ -10,6 +10,11 @@ void Projectile_Basic::setParams() {
 
 	//Projectile
 	setDamage(100);
+
+	// Booleans
+	setFriendlyFire(false);
+	setFollowingView(true);
+	setDestroyOnHit(true);
 }
 
 // Constructeurs
@@ -20,7 +25,7 @@ Projectile_Basic::Projectile_Basic(Transform const& transform, double speed, std
 }
 
 // Update
-unique_ptr<GameObject> Projectile_Basic::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
+void Projectile_Basic::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition, std::vector<std::unique_ptr<GameObject>>* gameObjects, LevelUpdateValues* levelUpdateValues) {
 	move({ 0, -10 * getSpeed() * deltaTime });
-	return nullptr;
+	GameObject::Update(deltaTime, view, windowSize, playerPosition, gameObjects, levelUpdateValues);
 };

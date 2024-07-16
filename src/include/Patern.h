@@ -1,12 +1,12 @@
 #pragma once
 
-#include "pugixml.hpp"
-#include "Tear.h"
-#include "Tear_Basic.h"
-#include "Tear_Guided.h"
-#include "Tear_River.h"
 #include <string>
 #include <vector>
+#include "pugixml.hpp"
+#include "GameObjects/Tears/Tear.h"
+#include "GameObjects/Tears/Tear_Basic.h"
+#include "GameObjects/Tears/Tear_Guided.h"
+#include "GameObjects/Tears/Tear_River.h"
 
 class Patern {
 public :

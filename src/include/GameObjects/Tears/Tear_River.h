@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tear.h"
+#include "GameObjects/Tears/Tear.h"
 
 class Tear_River : public Tear {
 public:
@@ -14,9 +14,6 @@ public:
 	// Construct Level
 	std::unique_ptr<Tear>			copy() const override;
 
-	// Update
-	std::unique_ptr<GameObject>		Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) override;
-
-	// Damages
-	bool							takeDamage(double damages) override;
+	// Collsion
+	bool							onCollisionActionReaction(Action action, double actionValue, PlayerModifiersValue const playerModifiersValue, LevelUpdateValues* levelUpdateValues) override;
 };

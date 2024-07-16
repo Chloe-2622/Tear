@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tear.h"
+#include "GameObjects/Tears/Tear.h"
 
 class Tear_Basic : public Tear {
 	public:

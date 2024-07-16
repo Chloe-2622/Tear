@@ -1,18 +1,23 @@
-#include "Tear_Guided.h"
+#include "GameObjects/Tears/Tear_Guided.h"
 
 using namespace std;
 
 // Param�tres
 void Tear_Guided::setParams() {
 	// GameObject
-	setSpeed(100);
+	setSpeed(200);
 	setTexturePath("resources/Sprites/Tears/Guided_Tear.png");
 
 	//Tear
 	setHealthPoints(100);
 	setScrollingPenalty(30);
-	setDamage(10);
+	setDamage(50);
 	setGoldReward(100);
+
+	// Booleans
+	setFriendlyFire(true);
+	setFollowingView(false);
+	setDestroyOnHit(true);
 }
 
 // Constructeurs
@@ -32,15 +37,14 @@ Tear_Guided::Tear_Guided(const pugi::xml_node& node) :
 unique_ptr<Tear> Tear_Guided::copy() const { return make_unique<Tear_Guided>(*this); }
 
 // Update
-unique_ptr<GameObject> Tear_Guided::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
-	this->playerPosition = playerPosition;
-
-	// Sets new rotation to face the plaayer
+void Tear_Guided::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition,
+											std::vector<std::unique_ptr<GameObject>>* gameObjects,
+											LevelUpdateValues* levelUpdateValues) {
+	// Sets new rotation to face the player
 	setRotation(-90 + atan2(playerPosition.y - getPosition().y, playerPosition.x - getPosition().x) * 180 / M_PI);
 
 	Vector2 direction = playerPosition - getPosition();
 	direction.normalize();
 
 	move(direction * getSpeed() * deltaTime);
-	return nullptr;
 };

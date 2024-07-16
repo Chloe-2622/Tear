@@ -1,6 +1,6 @@
-#include "GameObject.h"
 #include <iostream>
 #include <sstream>
+#include "GameObjects/GameObject.h"
 
 using namespace std;
 
@@ -47,40 +47,71 @@ void GameObject::Render(sf::RenderWindow &window) const {
 }
 
 // Update
-std::unique_ptr<GameObject> GameObject::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition) {
-    return nullptr; // Les objets qui n'ont pas d'update ou qui ne rajoutent pas de gameObjects retournent un pointeur null
+#pragma region Update
+void GameObject::Update(double deltaTime, sf::View const& view, Vector2 windowSize, Vector2 playerPosition,
+    std::vector<std::unique_ptr<GameObject>>* gameObjects,
+    LevelUpdateValues* levelUpdateValues) {
+
+    if (isOutRenderZone(view, windowSize)) {
+        exitRenderZone(levelUpdateValues);
+    }
 }
+
+void GameObject::followView(Vector2 viewMovement) {
+    if (followingView) { move(viewMovement); }
+}
+
+void GameObject::move(Vector2 movement) { transform.position += movement; }
+#pragma endregion Update
 
 // Out of View
-double GameObject::exitViewValue() const { return 0; };
+void GameObject::exitRenderZone(LevelUpdateValues* levelUpdateValues) {
+    levelUpdateValues->killedObjects.push_back(this);
+}
 
 // Damages
-#pragma region Damages
-GameObject* GameObject::hasHitSomething(const vector<unique_ptr<GameObject>>* gameObjects) const {
-
-    for (auto& gameObject : *gameObjects) {
-        if (hasHitObject(*gameObject)) {
-            return gameObject.get();
-        }
+#pragma region Collision
+void GameObject::handleCollisions(const std::vector<std::unique_ptr<GameObject>>* gameObjects, PlayerModifiersValue const playerModifiersValue, LevelUpdateValues* levelUpdateValues) {
+    for (auto const& gameObject : *gameObjects) {
+        handleCollision(*gameObject, playerModifiersValue, levelUpdateValues);
     }
-    return nullptr;
 }
 
-bool GameObject::hasHitObject(GameObject const& gameObject) const {
-    return gameObject.faction != this->faction && hasCollided(gameObject);
+void GameObject::handleCollision(GameObject& gameObject, PlayerModifiersValue const playerModifiersValue, LevelUpdateValues* levelUpdateValues) {
+    if (*this != gameObject && ((gameObject.faction != this->faction || friendlyFire) && hasCollided(gameObject))) {
+        onCollissionReaction(gameObject, playerModifiersValue, levelUpdateValues);
+    }
 }
 
-int GameObject::killReward(double playerMultiplier) const { return 0; }
-#pragma endregion Damages
+bool GameObject::hasCollided(GameObject const& gameObject) const {
+    // Box collisions
+    // Same line on X
+    if (gameObject.getPosition().x < getPosition().x + getSize().x && gameObject.getPosition().x + gameObject.getSize().x > getPosition().x) {
+
+        // Same column on Y 
+        return gameObject.getPosition().y < getPosition().y + getSize().y && gameObject.getPosition().y + gameObject.getSize().y > getPosition().y;
+    }
+    return false;
+}
+
+void GameObject::onCollissionReaction(GameObject& gameObject, PlayerModifiersValue const playerModifiersValue, LevelUpdateValues* levelUpdateValues) {
+    if (onCollissionAction(gameObject, playerModifiersValue, levelUpdateValues) && destroyOnHit) {
+        levelUpdateValues->killedObjects.push_back(this);
+    }
+}
+#pragma endregion Collision
 
 // Setter
 #pragma region Setter
 void GameObject::setPosition(Vector2 position) { transform.position = position; };
-void GameObject::move(Vector2 movement) { transform.position += movement; }
 void GameObject::setTexturePath(string_view const& newTexturePath) { texturePath = newTexturePath; }
 void GameObject::setSpeed(double newSpeed) { speed = newSpeed; }
 void GameObject::setRotation(double newRotation) { transform.rotation = newRotation; }
-void GameObject::setIsDestroyedOnHit(bool newDestroyOnHit) { destroyOnHit = newDestroyOnHit; }
+
+// Booléen
+void GameObject::setFriendlyFire(bool newFriendlyFire) { friendlyFire = newFriendlyFire; }
+void GameObject::setFollowingView(bool newFollowingView) { followingView = newFollowingView; }
+void GameObject::setDestroyOnHit(bool newDestroyOnHit) { destroyOnHit = newDestroyOnHit; }
 #pragma endregion Setter
 
 // Getter
@@ -89,8 +120,13 @@ Vector2 GameObject::getPosition() const { return transform.position; }
 Vector2 GameObject::getSize() const { return transform.size; }
 double GameObject::getRotation() const { return transform.rotation; }
 double GameObject::getSpeed() const { return speed; }
-bool GameObject::isDestroyedOnHit() const { return destroyOnHit; }
 #pragma endregion Getter
+
+// Operations
+bool GameObject::operator==(const GameObject& g) const
+{
+    return transform == g.transform;
+}
 
 // Debug
 string GameObject::dump(string const& indent) const {
