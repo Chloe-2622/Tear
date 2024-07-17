@@ -34,7 +34,7 @@ add_library(src ${SOURCES}
 	include/Scenes/Level.h
 	include/Scenes/Menu.h
 	include/Scenes/Shop.h
-	source/Scenes/Victory.h
+	include/Scenes/Victory.h
 	include/Game.hpp
 	include/Goal.h
 	include/myMain.h
